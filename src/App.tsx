@@ -1,3 +1,12 @@
-// Root component of the app.
-// Wraps providers (AuthContext, Theme, etc).
-// Renders Navbar + AppRoutes (main navigation).
+import Navbar from "./components/Navbar";
+import AppRoutes from "./routes/AppRoutes";
+
+export default function App() {
+
+    return (
+        <div>
+            <Navbar />
+            <AppRoutes />
+        </div>
+    );
+}

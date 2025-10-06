@@ -1,2 +1,7 @@
-// Main hub page.
-// Lets the user pick which minigame to play (movies/TV shows, etc).
+function GameSelector() {
+    return (
+        <h1>Home</h1>
+    );
+}
+
+export default GameSelector;
