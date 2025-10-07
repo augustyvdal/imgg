@@ -72,7 +72,7 @@ const HigherLower = observer(() => {
                         src={`https://image.tmdb.org/t/p/w200${presenter.movieB?.poster_path}`}
                         alt={presenter.movieB?.title}
                     />
-                    <p>{showRatings ? `${presenter.movieB?.vote_average}` : "Rating: ???"}</p>
+                    <p>{showRatings ? `Rating: ${presenter.movieB?.vote_average}` : "Rating: ???"}</p>
                 </div>
             </div>
         </div>
