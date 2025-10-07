@@ -1,34 +1,40 @@
-// ViewModel (hook) for Higher or Lower.
-// Fetches 2 titles, compares ratings, tracks streak, updates score.
+// src/presenters/HigherLowerPresenter.ts
 import { higherLowerModel, Movie } from "../models/higherLowerModel";
 
 export class HigherLowerPresenter {
-  private view: any;
-  private movies: Movie[] = [];
-  private currentIndex: number = 0;
+    private model = higherLowerModel;
 
-  constructor(view: any) {
-    this.view = view;
-  }
-
-  async init() {
-    try {
-      this.view.showLoading();
-      this.movies = await higherLowerModel.getPopularMovies();
-      this.currentIndex = 0;
-      this.view.render(this.movies[this.currentIndex]);
-    } catch (error) {
-      this.view.showError(error);
-    } finally {
-      this.view.hideLoading();
+    async loadMovies(): Promise<void> {
+        try {
+            await this.model.fetchMovies();
+        } catch (error) {
+            console.error("Failed to load movies", error);
+        }
     }
-  }
 
-  nextMovie() {
-    if (this.movies.length === 0) return;
+    handleGuess(guess: "higher" | "lower"): boolean {
+    return this.model.makeGuess(guess);
+    }
 
-    this.currentIndex = (this.currentIndex + 1) % this.movies.length;
-    this.view.render(this.movies[this.currentIndex]);
-  }
+    nextRound(): void {
+    this.model.nextRound();
+    }
+
+    get movieA(): Movie | null {
+        return this.model.movieA;
+    }
+
+    get movieB(): Movie | null {
+        return this.model.movieB;
+    }
+
+    get score(): number {
+        return this.model.score;
+    }
+
+    get hasMovies(): boolean {
+        return !!this.model.movieA && !!this.model.movieB;
+    }
 }
 
+export const higherLowerPresenter = new HigherLowerPresenter();
