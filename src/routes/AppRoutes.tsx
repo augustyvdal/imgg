@@ -4,6 +4,7 @@ import Home from "../views/GameSelector";
 import GuessTheMovie from "../views/GuessTheMovie";
 import HigherLower from "../views/HigherLowerView";
 import OrderBy from "../views/OrderBy";
+import LoginPage from "../views/LoginPage";
 
 
 const AppRoutes = (): JSX.Element => {
@@ -14,6 +15,7 @@ const AppRoutes = (): JSX.Element => {
         <div ref={nodeRef}>
             <Routes location={location}>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/game1" element={<GuessTheMovie />} />
                 <Route path="/game2" element={<HigherLower />} />
                 <Route path="/game3" element={<OrderBy />} />
