@@ -5,6 +5,10 @@ import GuessTheMovie from "../views/GuessTheMovie";
 import HigherLower from "../views/HigherLowerView";
 import SortGamePresenter from "../presenters/SortGamePresenter";
 import { SortGameModel } from "../models/SortGameModel"
+import HigherLowerPresenter from "../presenters/HigherLowerPresenter";
+import { HigherLowerModel } from "../models/higherLowerModel";
+import OrderBy from "../views/OrderBy";
+import LoginPage from "../views/LoginPage";
 
 type Props = {
   higherLowerModel: HigherLowerModel;
@@ -19,8 +23,9 @@ const AppRoutes = ({higherLowerModel, sortGameModel}: Props): JSX.Element => {
         <div ref={nodeRef}>
             <Routes location={location}>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/game1" element={<GuessTheMovie />} />
-                <Route path="/game2" element={<HigherLower />} />
+                <Route path="/game2" element={<HigherLowerPresenter model={higherLowerModel} />} />
                 <Route path="/game3" element={<SortGamePresenter model={sortGameModel} />} />
             </Routes>
         </div>
