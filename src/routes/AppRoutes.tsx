@@ -2,7 +2,7 @@ import {type JSX, useRef} from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "../views/GameSelector";
 import GuessTheMovie from "../views/GuessTheMovie";
-import HigherLower from "../views/HigherLower";
+import HigherLower from "../views/HigherLowerView";
 import OrderBy from "../views/OrderBy";
 
 
