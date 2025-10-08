@@ -17,6 +17,7 @@ function Options({ isMobile = false, closeAll }: { isMobile?: boolean; closeAll?
             <Link to="/game1" className="nav-link" onClick={closeAll}>Game 1</Link>
             <Link to="/game2" className="nav-link" onClick={closeAll}>Game 2</Link>
             <Link to="/game3" className="nav-link" onClick={closeAll}>Game 3</Link>
+            <Link to="/profile" className="nav-link" onClick={closeAll}>Profile</Link>
         </nav>
     );
 }
