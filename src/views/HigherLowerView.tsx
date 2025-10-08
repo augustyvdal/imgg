@@ -13,6 +13,7 @@ type Props = {
         buttonsDisabled: boolean;
         onGuess: (guess: "higher" | "lower") => void;
     };
+    
 export default function HigherLowerView({movieA, movieB, score, message, showRatings, buttonsDisabled, onGuess}: Props) {
 
     return (

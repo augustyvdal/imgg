@@ -1,6 +1,5 @@
 // src/models/movieModel.ts
 import { fetchFromTmdb } from "../services/apiClient";
-import { makeAutoObservable } from "mobx";
 
 export type Movie = {
   id: number;
@@ -14,10 +13,6 @@ export class HigherLowerModel {
   movieA: Movie | null = null;
   movieB: Movie | null = null;
   score: number = 0;
-
-  constructor() {
-    makeAutoObservable(this); 
-  }
 
   // Fetch popular movies right now only page 1 just for testing purposes
   async fetchMovies() {
@@ -64,4 +59,3 @@ export class HigherLowerModel {
 
 };
 
-export const higherLowerModel = new HigherLowerModel();
