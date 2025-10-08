@@ -1,6 +1,8 @@
 import "/src/styles/Navbar.css"
 import { useLocation, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Options({ isMobile = false, closeAll }: { isMobile?: boolean; closeAll?: () => void }) {
     const location = useLocation();
@@ -21,8 +23,22 @@ function Options({ isMobile = false, closeAll }: { isMobile?: boolean; closeAll?
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
-
     const closeMobile = () => setMobileOpen(false);
+
+    const { user, signOut } = useAuth() as any;
+    const navigate = useNavigate();
+
+    const handleLoginClick = () => {
+        closeMobile();
+        navigate("/login");
+    }
+
+    const handleLogoutClick = async () => {
+        await signOut();
+        closeMobile();
+        navigate("/");
+    }
+
 
     return (
         <header className="navbar">
@@ -39,7 +55,17 @@ const Navbar = () => {
             </button>
 
             <Options />
-
+            <div className="auth-buttons">
+            {user ? (
+                <button className="nav-link" onClick={handleLogoutClick}>
+                    Sign out ({user.email})
+                </button>
+             ) : (
+                <button className="nav-link" onClick={handleLoginClick}>
+                    Login
+                </button>
+                )}
+            </div>
 
             <div id="mobile-menu" className={`mobile-menu ${mobileOpen ? "open" : ""}`}>
                 <Options isMobile closeAll={closeMobile} />
