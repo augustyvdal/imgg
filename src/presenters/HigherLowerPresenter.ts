@@ -1,4 +1,7 @@
 // src/presenters/HigherLowerPresenter.ts
+import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import HigherLowerView from "../views/HigherLowerView";
 import { higherLowerModel, Movie } from "../models/higherLowerModel";
 
 export class HigherLowerPresenter {

@@ -21,7 +21,10 @@ export class HigherLowerModel {
 
   // Fetch popular movies right now only page 1 just for testing purposes
   async fetchMovies() {
-    const data = await fetchFromTmdb("/movie/popular?language=en-US&page=1");
+    //const randomPage = Math.floor(Math.random() * 38029) + 1;
+
+    const data = await fetchFromTmdb(`/movie/popular?language=en-US&page=1`);
+
     this.movies = data.results.map((movie: any) => ({
       id: movie.id,
       title: movie.title,
