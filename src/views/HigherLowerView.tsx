@@ -1,7 +1,7 @@
 ﻿// src/views/HigherLowerView.tsx
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Movie } from "../models/higherLowerModel";
+import { Movie } from "../services/apiClient";
 import "../styles/Higherlower.css"
 
 type Props = {

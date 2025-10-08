@@ -1,12 +1,6 @@
 // src/models/movieModel.ts
-import { fetchFromTmdb } from "../services/apiClient";
+import { fetchHigherLower, Movie } from "../services/apiClient";
 
-export type Movie = {
-  id: number;
-  title: string;
-  poster_path: string;
-  vote_average: number;
-};
 
 export class HigherLowerModel {
   movies: Movie[] = [];
@@ -14,18 +8,17 @@ export class HigherLowerModel {
   movieB: Movie | null = null;
   score: number = 0;
 
-  // Fetch popular movies right now only page 1 just for testing purposes
+  // Calls fetchHigherLower from apiClient and sets movies, movieA, movieB and score
   async fetchMovies() {
-    //const randomPage = Math.floor(Math.random() * 38029) + 1;
+    const randomPage = Math.floor(Math.random() * 100) + 1;
 
-    const data = await fetchFromTmdb(`/movie/popular?language=en-US&page=1`);
+    const movies = await fetchHigherLower(randomPage);
 
-    this.movies = data.results.map((movie: any) => ({
-      id: movie.id,
-      title: movie.title,
-      poster_path: movie.poster_path,
-      vote_average: movie.vote_average,
-    }));
+    // Sets movies attribute to the fetched movies
+    this.movies = movies;
+
+    // Shuffle movies
+    this.movies.sort(() => Math.random() - 0.5);
 
     // Gives movieA and movieB a movie with the attributes of the Movie type, takes and removes item from array
     this.movieA = this.movies.shift() || null;
@@ -38,7 +31,7 @@ export class HigherLowerModel {
     // Makes sure the movies are not null
     if (!this.movieA || !this.movieB) return false;
 
-    const isHigher = this.movieB.vote_average > this.movieA.vote_average;
+    const isHigher = (this.movieB?.vote_average || 0) > (this.movieA?.vote_average || 0);
     const correct = (guess === "higher" && isHigher) || (guess === "lower" && !isHigher);
 
     if (correct) {

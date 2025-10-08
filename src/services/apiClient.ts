@@ -6,6 +6,8 @@ const TOKEN = import.meta.env.VITE_TMDB_READACCESS_TOKEN;
 export type Movie = {
   id: number;
   title: string;
+  poster_path?: string;
+  vote_average?: number;
 };
 
 const options = {
@@ -29,6 +31,18 @@ export async function fetchFromTmdb(endpoint: string) {
   }
 
   return response.json();
+}
+
+// Fetches movies for higher lower game
+export async function fetchHigherLower(page: number): Promise<Movie[]> {
+  const data = await fetchFromTmdb(`/movie/popular?language=en-US&page=${page}`);
+
+  return data.results.map((movie: any) => ({
+    id: movie.id,
+    title: movie.title,
+    poster_path: movie.poster_path,
+    vote_average: movie.vote_average,
+  }));
 }
 
 /*
