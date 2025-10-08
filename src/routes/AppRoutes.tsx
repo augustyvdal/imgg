@@ -3,10 +3,15 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "../views/GameSelector";
 import GuessTheMovie from "../views/GuessTheMovie";
 import HigherLower from "../views/HigherLowerView";
-import OrderBy from "../views/OrderBy";
+import SortGamePresenter from "../presenters/SortGamePresenter";
+import { SortGameModel } from "../models/SortGameModel"
 
+type Props = {
+  higherLowerModel: HigherLowerModel;
+  sortGameModel: SortGameModel;
+};
 
-const AppRoutes = (): JSX.Element => {
+const AppRoutes = ({higherLowerModel, sortGameModel}: Props): JSX.Element => {
     const location = useLocation();
     const nodeRef = useRef<HTMLDivElement | null>(null);
 
@@ -16,7 +21,7 @@ const AppRoutes = (): JSX.Element => {
                 <Route path="/" element={<Home />} />
                 <Route path="/game1" element={<GuessTheMovie />} />
                 <Route path="/game2" element={<HigherLower />} />
-                <Route path="/game3" element={<OrderBy />} />
+                <Route path="/game3" element={<SortGamePresenter model={sortGameModel} />} />
             </Routes>
         </div>
     );
