@@ -42,7 +42,7 @@ a:hover {
     color: var(--main);
 }
 
-.vs button {
+button {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 6px;
@@ -53,11 +53,11 @@ a:hover {
     transition: background 0.2s;
 }
 
-.vs button:hover:not(:disabled) {
+button:hover:not(:disabled) {
     background-color: var(--main--hover);
 }
 
-.vs button:disabled {
+button:disabled {
     opacity: 0.6;
     cursor: default;
 }
