@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { higherLowerPresenter } from "../presenters/HigherLowerPresenter";
+import "../styles/Higherlower.css"
 
 const HigherLower = observer(() => {
     const presenter = higherLowerPresenter;
