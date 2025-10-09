@@ -1,37 +1,41 @@
-// src/models/movieModel.ts
-import { fetchHigherLower, Movie } from "../services/apiClient";
-
+import { fetchHigherLower, Content } from "../services/apiClient";
 
 export class HigherLowerModel {
-  movies: Movie[] = [];
-  movieA: Movie | null = null;
-  movieB: Movie | null = null;
+  allContent: Content[] = [];
+  contentA: Content | null = null;
+  contentB: Content | null = null;
   score: number = 0;
+  category: string = "";
 
-  // Calls fetchHigherLower from apiClient and sets movies, movieA, movieB and score
-  async fetchMovies() {
+  // Calls fetchHigherLower from apiClient and sets allContent, contentA, contentB and score
+  async startNewGame() {
+    // randomize page, fix so that it can pick any page and make it work for both tv shows and movies since they have different amount of pages
     const randomPage = Math.floor(Math.random() * 100) + 1;
 
-    const movies = await fetchHigherLower(randomPage);
+    const allContent = await fetchHigherLower(this.category, randomPage);
 
-    // Sets movies attribute to the fetched movies
-    this.movies = movies;
+    // Sets allContent attribute to the fetched allContent
+    this.allContent = allContent;
 
-    // Shuffle movies
-    this.movies.sort(() => Math.random() - 0.5);
+    // Shuffle content
+    this.allContent.sort(() => Math.random() - 0.5);
 
-    // Gives movieA and movieB a movie with the attributes of the Movie type, takes and removes item from array
-    this.movieA = this.movies.shift() || null;
-    this.movieB = this.movies.shift() || null;
+    // Sets contentA and contentB to the first two movies/tv-shows from allContent and removes them from the list
+    this.contentA = this.allContent.shift() || null;
+    this.contentB = this.allContent.shift() || null;
     this.score = 0;
+  }
+
+  chosenCategory(category: "movie" | "tv") {
+    this.category = category;
   }
 
   // Returns boolean if guess is correct or not and adds score if correct
   makeGuess(guess: "higher" | "lower"): boolean {
-    // Makes sure the movies are not null
-    if (!this.movieA || !this.movieB) return false;
+    // Makes sure the content is not null
+    if (!this.contentA || !this.contentB) return false;
 
-    const isHigher = (this.movieB?.vote_average || 0) > (this.movieA?.vote_average || 0);
+    const isHigher = (this.contentB?.vote_average || 0) > (this.contentA?.vote_average || 0);
     const correct = (guess === "higher" && isHigher) || (guess === "lower" && !isHigher);
 
     if (correct) {
@@ -41,14 +45,19 @@ export class HigherLowerModel {
     return correct;
   }
 
-  // When a new round is starting, movieB becomes movieA and a new movieB is drawn from the list 
-  nextRound() {
-    if (!this.movieB) return;
-    this.movieA = this.movieB;
-    this.movieB = this.movies.shift() || null;
+  // When a new round is starting, contentB becomes contentA and a new contentB is drawn from the list
+  nextItem() {
+    if (!this.contentB) return;
+    this.contentA = this.contentB;
+    this.contentB = this.allContent.shift() || null;
   }
 
-  // Add reset game function
+  reset() {
+    this.allContent = [];
+    this.contentA = null;
+    this.contentB = null;
+    this.score = 0;
+  }
 
 };
 

@@ -13,7 +13,7 @@ export default observer (
         const [isLoaded, setIsLoaded] = useState(false);
 
         useEffect(() => {
-                model.GetAllMovies(5)
+                model.GetAllContent(5)
                 .then(() => setIsLoaded(true))}
                 ,[model]);
         
@@ -23,7 +23,7 @@ export default observer (
 
         return (
         <SortGameView
-        movies={model.getAllMovies()}
+        content={model.getAllContent()}
         onReorder={onReorder}
         />
     );

@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from "./contexts/AuthContext";
-import { HigherLowerModel } from "./models/higherLowerModel";
+import { HigherLowerModel } from "./models/HigherLowerModel";
 import { SortGameModel } from "./models/SortGameModel";
 
 type Props = {

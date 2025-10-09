@@ -1,53 +1,67 @@
 ﻿// src/views/HigherLowerView.tsx
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Movie } from "../services/apiClient";
+import { Content } from "../services/apiClient";
 import "../styles/Higherlower.css"
+import ChooseCategory from "../components/ChooseCategory";
 
 type Props = {
-        movieA: Movie | null;
-        movieB: Movie | null;
+        contentA: Content | null;
+        contentB: Content | null;
         score: number;
+        category: string;
         message: string;
         showRatings: boolean;
         buttonsDisabled: boolean;
+        gameOver: boolean;
+        chooseCategory: (category: "movie" | "tv") => void;
         onGuess: (guess: "higher" | "lower") => void;
+        prepareNewGame: () => void;
     };
-    
-export default function HigherLowerView({movieA, movieB, score, message, showRatings, buttonsDisabled, onGuess}: Props) {
+
+export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, chooseCategory, onGuess, prepareNewGame}: Props) {
 
     return (
         <div className="game-container">
-            <h1>Higher or Lower: Movie Ratings</h1>
-            <h2>Score: {score}</h2>
+            <h1>Higher or Lower</h1>
+            {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
-            <div className="movies">
-                <div className="movie">
-                    <h3>{movieA?.title}</h3>
-                    <img
-                        src={`https://image.tmdb.org/t/p/w200${movieA?.poster_path}`}
-                        alt={movieA?.title}
-                    />
-                    <p>Rating: {movieA?.vote_average}</p>
-                </div>
+            {category !== "" && (
+                <>
+                <h2>Score: {score}</h2>
+                
+                <div className="items">
+                    <div className="item">
+                        <h3>{contentA?.title || contentA?.name}</h3>
+                        <img
+                            src={`https://image.tmdb.org/t/p/w200${contentA?.poster_path}`}
+                            alt={contentA?.title || contentA?.name}
+                        />
+                        <p>Rating: {contentA?.vote_average}</p>
+                    </div>
 
-                <div className="vs" style={{display: "flex", alignItems: "center", gap: "1rem"}}>
-                    <h3>Is "{movieB?.title}" rated</h3>
-                    <button onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
-                    <h3>OR</h3>
-                    <button onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
-                    {message && <p>{message}</p>}
-                </div>
+                    <div className="vs">
+                        <h3>Is "{contentB?.title || contentB?.name}" rated</h3>
+                        <button onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
+                        <h3>OR</h3>
+                        <button onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
+                        {message && <p>{message}</p>}
+                        {gameOver && <button onClick={prepareNewGame}>Play Again</button>}
+                    </div>
 
-                <div className="movie">
-                    <h3>{movieB?.title}</h3>
-                    <img
-                        src={`https://image.tmdb.org/t/p/w200${movieB?.poster_path}`}
-                        alt={movieB?.title}
-                    />
-                    <p>{showRatings ? `Rating: ${movieB?.vote_average}` : "Rating: ???"}</p>
+                    <div className="item">
+                        <h3>{contentB?.title || contentB?.name}</h3>
+                        <img
+                            src={`https://image.tmdb.org/t/p/w200${contentB?.poster_path}`}
+                            alt={contentB?.title || contentB?.name}
+                        />
+                        <p>{showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}</p>
+                    </div>
                 </div>
-            </div>
+                </>
+            )}
         </div>
+            
     );
+
 };

@@ -6,7 +6,7 @@ import HigherLower from "../views/HigherLowerView";
 import SortGamePresenter from "../presenters/SortGamePresenter";
 import { SortGameModel } from "../models/SortGameModel"
 import HigherLowerPresenter from "../presenters/HigherLowerPresenter";
-import { HigherLowerModel } from "../models/higherLowerModel";
+import { HigherLowerModel } from "../models/HigherLowerModel";
 import OrderBy from "../views/OrderBy";
 import LoginPage from "../views/LoginPage";
 import ProfilePage from "../views/ProfilePage";
