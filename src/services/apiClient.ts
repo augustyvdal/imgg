@@ -4,9 +4,10 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const TOKEN = import.meta.env.VITE_TMDB_READACCESS_TOKEN;
 const randomPage = Math.floor(Math.random() * 100) + 1;
 
-export type Movie = {
+export type Content = {
   id: number;
-  title: string;
+  title?: string;
+  name?: string;
   poster_path?: string;
   vote_average?: number;
 };
@@ -35,14 +36,15 @@ export async function fetchFromTmdb(endpoint: string) {
 }
 
 // Fetches movies for higher lower game
-export async function fetchHigherLower(page: number): Promise<Movie[]> {
-  const data = await fetchFromTmdb(`/movie/popular?language=en-US&page=${page}`);
+export async function fetchHigherLower(category: string,page: number): Promise<Content[]> {
+  const data = await fetchFromTmdb(`/${category}/popular?language=en-US&page=${page}`);
 
-  return data.results.map((movie: any) => ({
-    id: movie.id,
-    title: movie.title,
-    poster_path: movie.poster_path,
-    vote_average: movie.vote_average,
+  return data.results.map((content: any) => ({
+    id: content.id,
+    title: content.title,
+    name: content.name,
+    poster_path: content.poster_path,
+    vote_average: content.vote_average,
   }));
 }
 
@@ -57,7 +59,7 @@ export function GetMoviesForSort(amount: number): Promise<Movie[]> {
 }
 */
 
-export async function GetMoviesForSort(amount: number): Promise<Movie[]> {
+export async function GetContentForSort(amount: number): Promise<Content[]> {
   try {
     const url =
       BASE_URL +
@@ -75,12 +77,12 @@ export async function GetMoviesForSort(amount: number): Promise<Movie[]> {
       throw new Error("Unexpected API response format");
     }
 
-    return data.results.slice(0, amount).map((movie: any) => ({
-      id: movie.id,
-      title: movie.original_title,
+    return data.results.slice(0, amount).map((content: any) => ({
+      id: content.id,
+      title: content.original_title,
     }));
   } catch (err) {
-    console.error("Error fetching movies:", err);
+    console.error("Error fetching content:", err);
     return [];
   }
 }

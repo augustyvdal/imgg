@@ -1,15 +1,15 @@
-import { GetMoviesForSort, Movie } from "../services/apiClient";
+import { GetContentForSort, Content } from "../services/apiClient";
 
 export class SortGameModel {
-    allMovies: Movie[] = [];
+    allContent: Content[] = [];
 
-    async GetAllMovies(amount: number): Promise<Movie[]> {
-        const movies = await GetMoviesForSort(amount);
-        this.allMovies = movies;
-        return movies;
+    async GetAllContent(amount: number): Promise<Content[]> {
+        const allContent = await GetContentForSort(amount);
+        this.allContent = allContent;
+        return allContent;
     }
 
-    getAllMovies(): Movie[] {
-        return this.allMovies;
+    getAllContent(): Content[] {
+        return this.allContent;
     }
 }

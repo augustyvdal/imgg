@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { observer } from "mobx-react-lite";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { HigherLowerModel } from "./models/higherLowerModel";
+import { HigherLowerModel } from "./models/HigherLowerModel";
 import { SortGameModel } from "./models/SortGameModel";
 
 import "./styles/Global.css";

@@ -8,7 +8,7 @@
     margin: 0 auto;
 }
 
-.movies {
+.items {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -16,14 +16,14 @@
     flex-wrap: wrap;
 }
 
-.movie {
+.item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
 }
 
-.movie img {
+.item img {
     width: 200px;
     border-radius: 8px;
 }
