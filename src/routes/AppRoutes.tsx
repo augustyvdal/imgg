@@ -6,16 +6,15 @@ import HigherLower from "../views/HigherLowerView";
 import SortGamePresenter from "../presenters/SortGamePresenter";
 import { SortGameModel } from "../models/SortGameModel"
 import HigherLowerPresenter from "../presenters/HigherLowerPresenter";
-import { HigherLowerModel } from "../models/higherLowerModel";
+import { HigherLowerModel } from "../models/HigherLowerModel";
 import OrderBy from "../views/OrderBy";
 import LoginPage from "../views/LoginPage";
+import ProfilePage from "../views/ProfilePage";
 
-type Props = {
-  higherLowerModel: HigherLowerModel;
-  sortGameModel: SortGameModel;
-};
+const higherLowerModel = new HigherLowerModel();
+const sortGameModel = new SortGameModel();
 
-const AppRoutes = ({higherLowerModel, sortGameModel}: Props): JSX.Element => {
+const AppRoutes = (): JSX.Element => {
     const location = useLocation();
     const nodeRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,6 +22,7 @@ const AppRoutes = ({higherLowerModel, sortGameModel}: Props): JSX.Element => {
         <div ref={nodeRef}>
             <Routes location={location}>
                 <Route path="/" element={<Home />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/game1" element={<GuessTheMovie />} />
                 <Route path="/game2" element={<HigherLowerPresenter model={higherLowerModel} />} />

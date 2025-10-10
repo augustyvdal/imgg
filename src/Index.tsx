@@ -3,23 +3,15 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { observer } from "mobx-react-lite";
 import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./routes/AppRoutes";
-import { HigherLowerModel } from "./models/higherLowerModel";
-import { SortGameModel } from "./models/SortGameModel";
+import App from "./App";
 
 import "./styles/Global.css";
-
-const higherLowerModel = new HigherLowerModel();
-const sortGameModel = new SortGameModel();
 
 
 const ReactRoot = observer(() => {
   return (
     <BrowserRouter>
-      <AppRoutes
-        higherLowerModel={higherLowerModel} 
-        sortGameModel={sortGameModel}
-      />
+      <App/>
     </BrowserRouter>
   );
 });
