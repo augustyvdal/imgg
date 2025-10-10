@@ -1,6 +1,6 @@
 ﻿import { GuessingGameAPICall } from "../services/apiClient";
 
-export class MovieModel {
+export class GuessTheMovieModel {
     movie: any = null;
     clues: string[] = [];
     currentClueIndex = 0;
