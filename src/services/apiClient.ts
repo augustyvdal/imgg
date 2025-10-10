@@ -1,5 +1,6 @@
 // Handles API calls to IMDb (via RapidAPI).
 // Exports functions like getMovieById, searchMovies, getPopularTitles.
+import { getRandomNumber } from "../utilities/RandomNumber";
 const BASE_URL = "https://api.themoviedb.org/3";
 const TOKEN = import.meta.env.VITE_TMDB_READACCESS_TOKEN;
 const randomPage = Math.floor(Math.random() * 100) + 1;
@@ -36,7 +37,10 @@ export async function fetchFromTmdb(endpoint: string) {
 }
 
 // Fetches movies for higher lower game
-export async function fetchHigherLower(category: string,page: number): Promise<Content[]> {
+export async function fetchHigherLower(category: string): Promise<Content[]> {
+  // Get random page depending on category
+  const page: number = (category === "movie") ? getRandomNumber(500) : getRandomNumber(100);
+
   const data = await fetchFromTmdb(`/${category}/popular?language=en-US&page=${page}`);
 
   return data.results.map((content: any) => ({

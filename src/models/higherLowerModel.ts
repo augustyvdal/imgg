@@ -9,10 +9,7 @@ export class HigherLowerModel {
 
   // Calls fetchHigherLower from apiClient and sets allContent, contentA, contentB and score
   async startNewGame() {
-    // randomize page, fix so that it can pick any page and make it work for both tv shows and movies since they have different amount of pages
-    const randomPage = Math.floor(Math.random() * 100) + 1;
-
-    const allContent = await fetchHigherLower(this.category, randomPage);
+    const allContent = await fetchHigherLower(this.category);
 
     // Sets allContent attribute to the fetched allContent
     this.allContent = allContent;
