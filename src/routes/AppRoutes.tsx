@@ -11,12 +11,10 @@ import OrderBy from "../views/OrderBy";
 import LoginPage from "../views/LoginPage";
 import ProfilePage from "../views/ProfilePage";
 
-type Props = {
-  higherLowerModel: HigherLowerModel;
-  sortGameModel: SortGameModel;
-};
+const higherLowerModel = new HigherLowerModel();
+const sortGameModel = new SortGameModel();
 
-const AppRoutes = ({higherLowerModel, sortGameModel}: Props): JSX.Element => {
+const AppRoutes = (): JSX.Element => {
     const location = useLocation();
     const nodeRef = useRef<HTMLDivElement | null>(null);
 
