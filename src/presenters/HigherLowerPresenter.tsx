@@ -15,7 +15,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     // Boolean to disable buttons
     const [buttonsDisabled, setButtonsDisabled] = useState(false);
     // Boolean to check if content is fetched
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [gameOver, setGameOver] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<string>(""); // controls UI
 
@@ -51,9 +51,9 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     const chooseCategory = async (category: "movie" | "tv") => {
         setSelectedCategory(category);
         model.chosenCategory(category);
-        setIsLoaded(false);
+        setLoading(true);
         await model.startNewGame();
-        setIsLoaded(true);
+        setLoading(false);
     };
 
     const prepareNewGame = () => {
@@ -63,7 +63,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
         setButtonsDisabled(false);
         setMessage("");
         setGameOver(false);
-        setIsLoaded(false);
+        //setIsLoaded(false);
     };
 
     return (
@@ -76,6 +76,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
         showRatings = {showRatings}
         buttonsDisabled = {buttonsDisabled}
         gameOver = {gameOver}
+        loading = {loading}
         chooseCategory={chooseCategory}
         onGuess={onGuess}
         prepareNewGame={prepareNewGame}
