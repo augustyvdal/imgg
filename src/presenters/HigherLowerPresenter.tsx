@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import HigherLowerView from "../views/HigherLowerView";
-import { HigherLowerModel } from "../models/HigherLowerModel";
+import { HigherLowerModel } from "../models/higherLowerModel";
 
 type Props = {
   model: HigherLowerModel;

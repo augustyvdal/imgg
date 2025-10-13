@@ -1,14 +1,20 @@
-import { useEffect, useState } from "react";
-import { MovieModel } from "../models/GuessTheMovieModel";
+import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { GuessTheMovieModel } from "../models/GuessTheMovieModel";
+import GuessTheMovieView from "../views/GuessTheMovieView";
 
-export function useMovieGamePresenter() {
-    const [model] = useState(() => new MovieModel());
+type Props = {
+    model: GuessTheMovieModel;
+};
+
+export default observer(function GuessTheMoviePresenter({ model }: Props) {
     const [clues, setClues] = useState<string[]>([]);
     const [message, setMessage] = useState("");
     const [score, setScore] = useState<number | null>(null);
     const [isOver, setIsOver] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    // Load a new round on mount
     useEffect(() => {
         (async () => {
             setLoading(true);
@@ -46,5 +52,15 @@ export function useMovieGamePresenter() {
         setLoading(false);
     };
 
-    return { loading, clues, message, score, isOver, makeGuess, reset };
-}
+    return (
+        <GuessTheMovieView
+            loading={loading}
+            clues={clues}
+            message={message}
+            score={score}
+            isOver={isOver}
+            onGuess={makeGuess}
+            onRestart={reset}
+        />
+);
+});
