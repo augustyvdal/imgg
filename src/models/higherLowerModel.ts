@@ -54,6 +54,7 @@ export class HigherLowerModel {
     this.contentA = null;
     this.contentB = null;
     this.score = 0;
+    this.category = "";
   }
 
 };
