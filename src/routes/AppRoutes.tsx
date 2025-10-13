@@ -4,7 +4,7 @@ import Home from "../views/GameSelector";
 import SortGamePresenter from "../presenters/SortGamePresenter";
 import { SortGameModel } from "../models/SortGameModel"
 import HigherLowerPresenter from "../presenters/HigherLowerPresenter";
-import { HigherLowerModel } from "../models/higherLowerModel";
+import { HigherLowerModel } from "../models/HigherLowerModel";
 import GuessTheMoviePresenter from "../presenters/GuessTheMoviePresenter";
 import {GuessTheMovieModel} from "../models/GuessTheMovieModel";
 import LoginPage from "../views/LoginPage";
