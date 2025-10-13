@@ -6,9 +6,10 @@ export class GuessTheMovieModel {
     currentClueIndex = 0;
     score: number | null = null;
     isOver = false;
+    category: string = "";
 
     async startNewRound() {
-        const movieData = await GuessingGameAPICall();
+        const movieData = await GuessingGameAPICall(this.category);
         this.movie = movieData;
 
         this.clues = [
@@ -24,6 +25,10 @@ export class GuessTheMovieModel {
         this.isOver = false;
 
         return this.getCurrentClues();
+    }
+
+    chosenCategory(category: "movie" | "tv") {
+        this.category = category;
     }
 
     getCurrentClues() {

@@ -13,9 +13,10 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     const [score, setScore] = useState<number | null>(null);
     const [isOver, setIsOver] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-    // Load a new round on mount
     useEffect(() => {
+        if (!model.category && selectedCategory === "") return;
         (async () => {
             setLoading(true);
             await model.startNewRound();
@@ -42,6 +43,14 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
         }
     };
 
+    const chooseCategory = async (category: "movie" | "tv") => {
+        setSelectedCategory(category);
+        model.chosenCategory(category);
+        setLoading(false);
+        await model.startNewRound();
+        setLoading(true);
+    };
+
     const reset = async () => {
         setMessage("");
         setScore(null);
@@ -61,6 +70,8 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
             isOver={isOver}
             onGuess={makeGuess}
             onRestart={reset}
+            category={selectedCategory}
+            chooseCategory={chooseCategory}
         />
 );
 });
