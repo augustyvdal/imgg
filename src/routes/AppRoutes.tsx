@@ -1,12 +1,16 @@
 import {type JSX, useRef} from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "../views/GameSelector";
+
 import SortGamePresenter from "../presenters/SortGamePresenter";
 import { SortGameModel } from "../models/SortGameModel"
+
 import HigherLowerPresenter from "../presenters/HigherLowerPresenter";
 import { HigherLowerModel } from "../models/HigherLowerModel";
+
 import GuessTheMoviePresenter from "../presenters/GuessTheMoviePresenter";
 import {GuessTheMovieModel} from "../models/GuessTheMovieModel";
+
 import LoginPage from "../views/LoginPage";
 import ProfilePage from "../views/ProfilePage";
 

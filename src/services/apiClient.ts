@@ -52,17 +52,6 @@ export async function fetchHigherLower(category: string): Promise<Content[]> {
   }));
 }
 
-/*
-export function GetMoviesForSort(amount: number): Promise<Movie[]> {
-  const url = BASE_URL + `/discover/movie?include_adult=false&include_video=false&language=en-US&page=${amount}&sort_by=popularity.desc`
-  return fetch(url, options)
-  .then(response => response.json())
-  .then(response => response.results.slice(0,amount)
-  .map((movie: any) => ( {id: movie.id, title: movie.original_title} )))
-  .catch((err: any) => console.log(err))
-}
-*/
-
 export async function GetContentForSort(amount: number): Promise<Content[]> {
   try {
     const url =
@@ -84,6 +73,7 @@ export async function GetContentForSort(amount: number): Promise<Content[]> {
     return data.results.slice(0, amount).map((content: any) => ({
       id: content.id,
       title: content.original_title,
+      vote_average: content.vote_average,
     }));
   } catch (err) {
     console.error("Error fetching content:", err);
