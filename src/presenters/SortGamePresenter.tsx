@@ -15,14 +15,23 @@ export default observer (
         const [contentList, setContentList] = useState<Content[]>([]);
         const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
+        /*
         useEffect(() => {
                 model.GetAllContent(5)
                 .then(() => setIsLoaded(true))}
                 ,[model]);
-        
+        */
+
+        const handleCategorySelect = async (category: string) => {
+            model.chooseSortCategory(category);
+            await model.GetAllContent(5)
+            console.log(model.sortCategory);
+            setContentList(model.returnAllContent());
+        } 
+
         const handleReorder = (fromIndex: number, toIndex: number) => {
             model.reorderContent(fromIndex, toIndex)
-            setContentList(model.getAllContent())
+            setContentList(model.returnAllContent())
         };
 
         const handleSubmit = () => {
@@ -36,6 +45,8 @@ export default observer (
         onReorder={handleReorder}
         onSubmit={handleSubmit}
         feedback={feedbackMessage}
+        onCategorySelect={handleCategorySelect}
+        category={model.sortCategory}
         />
         );
     }

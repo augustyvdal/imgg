@@ -1,16 +1,24 @@
 import { Content } from "../services/apiClient";
+import ChooseCategory from "../components/ChooseCategory";
 
 type SortGameViewProps = {
     content: Content[];
     onReorder: (fromIndex: number, toIndex: number) => void;
     onSubmit: () => void;
     feedback: string | null;
+    onCategorySelect: (category: string) => void;
+    category: string;
 }
 
-function SortGameView({ content, onReorder, onSubmit, feedback }: SortGameViewProps) {
+function SortGameView({ content, onReorder, onSubmit, feedback, onCategorySelect, category }: Readonly<SortGameViewProps>) {
 
     return (
         <div className="flex flex-col items-center gap-4">
+            {category === "" && <ChooseCategory onSelect={onCategorySelect} />}
+
+
+            {category !== "" && (
+            <div>
             <ul className="flex flex-col gap-2 p-0 list-none">
                 {content.map((item, index) => (
                     <li
@@ -27,7 +35,7 @@ function SortGameView({ content, onReorder, onSubmit, feedback }: SortGameViewPr
                     }}
                     >
                         <p className="text-center text-sm font-medium mt-2 truncate">
-                            {item.title}
+                            {item.title || item.name}
                         </p>
                     </li>
                     ))
@@ -42,6 +50,8 @@ function SortGameView({ content, onReorder, onSubmit, feedback }: SortGameViewPr
             </button>
 
             {feedback && <p className="mt-2 text-lg">{feedback}</p>}
+            </div>
+            )}
         </div>
     );
 }
