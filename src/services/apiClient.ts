@@ -51,11 +51,12 @@ export async function fetchHigherLower(category: string): Promise<Content[]> {
   }));
 }
 
-export async function GetContentForSort(amount: number): Promise<Content[]> {
+export async function GetContentForSort(amountOfResults: number, category: string): Promise<Content[]> {
+  const page: number = getRandomNumber(500);
   try {
     const url =
       BASE_URL +
-      `/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`;
+      `/discover/${category}?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
 
     const response = await fetch(url, options);
 
@@ -69,10 +70,11 @@ export async function GetContentForSort(amount: number): Promise<Content[]> {
       throw new Error("Unexpected API response format");
     }
 
-    return data.results.slice(0, amount).map((content: any) => ({
+    return data.results.slice(0, amountOfResults).map((content: any) => ({
       id: content.id,
-      title: content.original_title,
+      title: content.title,
       vote_average: content.vote_average,
+      name: content.name
     }));
   } catch (err) {
     console.error("Error fetching content:", err);

@@ -2,15 +2,19 @@ import { GetContentForSort, Content } from "../services/apiClient";
 
 export class SortGameModel {
     allContent: Content[] = [];
+    sortCategory: string = "";
 
-    async GetAllContent(amount: number): Promise<Content[]> {
-        const allContent = await GetContentForSort(amount);
+    async GetAllContent(amount: number) {
+        const allContent = await GetContentForSort(amount, this.sortCategory);
         this.allContent = allContent;
-        return allContent;
     }
 
-    getAllContent(): Content[] {
+    returnAllContent(): Content[] {
         return this.allContent;
+    }
+
+    chooseSortCategory(category: string) {
+        this.sortCategory = category
     }
 
     reorderContent(fromIndex: number, toIndex: number) {
