@@ -17,7 +17,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     // Boolean to check if content is fetched
     const [loading, setLoading] = useState(false);
     const [gameOver, setGameOver] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string>(""); // controls UI
+
 
     // Resets the game everytime it renders. So if user goes back to menu and returns, game is reset.
     useEffect(() => {
@@ -49,7 +49,6 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     // Takes in the chosen category.
     // A new game is started only after a category is chosen
     const chooseCategory = async (category: "movie" | "tv") => {
-        setSelectedCategory(category);
         model.chosenCategory(category);
         setLoading(true);
         await model.startNewGame();
@@ -57,13 +56,11 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     };
 
     const prepareNewGame = () => {
-        setSelectedCategory("");             
         model.reset();                       
         setShowRatings(false);
         setButtonsDisabled(false);
         setMessage("");
         setGameOver(false);
-        //setIsLoaded(false);
     };
 
     return (
@@ -71,7 +68,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
         contentA = {model.contentA}
         contentB = {model.contentB}
         score = {model.score}
-        category = {selectedCategory}
+        category = {model.category}
         message = {message}
         showRatings = {showRatings}
         buttonsDisabled = {buttonsDisabled}
