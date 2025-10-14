@@ -18,7 +18,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     // Boolean to check if content is fetched
     const [loading, setLoading] = useState(false);
     const [gameOver, setGameOver] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string>(""); // controls UI
+
 
     const didSubmitRef = useRef(false); // Ref to track if score has been submitted
 
@@ -29,10 +29,10 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
 
     const submitIfNeeded = async () => {
         if (didSubmitRef.current) return;
-        if (model.score > 0 && selectedCategory) {
+        if (model.score > 0 && model.category) {
             didSubmitRef.current = true;
             try {
-                await submitScore(model.score, selectedCategory);
+                await submitScore(model.score, model.category);
             } catch (e) {
                 console.error("Failed to submit score:", e);
             }
