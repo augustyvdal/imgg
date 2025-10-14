@@ -15,32 +15,50 @@ export type LeaderboardRow = {
 export async function submitScore(score: number, category?: string) {
   if (score == null || Number.isNaN(score)) throw new Error("Invalid score");
 
-  // Get current user
   const { data: userData, error: userErr } = await supabase.auth.getUser();
   if (userErr) throw userErr;
   const user = userData.user;
   if (!user) throw new Error("You must be signed in to submit a score");
 
-  // Try to get username from profiles table (optional, nice for display)
+  // get username from profiles table if available
   let username: string | null = null;
-  const { data: profile, error: profileErr } = await supabase
+  const { data: profile } = await supabase
     .from("profiles")
     .select("username")
     .eq("id", user.id)
     .single();
 
-  if (!profileErr && profile) username = profile.username;
+  if (profile) username = profile.username;
 
-  // Insert the score
-  const { error: insertErr } = await supabase.from("leaderboard").insert({
-    user_id: user.id,
-    username,
-    score,
-    category: category ?? null,
-  });
+  // check if user already has a score for this category
+  const { data: existing } = await supabase
+    .from("leaderboard")
+    .select("id, score")
+    .eq("user_id", user.id)
+    .eq("category", category ?? null)
+    .maybeSingle();
 
-  if (insertErr) throw insertErr;
+  if (existing) {
+    // if new score is higher, update it
+    if (score > existing.score) {
+      const { error: updateErr } = await supabase
+        .from("leaderboard")
+        .update({ score, username })
+        .eq("id", existing.id);
+      if (updateErr) throw updateErr;
+    }
+  } else {
+    // no existing score → insert a new one
+    const { error: insertErr } = await supabase.from("leaderboard").insert({
+      user_id: user.id,
+      username,
+      score,
+      category: category ?? null,
+    });
+    if (insertErr) throw insertErr;
+  }
 }
+
 
 // Only keep top score per user
 export async function getTopScores(limit = 20, category?: string) {
