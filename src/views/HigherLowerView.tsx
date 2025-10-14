@@ -22,40 +22,40 @@ type Props = {
 export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, chooseCategory, onGuess, prepareNewGame}: Props) {
 
     return (
-        <div className="game-container">
-            <h1>Higher or Lower</h1>
+        <div class="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
+            <h1 class="text-black dark:text-white text-xl flex justify-center font-sans font-bold">Higher or Lower</h1>
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
             {category !== "" && (
                 <>
-                <h2>Score: {score}</h2>
+                <h2 class="text-black dark:text-white text-lg flex justify-center font-sans font-bold">Score: {score}</h2>
                 
-                <div className="items">
-                    <div className="item">
-                        <h3>{contentA?.title || contentA?.name}</h3>
-                        <img
+                <div class="col-start-3 row-start-3 flex max-w-lg flex-row place-content-center bg-white dark:bg-gray-800 p-5 rounded-lg">
+                    <div class="flex flex-col p-5">
+                        <h3 class="text-black dark:text-white text-xl flex justify-center font-sans font-bold">{contentA?.title || contentA?.name}</h3>
+                        <img class="rounded-lg"
                             src={`https://image.tmdb.org/t/p/w200${contentA?.poster_path}`}
                             alt={contentA?.title || contentA?.name}
                         />
-                        <p>Rating: {contentA?.vote_average}</p>
+                        <p class="text-black dark:text-white text-xl flex justify-center font-sans font-bold">Rating: {contentA?.vote_average}</p>
                     </div>
 
-                    <div className="vs">
-                        <h3>Is "{contentB?.title || contentB?.name}" rated</h3>
-                        <button onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
-                        <h3>OR</h3>
-                        <button onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
-                        {message && <p>{message}</p>}
+                    <div class="flex flex-col p-5">
+                        <h3 class="text-black dark:text-white text-xl flex justify-center font-sans font-bold">Is "{contentB?.title || contentB?.name}" rated</h3>
+                        <button class="flex justify-center" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
+                        <h3 class="text-black dark:text-white text-xl flex justify-center font-sans font-bold">OR</h3>
+                        <button class="flex justify-center" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
+                        {message && <p class="text-black dark:text-white text-xl flex font-sans font-bold">{message}</p>}
                         {gameOver && <button onClick={prepareNewGame}>Play Again</button>}
                     </div>
 
-                    <div className="item">
-                        <h3>{contentB?.title || contentB?.name}</h3>
-                        <img
+                    <div class="flex flex-col p-5">
+                        <h3 class="text-black dark:text-white text-xl flex font-sans font-bold">{contentB?.title || contentB?.name}</h3>
+                        <img class="rounded-lg"
                             src={`https://image.tmdb.org/t/p/w200${contentB?.poster_path}`}
                             alt={contentB?.title || contentB?.name}
                         />
-                        <p>{showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}</p>
+                        <p class="text-black dark:text-white text-xl flex font-sans font-bold">{showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}</p>
                     </div>
                 </div>
                 </>
