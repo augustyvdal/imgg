@@ -14,6 +14,8 @@ import LoginPage from "../views/LoginPage";
 import ProfilePage from "../views/ProfilePage";
 import HomeView from "../views/HomeView";
 
+import LeaderboardPage from "../views/Leaderboard";
+
 const higherLowerModel = new HigherLowerModel();
 const sortGameModel = new SortGameModel();
 const guessTheMovieModel = new GuessTheMovieModel();
@@ -31,6 +33,7 @@ const AppRoutes = (): JSX.Element => {
                 <Route path="/game1" element={<GuessTheMoviePresenter model={guessTheMovieModel} />} />
                 <Route path="/game2" element={<HigherLowerPresenter model={higherLowerModel} />} />
                 <Route path="/game3" element={<SortGamePresenter model={sortGameModel} />} />
+                <Route path="/leaderboard" element={<LeaderboardPage />} />
             </Routes>
         </div>
     );
