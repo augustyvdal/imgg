@@ -40,9 +40,10 @@ export async function fetchFromTmdb(endpoint: string) {
 export async function fetchHigherLower(category: string): Promise<Content[]> {
   const today = new Date().toISOString().split("T")[0];
   const randomPage = getRandomNumber(500);
-  const data =  await fetchFromTmdb(`/discover/${category}?language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
+  const data =  await fetchFromTmdb(`/discover/${category}?include_adult=false&language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
 
-  return data.results.map((content: any) => ({
+  // Filter out items without poster or vote_average of 0
+  return data.results.filter((content: any) => content.poster_path && content.vote_average > 0).map((content: any) => ({
     id: content.id,
     title: content.title,
     name: content.name,
