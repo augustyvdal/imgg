@@ -32,8 +32,10 @@ export class HigherLowerModel {
     // Makes sure the content is not null
     if (!this.contentA || !this.contentB) return false;
 
-    const isHigher = (this.contentB?.vote_average || 0) > (this.contentA?.vote_average || 0);
-    const correct = (guess === "higher" && isHigher) || (guess === "lower" && !isHigher);
+    const ratingA = this.contentA.vote_average || 0;
+    const ratingB = this.contentB.vote_average || 0;
+    
+    const correct = (ratingB === ratingA) || (guess === "higher" && ratingB > ratingA) || (guess === "lower" && ratingA > ratingB);
 
     if (correct) {
       this.score++;
@@ -54,6 +56,7 @@ export class HigherLowerModel {
     this.contentA = null;
     this.contentB = null;
     this.score = 0;
+    this.category = "";
   }
 
 };

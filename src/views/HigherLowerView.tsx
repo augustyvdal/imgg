@@ -14,12 +14,15 @@ type Props = {
         showRatings: boolean;
         buttonsDisabled: boolean;
         gameOver: boolean;
+        loading: boolean;
         chooseCategory: (category: "movie" | "tv") => void;
         onGuess: (guess: "higher" | "lower") => void;
         prepareNewGame: () => void;
     };
 
-export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, chooseCategory, onGuess, prepareNewGame}: Props) {
+export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, loading, chooseCategory, onGuess, prepareNewGame}: Props) {
+
+    if (loading) return <p>Loading random movie...</p>;
 
     return (
         <div className="game-container">
@@ -47,6 +50,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                         <button onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
                         {message && <p>{message}</p>}
                         {gameOver && <button onClick={prepareNewGame}>Play Again</button>}
+                        <button onClick={() => window.location.href = "/"}>Quit</button>
                     </div>
 
                     <div className="item">

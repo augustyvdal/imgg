@@ -37,12 +37,12 @@ export async function fetchFromTmdb(endpoint: string) {
 
 // Fetches movies for higher lower game
 export async function fetchHigherLower(category: string): Promise<Content[]> {
-  // Get random page depending on category
-  const page: number = (category === "movie") ? getRandomNumber(500) : getRandomNumber(100);
+  const today = new Date().toISOString().split("T")[0];
+  const randomPage = getRandomNumber(500);
+  const data =  await fetchFromTmdb(`/discover/${category}?include_adult=false&language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
 
-  const data = await fetchFromTmdb(`/${category}/popular?language=en-US&page=${page}`);
-
-  return data.results.map((content: any) => ({
+  // Filter out items without poster or vote_average of 0
+  return data.results.filter((content: any) => content.poster_path && content.vote_average > 0).map((content: any) => ({
     id: content.id,
     title: content.title,
     name: content.name,
