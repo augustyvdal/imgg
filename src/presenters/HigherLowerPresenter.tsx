@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import HigherLowerView from "../views/HigherLowerView";
-import { HigherLowerModel } from "../models/higherLowerModel";
+import { HigherLowerModel } from "../models/HigherLowerModel";
 import { submitScore } from "../services/leaderboardService";
 
 type Props = {

@@ -88,9 +88,9 @@ export async function getMatchHistory(category?: string) {
         .select("game_1, game_2, game_3, game_4, game_5, game_6, game_7, game_8, game_9, game_10")
         .eq("user_id", user.id)
         .eq("category", category)
-        .single();
+        .maybeSingle();
 
     if (error) throw error;
 
-    return [data.game_1, data.game_2, data.game_3, data.game_4, data.game_5, data.game_6, data.game_7, data.game_8, data.game_9, data.game_10];
+    return [data?.game_1, data?.game_2, data?.game_3, data?.game_4, data?.game_5, data?.game_6, data?.game_7, data?.game_8, data?.game_9, data?.game_10];
 }
