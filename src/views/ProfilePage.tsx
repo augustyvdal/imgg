@@ -65,8 +65,8 @@ export default function ProfilePage() {
   if (loading || !user) return null;
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Your Profile</h1>
+    <div class="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+      <h1 className="text-black dark:text-white text-2xl font-semibold">Your Profile</h1>
 
       <div className="flex items-center gap-4">
         <img
@@ -74,7 +74,7 @@ export default function ProfilePage() {
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover border"
         />
-        <label className="cursor-pointer border rounded px-3 py-2">
+        <label className="text-black dark:text-white cursor-pointer border rounded px-3 py-2">
           {uploading ? "Uploading..." : "Change avatar"}
           <input
             type="file"
@@ -88,14 +88,14 @@ export default function ProfilePage() {
 
       <form onSubmit={onSave} className="space-y-3">
         <div>
-          <label className="block text-sm mb-1">Email</label>
+          <label className="text-black dark:text-white block text-sm mb-1">Email</label>
           <input className="w-full border rounded p-2 bg-gray-50" value={user.email} disabled />
         </div>
 
         <div>
-          <label className="block text-sm mb-1">Username</label>
+          <label className="text-black dark:text-white block text-sm mb-1">Username</label>
           <input
-            className="w-full border rounded p-2"
+            className="text-black dark:text-white w-full border rounded p-2"
             placeholder="Pick a username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}

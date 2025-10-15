@@ -43,20 +43,7 @@ const Navbar = () => {
 
 
     return (
-        <header className="navbar">
-            <button
-                className={`hamburger ${mobileOpen ? "is-active" : ""}`}
-                aria-label="Öppna meny"
-                aria-expanded={mobileOpen}
-                aria-controls="mobile-menu"
-                onClick={() => setMobileOpen(v => !v)}
-            >
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </button>
-
-            <Options />
+        <header>
             <div className="auth-buttons">
             {user ? (
                 <button className="nav-link" onClick={handleLogoutClick}>
@@ -68,7 +55,6 @@ const Navbar = () => {
                 </button>
                 )}
             </div>
-
             <div id="mobile-menu" className={`mobile-menu ${mobileOpen ? "open" : ""}`}>
                 <Options isMobile closeAll={closeMobile} />
                 <div className="mobile-cta">
