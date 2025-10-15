@@ -3,7 +3,6 @@
 import { getRandomNumber } from "../utilities/RandomNumber";
 const BASE_URL = "https://api.themoviedb.org/3";
 const TOKEN = import.meta.env.VITE_TMDB_READACCESS_TOKEN;
-const randomPage = Math.floor(Math.random() * 100) + 1;
 
 export type Content = {
   id: number;
@@ -84,15 +83,21 @@ export async function GetContentForSort(amountOfResults: number, category: strin
 }
 
 
-export async function GuessingGameAPICall() {
-    const data = await fetchFromTmdb(`/movie/popular?page=${randomPage}`);
+export async function GuessingGameAPICall(category: string) {
+    const today = new Date().toISOString().split("T")[0];
+    const randomPage = getRandomNumber(500);
+    const data =  await fetchFromTmdb(`/discover/${category}?language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
     const randomMovie = data.results[Math.floor(Math.random() * data.results.length)];
 
-    const details = await fetchFromTmdb(`/movie/${randomMovie.id}?append_to_response=credits`);
-    const director = details.credits.crew.find((c: any) => c.job === "Director")?.name;
-    const main_actors = details.credits.cast.slice(0, 3).map((a: any) => a.name);
-    const genres = details.genres.map((g: any) => g.name).join(", ");
-    const release_year = details.release_date?.split("-")[0];
+    const details = await fetchFromTmdb(`/movie/${randomMovie.id}?append_to_response=credits`) || "Unknown Title";
+    const director = details.credits.crew.find((c: any) => c.job === "Director")?.name || "Unknown";
+    const main_actors = details.credits.cast.slice(0, 3).map((a: any) => a.name) || "Unknown";
+    const genres = details.genres.map((g: any) => g.name).join(", ") || "Not Found";
+    const release_year = details.release_date?.split("-")[0] || "No description available.";
+    const budget = details.budget || "Not Found";
+    const revenue = details.revenue || "Not Found";
+    const keywords = details.keywords || "Not Found";
+
 
     return {
         id: details.id,
@@ -103,5 +108,8 @@ export async function GuessingGameAPICall() {
         main_actors,
         genres,
         description: details.overview,
+        budget,
+        revenue,
+        keywords
     };
 }

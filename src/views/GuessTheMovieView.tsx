@@ -1,58 +1,79 @@
 ﻿import React, { useState } from "react";
 import "../styles/Guessthemovie.css";
+import ChooseCategory from "../components/ChooseCategory";
 
 type Props = {
     loading: boolean;
     clues: string[];
     message: string;
-    score: number | null;
-    isOver: boolean;
+    category: string;
+    score: number;
+    gameOver: boolean;
     onGuess: (guess: string) => void;
     onRestart: () => void;
+    chooseCategory: (category: "movie" | "tv") => void;
+    startingInfo: string[];
 };
 
-export default function GuessTheMovieView({loading, clues, message, score,isOver,onGuess, onRestart,}: Props) {
+export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo}: Props) {
     const [guess, setGuess] = useState("");
 
-    if (loading) return <p>Loading random movie...</p>;
 
     return (
         <div className="guess-container">
             <h1>Guess the Movie</h1>
 
-            <div className="clues">
-                {clues.map((clue, i) => (
-                    <p key={i}>
-                        <strong>Clue {i + 1}:</strong> {clue}
-                    </p>
-                ))}
-            </div>
+            {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
-            {message && <p className="message">{message}</p>}
+            {category !== "" && (
+                <>
+                    {loading ? (
+                        <p>Loading new movie...</p>
+                    ) : (
+                        <>
+                            <div className="starting-info">
+                                {startingInfo.map((info, i) => (
+                                    <p key={i}>{info}</p>
+                                ))}
+                            </div>
 
-            {!isOver && (
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        onGuess(guess);
-                        setGuess("");
-                    }}
-                >
-                    <input
-                        type="text"
-                        value={guess}
-                        onChange={(e) => setGuess(e.target.value)}
-                        placeholder="Your guess..."
-                    />
-                    <button type="submit">Guess</button>
-                </form>
-            )}
+                            <div className="clues">
+                                {clues.map((clue, i) => (
+                                    <p key={i}>
+                                        <strong>Clue {i + 1}:</strong> {clue}
+                                    </p>
+                                ))}
+                            </div>
 
-            {isOver && (
-                <div>
-                    <p>Final Score: {score}</p>
-                    <button onClick={onRestart}>Play Again</button>
-                </div>
+                            {message && <p className="message">{message}</p>}
+
+                            {!gameOver && (
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        onGuess(guess);
+                                        setGuess("");
+                                    }}
+                                >
+                                    <input
+                                        type="text"
+                                        value={guess}
+                                        onChange={(e) => setGuess(e.target.value)}
+                                        placeholder="Your guess..."
+                                    />
+                                    <button type="submit">Guess</button>
+                                </form>
+                            )}
+
+                            {gameOver && (
+                                <div>
+                                    <p>Final Score: {score}</p>
+                                    <button onClick={onRestart}>Play Again</button>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </>
             )}
         </div>
     );
