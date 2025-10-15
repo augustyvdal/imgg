@@ -109,13 +109,13 @@ export default function ProfilePage() {
       <form onSubmit={onSave} className="space-y-3">
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Email</label>
-          <input className="w-full border rounded p-2 bg-gray-50" value={user.email} disabled />
+          <input className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-500 w-full border rounded p-2" value={user.email} disabled />
         </div>
 
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Username</label>
           <input
-            className="text-black dark:text-white w-full border rounded p-2"
+            className="text-gray-800 dark:text-gray-300 w-full border border-gray-700 dark:border-gray-400 rounded p-2"
             placeholder="Pick a username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -136,7 +136,7 @@ export default function ProfilePage() {
       {/*Category select*/}
       <div className="flex items-center gap-2 mb-4 w-full max-w-md">
         <select
-          className="border rounded px-2 py-1 flex-1"
+          className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1"
           value={category}
           onChange={(e) => setCategory(e.target.value as "movie" | "tv")}
         >
@@ -163,7 +163,7 @@ export default function ProfilePage() {
         ) : games.length ? (
           <ol className="space-y-1">
             {games.map((gameScore, i) => (
-              <li key={i} className="p-2 border-b text-black dark:text-white bg-gray-50 dark:bg-gray-800">
+              <li key={i} className="p-2 border-b text-gray-800 dark:text-gray-300 bg-gray-50 dark:bg-gray-800">
                 Game {games.length - i} Score: {gameScore}
               </li>
             ))}
