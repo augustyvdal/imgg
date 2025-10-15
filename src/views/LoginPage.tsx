@@ -30,33 +30,35 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-4">Sign in</h1>
+    <div class="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+      <div className="max-w-md mx-auto p-6">
+        <h1 className="text-black dark:text-white text-2xl font-semibold mb-4">Sign in</h1>
 
-      <form className="space-y-3" onSubmit={onLogin}>
-        <input
-          className="w-full border rounded p-2"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          className="w-full border rounded p-2"
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className="w-full bg-blue-600 text-white rounded p-2" disabled={loading}>
-          Sign in
+        <form className="space-y-3" onSubmit={onLogin}>
+          <input
+            className="text-black dark:text-white w-full border rounded p-2"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            className="text-black dark:text-white w-full border rounded p-2"
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button className="w-full bg-blue-600 text-white rounded p-2" disabled={loading}>
+            Sign in
+          </button>
+        </form>
+
+        <button className="w-full border rounded p-2 mt-3" onClick={onSignup} disabled={loading}>
+          Create account
         </button>
-      </form>
 
-      <button className="w-full border rounded p-2 mt-3" onClick={onSignup} disabled={loading}>
-        Create account
-      </button>
-
-      {err && <p className="text-red-600 mt-3">{err}</p>}
+        {err && <p className="text-red-600 mt-3">{err}</p>}
+      </div>
     </div>
   );
 }
