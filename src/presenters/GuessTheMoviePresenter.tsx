@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
+import { searchTitles } from "../services/apiClient";
 import { observer } from "mobx-react-lite";
 import { GuessTheMovieModel } from "../models/GuessTheMovieModel";
-import GuessTheMovieView from "../views/GuessTheMovieView";
+import GuessTheMovieView from "../views/GuessTheMovieView"
+import { Debounce } from "../utilities/Debounce";
 
 type Props = {
     model: GuessTheMovieModel;
 };
 
 export default observer(function GuessTheMoviePresenter({ model }: Props) {
+    const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+
     const [clues, setClues] = useState<string[]>([]);
     const [startingInfo, setStartingInfo] = useState<string[]>([]);
     const [message, setMessage] = useState("");
     const [totalScore, setTotalScore] = useState<number>(0);
     const [gameOver, setGameOver] = useState(false);
 
-    const [loading, setLoading] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [searchResults, setSearchResults] = useState<{ id: number; title: string; year: string }[]>([]);
+    const [query, setQuery] = useState("");
+    const debouncedQuery = Debounce(query, 300);
+
 
     useEffect(() => {
         if (!model.category && selectedCategory === "") return;
@@ -23,6 +30,14 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
             await startNewRound()
         })();
     }, [selectedCategory]);
+
+    useEffect(() => {
+        (async () => {
+            if (!debouncedQuery.trim()) return setSearchResults([]);
+            const results = await searchTitles(debouncedQuery, model.category as "movie" | "tv");
+            setSearchResults(results.slice(0, 5));
+        })();
+    }, [debouncedQuery, model.category]);
 
     async function startNewRound() {
         setLoading(true);
@@ -70,6 +85,15 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
         setStartingInfo([]);
     }
 
+    function onQueryChange(value: string) {
+        setQuery(value);
+    }
+
+    function onSelectSuggestion(title: string) {
+        setQuery(title);
+        setSearchResults([]);
+    }
+
     return (
         <GuessTheMovieView
             loading={loading}
@@ -82,6 +106,10 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
             category={selectedCategory}
             chooseCategory={chooseCategory}
             startingInfo={startingInfo}
+            query={query}
+            onQueryChange={onQueryChange}
+            searchResults={searchResults}
+            onSelectSuggestion={onSelectSuggestion}
         />
 );
 });

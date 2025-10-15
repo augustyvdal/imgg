@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import "../styles/Guessthemovie.css";
 import ChooseCategory from "../components/ChooseCategory";
 
@@ -13,12 +13,13 @@ type Props = {
     onRestart: () => void;
     chooseCategory: (category: "movie" | "tv") => void;
     startingInfo: string[];
+    query: string;
+    onQueryChange: (q: string) => void;
+    searchResults: { id: number; image: string; title: string; year: string }[];
+    onSelectSuggestion: (title: string) => void;
 };
 
-export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo}: Props) {
-    const [guess, setGuess] = useState("");
-
-
+export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo, query, onQueryChange, searchResults, onSelectSuggestion}: Props) {
     return (
         <div className="guess-container">
             <h1>Guess the Movie</h1>
@@ -51,16 +52,42 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                 <form
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        onGuess(guess);
-                                        setGuess("");
+                                        onGuess(query);
+                                        onQueryChange("");
                                     }}
+                                    className="guess-form"
                                 >
-                                    <input
-                                        type="text"
-                                        value={guess}
-                                        onChange={(e) => setGuess(e.target.value)}
-                                        placeholder="Your guess..."
-                                    />
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            value={query}
+                                            onChange={(e) => onQueryChange(e.target.value)}
+                                            placeholder="Your guess..."
+                                            autoComplete="off"
+                                        />
+
+                                        {searchResults.length > 0 && (
+                                            <ul className="suggestions">
+                                                {searchResults.map((s, i) => (
+                                                    <li key={i} onClick={() => onSelectSuggestion(s.title)}>
+                                                        {s.image ? (
+                                                            <img
+                                                                src={`https://image.tmdb.org/t/p/w92${s.image}`}
+                                                                alt={s.title}
+                                                            />
+                                                        ) : (
+                                                            <div style={{ width: "40px", height: "60px", background: "#ddd", borderRadius: "4px" }} />
+                                                        )}
+                                                        <div style={{ textAlign: "left" }}>
+                                                            <div>{s.title}</div>
+                                                            {s.year && <span className="year">({s.year})</span>}
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
                                     <button type="submit">Guess</button>
                                 </form>
                             )}

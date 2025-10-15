@@ -82,14 +82,13 @@ export async function GetContentForSort(amountOfResults: number, category: strin
   }
 }
 
-
 export async function GuessingGameAPICall(category: string) {
     const today = new Date().toISOString().split("T")[0];
     const randomPage = getRandomNumber(500);
     const data =  await fetchFromTmdb(`/discover/${category}?language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
     const randomMovie = data.results[Math.floor(Math.random() * data.results.length)];
 
-    const details = await fetchFromTmdb(`/movie/${randomMovie.id}?append_to_response=credits`) || "Unknown Title";
+    const details = await fetchFromTmdb(`/${category}/${randomMovie.id}?append_to_response=credits`) || "Unknown Title";
     const director = details.credits.crew.find((c: any) => c.job === "Director")?.name || "Unknown";
     const main_actors = details.credits.cast.slice(0, 3).map((a: any) => a.name) || "Unknown";
     const genres = details.genres.map((g: any) => g.name).join(", ") || "Not Found";
@@ -112,4 +111,16 @@ export async function GuessingGameAPICall(category: string) {
         revenue,
         keywords
     };
+}
+export async function searchTitles(query: string, category: "movie" | "tv") {
+    if (!query.trim()) return [];
+    const data = await fetchFromTmdb(
+        `/search/${category}?query=${encodeURIComponent(query)}&language=en-US&page=1`
+    );
+    return data.results.map((r: any) => ({
+        id: r.id,
+        title: category === "movie" ? r.title : r.name,
+        image: r.poster_path,
+        year: (r.release_date || "").split("-")[0]
+    }));
 }
