@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { GuessTheMovieModel } from "../models/GuessTheMovieModel";
 import GuessTheMovieView from "../views/GuessTheMovieView";
+import { submitGameScore } from "../services/guessGameHistoryService";
 
 type Props = {
     model: GuessTheMovieModel;
@@ -17,6 +18,8 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
+    const didSubmitRef = useRef(false);
+
     useEffect(() => {
         if (!model.category && selectedCategory === "") return;
         (async () => {
@@ -25,6 +28,7 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     }, [selectedCategory]);
 
     async function startNewRound() {
+        didSubmitRef.current = false;
         setLoading(true);
         await model.startNewRound();
         setStartingInfo(model.startingInfo)
@@ -41,6 +45,7 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
 
         if (result.correct) {
             setMessage(`Correct! The movie was "${model.movie.title}".`);
+            submitScore();
             setTimeout(async () => {
                 setMessage("Next movie loading...");
                 await startNewRound();
@@ -48,6 +53,7 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
 
         } else if (result.lose) {
             setMessage(`You lose! The movie was "${model.movie.title}".`);
+            submitScore();
             setGameOver(true);
 
         } else {
@@ -63,12 +69,25 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     async function reset() {
         model.restartGame();
         setTotalScore(0);
+        didSubmitRef.current = false;
         setMessage("");
         setGameOver(false);
         setSelectedCategory("");
         setClues([]);
         setStartingInfo([]);
     }
+
+    const submitScore = async () => {
+        if (didSubmitRef.current) return;
+        if (model.totalScore != null && model.category) {
+            didSubmitRef.current = true;
+            try {
+                await submitGameScore(model.totalScore, model.category);
+            } catch (e) {
+                console.error("Failed to submit score:", e);
+            }
+        }
+    };
 
     return (
         <GuessTheMovieView
