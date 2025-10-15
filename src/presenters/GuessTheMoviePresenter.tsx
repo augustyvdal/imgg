@@ -9,69 +9,79 @@ type Props = {
 
 export default observer(function GuessTheMoviePresenter({ model }: Props) {
     const [clues, setClues] = useState<string[]>([]);
+    const [startingInfo, setStartingInfo] = useState<string[]>([]);
     const [message, setMessage] = useState("");
-    const [score, setScore] = useState<number | null>(null);
-    const [isOver, setIsOver] = useState(false);
+    const [totalScore, setTotalScore] = useState<number>(0);
+    const [gameOver, setGameOver] = useState(false);
+
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
     useEffect(() => {
         if (!model.category && selectedCategory === "") return;
         (async () => {
-            setLoading(true);
-            await model.startNewRound();
-            setClues(model.getCurrentClues());
-            setLoading(false);
+            await startNewRound()
         })();
-    }, [model]);
+    }, [selectedCategory]);
 
-    const makeGuess = (guess: string) => {
+    async function startNewRound() {
+        setLoading(true);
+        await model.startNewRound();
+        setStartingInfo(model.startingInfo)
+        setClues(model.getCurrentClues());
+        setLoading(false);
+    }
+
+    async function makeGuess(guess: string) {
         const result = model.makeGuess(guess);
         if (!result) return;
 
+        setTotalScore(result.score);
+        setClues(model.getCurrentClues());
+
         if (result.correct) {
             setMessage(`Correct! The movie was "${model.movie.title}".`);
-            setScore(result.score);
-            setIsOver(true);
+            setTimeout(async () => {
+                setMessage("Next movie loading...");
+                await startNewRound();
+            }, 1500);
+
         } else if (result.lose) {
             setMessage(`You lose! The movie was "${model.movie.title}".`);
-            setScore(0);
-            setIsOver(true);
+            setGameOver(true);
+
         } else {
             setMessage("Wrong guess! Here's another clue...");
-            setClues(model.getCurrentClues());
         }
-    };
+    }
 
-    const chooseCategory = async (category: "movie" | "tv") => {
+    async function chooseCategory(category: "movie" | "tv") {
         setSelectedCategory(category);
         model.chosenCategory(category);
-        setLoading(false);
-        await model.startNewRound();
-        setLoading(true);
-    };
+    }
 
-    const reset = async () => {
+    async function reset() {
+        model.restartGame();
+        setTotalScore(0);
         setMessage("");
-        setScore(null);
-        setIsOver(false);
-        setLoading(true);
-        await model.startNewRound();
-        setClues(model.getCurrentClues());
-        setLoading(false);
-    };
+        setGameOver(false);
+        setSelectedCategory("");
+        setClues([]);
+        setStartingInfo([]);
+    }
 
     return (
         <GuessTheMovieView
             loading={loading}
             clues={clues}
             message={message}
-            score={score}
-            isOver={isOver}
+            score={totalScore}
+            gameOver={gameOver}
             onGuess={makeGuess}
             onRestart={reset}
             category={selectedCategory}
             chooseCategory={chooseCategory}
+            startingInfo={startingInfo}
         />
 );
 });

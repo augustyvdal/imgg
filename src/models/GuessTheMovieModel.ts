@@ -2,61 +2,77 @@
 
 export class GuessTheMovieModel {
     movie: any = null;
+    startingInfo: string[] = []
     clues: string[] = [];
-    currentClueIndex = 0;
-    score: number | null = null;
-    isOver = false;
+    currentClueIndex = -1;
+    totalScore: number = 0;
+    gameOver = false;
     category: string = "";
 
     async startNewRound() {
         const movieData = await GuessingGameAPICall(this.category);
         this.movie = movieData;
-
-        this.clues = [
+        this.startingInfo = [
             `Release year: ${movieData.release_year}`,
-            `Genre(s): ${movieData.genres}`,
+            `Genres: ${movieData.genres}`,
+        ];
+        this.clues = [
+            `Budget: $${(movieData.budget / 1_000_000).toFixed(1)} M`,
+            `Revenue: $${(movieData.revenue / 1_000_000).toFixed(1)} M`,
+            //`Keywords: ${movieData.keywords.join(", ")}`,
             `Director: ${movieData.director}`,
-            `Main actor(s): ${movieData.main_actors.join(", ")}`,
-            `Description: ${movieData.description.split(".")[0]}.`,
+            `Actors: ${movieData.main_actors.join(", ")}`,
+            `Plot: ${movieData.description.split(".")[0]}.`,
         ];
 
-        this.currentClueIndex = 0;
-        this.score = null;
-        this.isOver = false;
+        this.currentClueIndex = -1;
 
         return this.getCurrentClues();
     }
 
-    chosenCategory(category: "movie" | "tv") {
-        this.category = category;
-    }
-
-    getCurrentClues() {
-        return this.clues.slice(0, this.currentClueIndex + 1);
-    }
-
     makeGuess(guess: string) {
-        if (this.isOver || !this.movie) return;
+        if (this.gameOver || !this.movie) return;
 
         const normalizedGuess = guess.trim().toLowerCase();
         const normalizedTitle = this.movie.title.toLowerCase();
 
         if (normalizedGuess === normalizedTitle) {
-            this.score = 5 - this.currentClueIndex;
-            this.isOver = true;
-            return { correct: true, score: this.score };
-        } else {
-            this.currentClueIndex++;
-            if (this.currentClueIndex >= 5) {
-                this.isOver = true;
-                this.score = 0;
-                return { correct: false, score: 0, lose: true };
-            }
+            const score = this.clues.length - this.currentClueIndex;
+            this.totalScore += score;
             return {
-                correct: false,
-                nextClue: this.getCurrentClues(),
-                remaining: 5 - this.currentClueIndex,
+                correct: true,
+                score: this.totalScore
             };
         }
+
+        this.currentClueIndex++;
+        if (this.currentClueIndex >= this.clues.length) {
+            this.gameOver = true;
+            // Highscore, leaderboard etc.
+            //this.totalScore = 0;
+            return {
+                correct: false,
+                score: this.totalScore,
+                lose: true
+            };
+        }
+        return {
+            correct: false,
+            nextClue: this.getCurrentClues(),
+            remaining: this.clues.length - this.currentClueIndex,
+            score: this.totalScore
+        };
+    }
+    chosenCategory(category: "movie" | "tv") {
+        this.category = category;
+    }
+    getCurrentClues() {
+        return this.clues.slice(0, this.currentClueIndex + 1);
+    }
+    restartGame() {
+        this.totalScore = 0;
+        this.gameOver = false;
+        this.currentClueIndex = 0;
+        this.movie = null;
     }
 }

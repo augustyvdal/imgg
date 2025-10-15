@@ -92,8 +92,12 @@ export async function GuessingGameAPICall(category: string) {
     const details = await fetchFromTmdb(`/movie/${randomMovie.id}?append_to_response=credits`) || "Unknown Title";
     const director = details.credits.crew.find((c: any) => c.job === "Director")?.name || "Unknown";
     const main_actors = details.credits.cast.slice(0, 3).map((a: any) => a.name) || "Unknown";
-    const genres = details.genres.map((g: any) => g.name).join(", ") || "N/A";
+    const genres = details.genres.map((g: any) => g.name).join(", ") || "Not Found";
     const release_year = details.release_date?.split("-")[0] || "No description available.";
+    const budget = details.budget || "Not Found";
+    const revenue = details.revenue || "Not Found";
+    const keywords = details.keywords || "Not Found";
+
 
     return {
         id: details.id,
@@ -104,5 +108,8 @@ export async function GuessingGameAPICall(category: string) {
         main_actors,
         genres,
         description: details.overview,
+        budget,
+        revenue,
+        keywords
     };
 }

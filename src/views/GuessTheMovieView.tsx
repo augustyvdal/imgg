@@ -7,57 +7,71 @@ type Props = {
     clues: string[];
     message: string;
     category: string;
-    score: number | null;
-    isOver: boolean;
+    score: number;
+    gameOver: boolean;
     onGuess: (guess: string) => void;
     onRestart: () => void;
     chooseCategory: (category: "movie" | "tv") => void;
+    startingInfo: string[];
 };
 
-export default function GuessTheMovieView({loading, clues, message, category, score, isOver, onGuess, onRestart, chooseCategory,}: Props) {
+export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo}: Props) {
     const [guess, setGuess] = useState("");
 
 
     return (
         <div className="guess-container">
             <h1>Guess the Movie</h1>
+
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
             {category !== "" && (
                 <>
-                    <div className="clues">
-                        {clues.map((clue, i) => (
-                            <p key={i}>
-                                <strong>Clue {i + 1}:</strong> {clue}
-                            </p>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <p>Loading new movie...</p>
+                    ) : (
+                        <>
+                            <div className="starting-info">
+                                {startingInfo.map((info, i) => (
+                                    <p key={i}>{info}</p>
+                                ))}
+                            </div>
 
-                    {message && <p className="message">{message}</p>}
+                            <div className="clues">
+                                {clues.map((clue, i) => (
+                                    <p key={i}>
+                                        <strong>Clue {i + 1}:</strong> {clue}
+                                    </p>
+                                ))}
+                            </div>
 
-                    {!isOver && (
-                        <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                onGuess(guess);
-                                setGuess("");
-                            }}
-                        >
-                            <input
-                                type="text"
-                                value={guess}
-                                onChange={(e) => setGuess(e.target.value)}
-                                placeholder="Your guess..."
-                            />
-                            <button type="submit">Guess</button>
-                        </form>
-                    )}
+                            {message && <p className="message">{message}</p>}
 
-                    {isOver && (
-                        <div>
-                            <p>Final Score: {score}</p>
-                            <button onClick={onRestart}>Play Again</button>
-                        </div>
+                            {!gameOver && (
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        onGuess(guess);
+                                        setGuess("");
+                                    }}
+                                >
+                                    <input
+                                        type="text"
+                                        value={guess}
+                                        onChange={(e) => setGuess(e.target.value)}
+                                        placeholder="Your guess..."
+                                    />
+                                    <button type="submit">Guess</button>
+                                </form>
+                            )}
+
+                            {gameOver && (
+                                <div>
+                                    <p>Final Score: {score}</p>
+                                    <button onClick={onRestart}>Play Again</button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </>
             )}
