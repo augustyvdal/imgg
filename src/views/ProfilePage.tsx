@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { getMyProfile, updateMyProfile, uploadAvatar, type Profile } from "../services/profileService";
 import { supabase } from "../services/supabaseClient";
+import { getMatchHistory } from "../services/guessGameHistoryService";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth() as any;
@@ -16,6 +17,9 @@ export default function ProfilePage() {
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
 
+  const [games, setGames] = useState<any[]>([]);
+  const [loadingGames, setLoadingGames] = useState(false);
+  const [category, setCategory] = useState<"movie" | "tv">("movie");
 
   useEffect(() => {
     if (!loading && !user) navigate("/login");
@@ -34,6 +38,22 @@ export default function ProfilePage() {
       }
     })().catch(e => setErr(e.message));
   }, [user]);
+
+  useEffect(() => {
+    (async () => {
+      if (!user) return;
+      setLoadingGames(true);
+      setErr(null);
+      try {
+        const matchHistory = await getMatchHistory(category);
+        setGames(matchHistory.filter((gameScore) => gameScore != null).reverse());
+      } catch (e: any) {
+        setErr(e.message);
+      } finally {
+        setLoadingGames(false);
+      }
+    })();
+  }, [user, category]);
 
   const onSave = async (e: FormEvent) => {
     e.preventDefault();
@@ -112,6 +132,47 @@ export default function ProfilePage() {
 
       {err && <p className="text-red-600">{err}</p>}
       {ok && <p className="text-green-700">{ok}</p>}
+
+      {/*Category select*/}
+      <div className="flex items-center gap-2 mb-4 w-full max-w-md">
+        <select
+          className="border rounded px-2 py-1 flex-1"
+          value={category}
+          onChange={(e) => setCategory(e.target.value as "movie" | "tv")}
+        >
+          <option value="movie">Movies</option>
+          <option value="tv">TV Shows</option>
+        </select>
+        <button
+          className="border rounded px-3 py-1"
+          onClick={() => setCategory(category)}
+          disabled={loadingGames}
+        >
+          {loadingGames ? "Loading…" : "Refresh"}
+        </button>
+      </div>
+
+      {/*Match history*/}
+      <div className="w-full max-w-md">
+        <h2 className="text-lg font-semibold text-black dark:text-white mb-2">
+          {category === "movie" ? "Guess Movie Game History" : "Guess TV Shows Game History"}
+        </h2>
+
+        {loadingGames ? (
+          <p className="text-gray-500">Loading games…</p>
+        ) : games.length ? (
+          <ol className="space-y-1">
+            {games.map((gameScore, i) => (
+              <li key={i} className="p-2 border-b text-black dark:text-white bg-gray-50 dark:bg-gray-800">
+                Game {games.length - i} Score: {gameScore}
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="text-gray-500 text-center">No games found for this category.</p>
+        )}
+      </div>
+
     </div>
   );
 }
