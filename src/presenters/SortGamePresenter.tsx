@@ -14,20 +14,15 @@ export default observer (
         const [isLoaded, setIsLoaded] = useState(false);
         const [contentList, setContentList] = useState<Content[]>([]);
         const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
-
-        /*
-        useEffect(() => {
-                model.GetAllContent(5)
-                .then(() => setIsLoaded(true))}
-                ,[model]);
-        */
+        const [triesRemaining, setTriesRemaining] = useState(model.maxTries);
 
         const handleCategorySelect = async (category: string) => {
             model.chooseSortCategory(category);
             await model.GetAllContent(5)
-            console.log(model.sortCategory);
             setContentList(model.returnAllContent());
-        } 
+            setFeedbackMessage(null);
+            setTriesRemaining(model.maxTries);
+        };
 
         const handleReorder = (fromIndex: number, toIndex: number) => {
             model.reorderContent(fromIndex, toIndex)
@@ -36,7 +31,29 @@ export default observer (
 
         const handleSubmit = () => {
             const correct = model.checkOrderCorrect();
-            setFeedbackMessage(correct ? "Correct order!" : "Wrong order, try again!")
+            
+            if (correct) {
+                setFeedbackMessage("CORRECT!!!")
+                return
+            }
+
+            model.decrementTriesRemaining();
+            const correctCount = model.countCorrectPlaces();
+
+            if (model.triesRemaining > 0) {
+                setFeedbackMessage(`Wrong order, try again. You had ${correctCount} out of ${model.allContent.length} in the correct place!`);
+            } else {
+                setFeedbackMessage("Out of tries! Click 'try again' to restart!");
+            }
+            
+            setTriesRemaining(model.triesRemaining);
+        };
+
+        const handleReset = async () => {
+            model.resetSortGame();
+            setFeedbackMessage(null);
+            setTriesRemaining(model.maxTries);
+            setContentList([]);
         }
 
         return (
@@ -44,9 +61,11 @@ export default observer (
         content={model.allContent}
         onReorder={handleReorder}
         onSubmit={handleSubmit}
+        onReset={handleReset}
         feedback={feedbackMessage}
         onCategorySelect={handleCategorySelect}
         category={model.sortCategory}
+        triesLeft={triesRemaining}
         />
         );
     }
