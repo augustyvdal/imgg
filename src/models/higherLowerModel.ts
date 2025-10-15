@@ -9,10 +9,7 @@ export class HigherLowerModel {
 
   // Calls fetchHigherLower from apiClient and sets allContent, contentA, contentB and score
   async startNewGame() {
-    // randomize page, fix so that it can pick any page and make it work for both tv shows and movies since they have different amount of pages
-    const randomPage = Math.floor(Math.random() * 100) + 1;
-
-    const allContent = await fetchHigherLower(this.category, randomPage);
+    const allContent = await fetchHigherLower(this.category);
 
     // Sets allContent attribute to the fetched allContent
     this.allContent = allContent;
@@ -35,8 +32,10 @@ export class HigherLowerModel {
     // Makes sure the content is not null
     if (!this.contentA || !this.contentB) return false;
 
-    const isHigher = (this.contentB?.vote_average || 0) > (this.contentA?.vote_average || 0);
-    const correct = (guess === "higher" && isHigher) || (guess === "lower" && !isHigher);
+    const ratingA = this.contentA.vote_average || 0;
+    const ratingB = this.contentB.vote_average || 0;
+    
+    const correct = (ratingB === ratingA) || (guess === "higher" && ratingB > ratingA) || (guess === "lower" && ratingA > ratingB);
 
     if (correct) {
       this.score++;
@@ -57,6 +56,7 @@ export class HigherLowerModel {
     this.contentA = null;
     this.contentB = null;
     this.score = 0;
+    this.category = "";
   }
 
 };

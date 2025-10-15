@@ -1,28 +1,59 @@
-import {useState} from "react"
+import { Content } from "../services/apiClient";
+import ChooseCategory from "../components/ChooseCategory";
 
 type SortGameViewProps = {
-    content: {id: number; title: string}[];
+    content: Content[];
     onReorder: (fromIndex: number, toIndex: number) => void;
+    onSubmit: () => void;
+    feedback: string | null;
+    onCategorySelect: (category: string) => void;
+    category: string;
 }
 
-function SortGameView({ content, onReorder}: SortGameViewProps) {
-    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+function SortGameView({ content, onReorder, onSubmit, feedback, onCategorySelect, category }: Readonly<SortGameViewProps>) {
 
     return (
-        <div>
-            {content.map((item) => (
-                <div
-                key={item.id}
-                className="w-32 h-48 border rounded-lg shadow-md p-2 flex flex-col items-center bg-white"
-                >
-                    <p className="text-center text-sm font-medium mt-2 truncate">
-                        {item.title}
-                    </p>
-                </div>
-                ))
-            }
+        <div className="flex flex-col items-center gap-4">
+            {category === "" && <ChooseCategory onSelect={onCategorySelect} />}
+
+
+            {category !== "" && (
+            <div>
+            <ul className="flex flex-col gap-2 p-0 list-none">
+                {content.map((item, index) => (
+                    <li
+                    key={item.id}
+                    className="w-32 h-48 border rounded-lg shadow-md p-2 flex flex-col items-center bg-white"
+                    draggable
+                    onDragStart={(e) =>
+                        e.dataTransfer.setData("fromIndex", index.toString())
+                    }
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                        const fromIndex = parseInt(e.dataTransfer.getData("fromIndex"));
+                        onReorder(fromIndex, index);
+                    }}
+                    >
+                        <p className="text-center text-sm font-medium mt-2 truncate">
+                            {item.title || item.name}
+                        </p>
+                    </li>
+                    ))
+                }
+            </ul>
+
+            <button
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+                onClick={onSubmit}
+            >
+                Submit
+            </button>
+
+            {feedback && <p className="mt-2 text-lg">{feedback}</p>}
+            </div>
+            )}
         </div>
-    )
+    );
 }
 
 export default SortGameView
