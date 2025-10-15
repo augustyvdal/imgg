@@ -20,24 +20,24 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
 
 
     return (
-        <div className="guess-container">
-            <h1>Guess the Movie</h1>
+        <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
+            <h1 className="text-black dark:text-white text-2xl flex justify-center font-sans font-bold">Guess the Movie</h1>
 
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
             {category !== "" && (
                 <>
                     {loading ? (
-                        <p>Loading new movie...</p>
+                        <p className="text-black dark:text-white">Loading new movie...</p>
                     ) : (
                         <>
-                            <div className="starting-info">
+                            <div className="text-black dark:text-white text-lg  flex flex-col justify-center font-sans">
                                 {startingInfo.map((info, i) => (
                                     <p key={i}>{info}</p>
                                 ))}
                             </div>
 
-                            <div className="clues">
+                            <div className="text-black dark:text-white">
                                 {clues.map((clue, i) => (
                                     <p key={i}>
                                         <strong>Clue {i + 1}:</strong> {clue}
@@ -45,7 +45,7 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                 ))}
                             </div>
 
-                            {message && <p className="message">{message}</p>}
+                            {message && <p className="text-black dark:text-white">{message}</p>}
 
                             {!gameOver && (
                                 <form
@@ -55,7 +55,7 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                         setGuess("");
                                     }}
                                 >
-                                    <input
+                                    <input className="text-black dark:text-white w-full border rounded p-2"
                                         type="text"
                                         value={guess}
                                         onChange={(e) => setGuess(e.target.value)}
@@ -67,7 +67,7 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
 
                             {gameOver && (
                                 <div>
-                                    <p>Final Score: {score}</p>
+                                    <p className="text-black dark:text-white">Final Score: {score}</p>
                                     <button onClick={onRestart}>Play Again</button>
                                 </div>
                             )}
