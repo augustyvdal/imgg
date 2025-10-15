@@ -5,12 +5,14 @@ type SortGameViewProps = {
     content: Content[];
     onReorder: (fromIndex: number, toIndex: number) => void;
     onSubmit: () => void;
+    onReset: () => void;
     feedback: string | null;
     onCategorySelect: (category: string) => void;
     category: string;
-}
+    triesLeft: number;
+};
 
-function SortGameView({ content, onReorder, onSubmit, feedback, onCategorySelect, category }: Readonly<SortGameViewProps>) {
+function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft }: Readonly<SortGameViewProps>) {
 
     return (
         <div className="flex flex-col items-center gap-4">
@@ -18,7 +20,7 @@ function SortGameView({ content, onReorder, onSubmit, feedback, onCategorySelect
 
 
             {category !== "" && (
-            <div>
+        <div>
             <ul className="flex flex-col gap-2 p-0 list-none">
                 {content.map((item, index) => (
                     <li
@@ -41,19 +43,26 @@ function SortGameView({ content, onReorder, onSubmit, feedback, onCategorySelect
                     ))
                 }
             </ul>
-
+            
+            {triesLeft > 0 ? (
             <button
                 className="px-4 py-2 bg-blue-500 text-white rounded"
                 onClick={onSubmit}
             >
                 Submit
             </button>
+            ): (
+                <button className="px-4 py-2 bg-green-500 text-white rounded mt-3" onClick={onReset}>
+                    Try Again
+                </button>
+            )}
 
             {feedback && <p className="mt-2 text-lg">{feedback}</p>}
+
             </div>
             )}
         </div>
     );
 }
 
-export default SortGameView
+export default SortGameView;
