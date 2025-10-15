@@ -30,13 +30,13 @@ export default function LeaderboardPage() {
           <h1 className="text-black dark:text-white text-2xl font-semibold">Leaderboard</h1>
           <div className="flex gap-2">
             <select
-              className="bg-white dark:bg-gray-900 text-black dark:text-white border rounded px-2 py-1"
+              className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1"
               value={category ?? ""}
               onChange={(e) => setCategory(e.target.value || undefined)}
             >
               <option value="">All</option>
               <option value="movie">Movies</option>
-              <option value="tv">TV Shows</option>
+              <option value="tv">TV</option>
             </select>
             <button className="border rounded px-3 py-1" onClick={load} disabled={loading}>
               {loading ? "Loading…" : "Refresh"}
@@ -50,7 +50,7 @@ export default function LeaderboardPage() {
           {rows.map((r, i) => (
               <li
               key={r.id}
-              className="text-black dark:text-white p-2 border-b border-gray-400 flex justify-between"
+              className="p-2 border-b text-gray-800 dark:text-gray-300"
               >
               <span>
                   <strong>Score {r.score}</strong>{" "}
