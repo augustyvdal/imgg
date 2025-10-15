@@ -121,6 +121,5 @@ export async function searchTitles(query: string, category: "movie" | "tv") {
         id: r.id,
         title: category === "movie" ? r.title : r.name,
         image: r.poster_path,
-        year: (r.release_date || "").split("-")[0]
     }));
 }

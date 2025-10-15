@@ -19,7 +19,7 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     const [totalScore, setTotalScore] = useState<number>(0);
     const [gameOver, setGameOver] = useState(false);
 
-    const [searchResults, setSearchResults] = useState<{ id: number; title: string; year: string }[]>([]);
+    const [searchResults, setSearchResults] = useState<{ id: number; image: string; title: string;  }[]>([]);
     const [query, setQuery] = useState("");
     const debouncedQuery = Debounce(query, 300);
 

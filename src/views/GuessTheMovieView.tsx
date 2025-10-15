@@ -15,11 +15,11 @@ type Props = {
     startingInfo: string[];
     query: string;
     onQueryChange: (q: string) => void;
-    searchResults: { id: number; image: string; title: string; year: string }[];
+    searchResults: { id: number; image: string; title: string }[];
     onSelectSuggestion: (title: string) => void;
 };
 
-export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo, query, onQueryChange, searchResults, onSelectSuggestion}: Props) {
+export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo, query, onQueryChange, searchResults, onSelectSuggestion,}: Props) {
     return (
         <div className="guess-container">
             <h1>Guess the Movie</h1>
@@ -57,7 +57,7 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                     }}
                                     className="guess-form"
                                 >
-                                    <div className="relative">
+                                    <div className="input-wrapper">
                                         <input
                                             type="text"
                                             value={query}
@@ -69,18 +69,20 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                         {searchResults.length > 0 && (
                                             <ul className="suggestions">
                                                 {searchResults.map((s, i) => (
-                                                    <li key={i} onClick={() => onSelectSuggestion(s.title)}>
+                                                    <li
+                                                        key={i}
+                                                        onClick={() => onSelectSuggestion(s.title)}
+                                                    >
                                                         {s.image ? (
                                                             <img
                                                                 src={`https://image.tmdb.org/t/p/w92${s.image}`}
                                                                 alt={s.title}
                                                             />
                                                         ) : (
-                                                            <div style={{ width: "40px", height: "60px", background: "#ddd", borderRadius: "4px" }} />
+                                                            <div className="placeholder-poster" />
                                                         )}
-                                                        <div style={{ textAlign: "left" }}>
+                                                        <div className="suggestion-text">
                                                             <div>{s.title}</div>
-                                                            {s.year && <span className="year">({s.year})</span>}
                                                         </div>
                                                     </li>
                                                 ))}
@@ -93,7 +95,7 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                             )}
 
                             {gameOver && (
-                                <div>
+                                <div className="gameover">
                                     <p>Final Score: {score}</p>
                                     <button onClick={onRestart}>Play Again</button>
                                 </div>
