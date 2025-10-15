@@ -14,11 +14,11 @@ export type MatchHistory = {
   game_8: number;
   game_9: number;
   game_10: number;
-  updated_at: string;
+  created_at: string;
 };
 
 // Submit new game score for the signed in user.
-export async function submitMatchScore(score: number, category?: string) {
+export async function submitGameScore(score: number, category?: string) {
     if (score == null || Number.isNaN(score)) throw new Error("Invalid score");
 
     // Ensure user is signed in
@@ -51,14 +51,15 @@ export async function submitMatchScore(score: number, category?: string) {
     // Take the old scores if there are any, otherwise initialize an array of 10 zeros
     const oldScores = existing? [existing.game_1,existing.game_2,existing.game_3, existing.game_4,
         existing.game_5,existing.game_6,existing.game_7,existing.game_8,existing.game_9,
-        existing.game_10,]: Array(10).fill(0);
+        existing.game_10,]: Array(10).fill(null);
 
     // Create new scores array with the latest score at the end and removes the first (oldest)
     const newScores = [...oldScores.slice(1), score]; 
 
     // Upsert the new scores into the database, meaning update if exists, insert if not
     const { error: upsertError } = await supabase.from("guess_game_history").upsert(
-        [{user_id: user.id,username,
+        [{user_id: user.id,
+        username,
         category, 
         game_1: newScores[0], 
         game_2: newScores[1], 
@@ -69,7 +70,7 @@ export async function submitMatchScore(score: number, category?: string) {
         game_7: newScores[6], 
         game_8: newScores[7], 
         game_9: newScores[8],
-        game_10: newScores[9], updated_at: new Date().toISOString(),},],{ onConflict: "user_id,category" }
+        game_10: newScores[9], created_at: new Date().toISOString(),},],{ onConflict: "user_id,category" }
     );
 
     if (upsertError) throw upsertError;
