@@ -89,7 +89,7 @@ export default function ProfilePage() {
       <form onSubmit={onSave} className="space-y-3">
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Email</label>
-          <input className="w-full border rounded p-2 bg-gray-50" value={user.email} disabled />
+          <input className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-500 w-full border rounded p-2" value={user.email} disabled />
         </div>
 
         <div>
