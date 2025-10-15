@@ -43,7 +43,7 @@ const Navbar = () => {
 
 
     return (
-        <header>
+        <header className="bg-gray-50 dark:bg-gray-800 flex flex-row justify-between px-4 py-3 shadow-md">
             <div className="auth-buttons">
             {user ? (
                 <button className="nav-link" onClick={handleLogoutClick}>
@@ -55,10 +55,8 @@ const Navbar = () => {
                 </button>
                 )}
             </div>
-            <div id="mobile-menu" className={`mobile-menu ${mobileOpen ? "open" : ""}`}>
+            <div className="text-black dark:text-white text-xl flex flex-row justify-center font-sans font-bold">
                 <Options isMobile closeAll={closeMobile} />
-                <div className="mobile-cta">
-                </div>
             </div>
         </header>
     );
