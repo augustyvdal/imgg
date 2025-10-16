@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import "../styles/Guessthemovie.css";
 import ChooseCategory from "../components/ChooseCategory";
 
@@ -13,12 +13,13 @@ type Props = {
     onRestart: () => void;
     chooseCategory: (category: "movie" | "tv") => void;
     startingInfo: string[];
+    query: string;
+    onQueryChange: (q: string) => void;
+    searchResults: { id: number; image: string; title: string }[];
+    onSelectSuggestion: (title: string) => void;
 };
 
-export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo}: Props) {
-    const [guess, setGuess] = useState("");
-
-
+export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo, query, onQueryChange, searchResults, onSelectSuggestion,}: Props) {
     return (
         <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
             <h1 className="text-black dark:text-white text-2xl flex justify-center font-sans font-bold">Guess the Movie</h1>
@@ -51,16 +52,44 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                 <form
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        onGuess(guess);
-                                        setGuess("");
+                                        onGuess(query);
+                                        onQueryChange("");
                                     }}
+                                    className="guess-form"
                                 >
-                                    <input className="text-black dark:text-white w-full border rounded p-2"
-                                        type="text"
-                                        value={guess}
-                                        onChange={(e) => setGuess(e.target.value)}
-                                        placeholder="Your guess..."
-                                    />
+                                    <div className="input-wrapper">
+                                        <input
+                                            type="text"
+                                            value={query}
+                                            onChange={(e) => onQueryChange(e.target.value)}
+                                            placeholder="Your guess..."
+                                            autoComplete="off"
+                                        />
+
+                                        {searchResults.length > 0 && (
+                                            <ul className="suggestions">
+                                                {searchResults.map((s, i) => (
+                                                    <li
+                                                        key={i}
+                                                        onClick={() => onSelectSuggestion(s.title)}
+                                                    >
+                                                        {s.image ? (
+                                                            <img
+                                                                src={`https://image.tmdb.org/t/p/w92${s.image}`}
+                                                                alt={s.title}
+                                                            />
+                                                        ) : (
+                                                            <div className="placeholder-poster" />
+                                                        )}
+                                                        <div className="suggestion-text">
+                                                            <div>{s.title}</div>
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
                                     <button type="submit">Guess</button>
                                 </form>
                             )}

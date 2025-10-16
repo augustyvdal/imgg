@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { searchTitles } from "../services/apiClient";
 import { observer } from "mobx-react-lite";
 import { GuessTheMovieModel } from "../models/GuessTheMovieModel";
-import GuessTheMovieView from "../views/GuessTheMovieView";
+import GuessTheMovieView from "../views/GuessTheMovieView"
+import { Debounce } from "../utilities/Debounce";
 import { submitGameScore } from "../services/guessGameHistoryService";
 
 type Props = {
@@ -9,14 +11,19 @@ type Props = {
 };
 
 export default observer(function GuessTheMoviePresenter({ model }: Props) {
+    const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+
     const [clues, setClues] = useState<string[]>([]);
     const [startingInfo, setStartingInfo] = useState<string[]>([]);
     const [message, setMessage] = useState("");
     const [totalScore, setTotalScore] = useState<number>(0);
     const [gameOver, setGameOver] = useState(false);
 
-    const [loading, setLoading] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [searchResults, setSearchResults] = useState<{ id: number; image: string; title: string;  }[]>([]);
+    const [query, setQuery] = useState("");
+    const debouncedQuery = Debounce(query, 300);
+
 
     const didSubmitRef = useRef(false);
 
@@ -26,6 +33,14 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
             await startNewRound()
         })();
     }, [selectedCategory]);
+
+    useEffect(() => {
+        (async () => {
+            if (!debouncedQuery.trim()) return setSearchResults([]);
+            const titles = await searchTitles(debouncedQuery, model.category as "movie" | "tv");
+            setSearchResults(titles.slice(0, 5));
+        })();
+    }, [debouncedQuery, model.category]);
 
     async function startNewRound() {
         didSubmitRef.current = false;
@@ -44,16 +59,16 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
         setClues(model.getCurrentClues());
 
         if (result.correct) {
-            setMessage(`Correct! The movie was "${model.movie.title}".`);
-            submitScore();
+            setMessage(`Correct! The movie was "${model.title.title}".`);
+            await submitScore();
             setTimeout(async () => {
                 setMessage("Next movie loading...");
                 await startNewRound();
             }, 1500);
 
         } else if (result.lose) {
-            setMessage(`You lose! The movie was "${model.movie.title}".`);
-            submitScore();
+            setMessage(`You lose! The movie was "${model.title.title}".`);
+            await submitScore();
             setGameOver(true);
 
         } else {
@@ -89,6 +104,15 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
         }
     };
 
+    function onQueryChange(value: string) {
+        setQuery(value);
+    }
+
+    function onSelectSuggestion(title: string) {
+        setQuery(title);
+        setSearchResults([]);
+    }
+
     return (
         <GuessTheMovieView
             loading={loading}
@@ -101,6 +125,10 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
             category={selectedCategory}
             chooseCategory={chooseCategory}
             startingInfo={startingInfo}
+            query={query}
+            onQueryChange={onQueryChange}
+            searchResults={searchResults}
+            onSelectSuggestion={onSelectSuggestion}
         />
 );
 });
