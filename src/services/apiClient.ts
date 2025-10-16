@@ -79,7 +79,8 @@ export async function GetContentForSort(amountOfResults: number, category: strin
       vote_average: content.vote_average,
       name: content.name,
       poster_path: content.poster_path,
-      year: content.first_air_date ? content.first_air_date.split("-")[0] : "Year N/A",
+      year: content.first_air_date ? content.first_air_date.split("-")[0] : 
+            content.release_date ? content.release_date.split("-")[0] : "Year N/A",
     }));
 
   } catch (err) {
