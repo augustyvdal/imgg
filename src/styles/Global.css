@@ -4,6 +4,16 @@
 
 /* Vi kan ändra här. Har bara skapat en "mall" med variabler etc att arbeta utifrån. */
 
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
 /*:root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif, 'Inter';
     line-height: 1.5;
