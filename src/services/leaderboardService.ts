@@ -21,14 +21,13 @@ export async function submitScore(score: number, category?: string) {
   if (!user) throw new Error("You must be signed in to submit a score");
 
   // get username from profiles table if available
-  let username: string | null = null;
   const { data: profile } = await supabase
     .from("profiles")
     .select("username")
     .eq("id", user.id)
     .single();
 
-  if (profile) username = profile.username;
+  const username: string | null = profile?.username ?? null;
 
   // check if user already has a score for this category
   const { data: existing } = await supabase
@@ -77,15 +76,16 @@ export async function getMyBestScore(category?: string) {
   const user = userData.user;
   if (!user) return null;
 
-  let query = supabase
-    .from("leaderboard")
-    .select("score,created_at,category")
-    .eq("user_id", user.id)
-    .order("score", { ascending: false })
-    .order("created_at", { ascending: true })
-    .limit(1);
-
-  if (category) query = query.eq("category", category);
+  const query = category
+    ? supabase
+        .from("leaderboard")
+        .select("id, username, score, category, created_at")
+        .order("score", { ascending: false })
+        .eq("category", category)
+    : supabase
+        .from("leaderboard")
+        .select("id, username, score, category, created_at")
+        .order("score", { ascending: false });
 
   const { data, error } = await query;
   if (error) throw error;
