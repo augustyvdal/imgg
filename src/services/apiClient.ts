@@ -10,6 +10,7 @@ export type Content = {
   name?: string;
   poster_path?: string;
   vote_average?: number;
+  year?: string;
 };
 
 const options = {
@@ -53,10 +54,12 @@ export async function fetchHigherLower(category: string): Promise<Content[]> {
 
 export async function GetContentForSort(amountOfResults: number, category: string): Promise<Content[]> {
   const page: number = getRandomNumber(500);
+  const today = new Date().toISOString().split("T")[0];
+
   try {
     const url =
       BASE_URL +
-      `/discover/${category}?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
+      `/discover/${category}?include_adult=false&include_video=false&language=en-US&release_date.lte=${today}&page=${page}&sort_by=popularity.desc`;
 
     const response = await fetch(url, options);
 
@@ -74,8 +77,11 @@ export async function GetContentForSort(amountOfResults: number, category: strin
       id: content.id,
       title: content.title,
       vote_average: content.vote_average,
-      name: content.name
+      name: content.name,
+      poster_path: content.poster_path,
+      year: content.first_air_date ? content.first_air_date.split("-")[0] : "Year N/A",
     }));
+
   } catch (err) {
     console.error("Error fetching content:", err);
     return [];

@@ -1,6 +1,6 @@
 import SortGameView from "../views/SortGameView"
 import {observer} from "mobx-react-lite"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SortGameModel } from "../models/SortGameModel";
 import { Content } from "../services/apiClient";
 
@@ -15,6 +15,7 @@ export default observer (
         const [contentList, setContentList] = useState<Content[]>([]);
         const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
         const [triesRemaining, setTriesRemaining] = useState(model.maxTries);
+        const [shake, setShake] = useState(false);
 
         const handleCategorySelect = async (category: string) => {
             model.chooseSortCategory(category);
@@ -42,8 +43,10 @@ export default observer (
 
             if (model.triesRemaining > 0) {
                 setFeedbackMessage(`Wrong order, try again. You had ${correctCount} out of ${model.allContent.length} in the correct place!`);
+                setShake(true);
+                setTimeout(() => setShake(false), 500)
             } else {
-                setFeedbackMessage("Out of tries! Click 'try again' to restart!");
+                setFeedbackMessage("That was your last try! Click 'try again' to restart!");
             }
             
             setTriesRemaining(model.triesRemaining);
@@ -66,6 +69,7 @@ export default observer (
         onCategorySelect={handleCategorySelect}
         category={model.sortCategory}
         triesLeft={triesRemaining}
+        shake={shake}
         />
         );
     }
