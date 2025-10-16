@@ -37,8 +37,8 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     useEffect(() => {
         (async () => {
             if (!debouncedQuery.trim()) return setSearchResults([]);
-            const results = await searchTitles(debouncedQuery, model.category as "movie" | "tv");
-            setSearchResults(results.slice(0, 5));
+            const titles = await searchTitles(debouncedQuery, model.category as "movie" | "tv");
+            setSearchResults(titles.slice(0, 5));
         })();
     }, [debouncedQuery, model.category]);
 
@@ -59,16 +59,16 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
         setClues(model.getCurrentClues());
 
         if (result.correct) {
-            setMessage(`Correct! The movie was "${model.movie.title}".`);
-            submitScore();
+            setMessage(`Correct! The movie was "${model.title.title}".`);
+            await submitScore();
             setTimeout(async () => {
                 setMessage("Next movie loading...");
                 await startNewRound();
             }, 1500);
 
         } else if (result.lose) {
-            setMessage(`You lose! The movie was "${model.movie.title}".`);
-            submitScore();
+            setMessage(`You lose! The movie was "${model.title.title}".`);
+            await submitScore();
             setGameOver(true);
 
         } else {

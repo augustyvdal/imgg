@@ -1,7 +1,7 @@
 ﻿import { GuessingGameAPICall } from "../services/apiClient";
 
 export class GuessTheMovieModel {
-    movie: any = null;
+    title: any = null;
     startingInfo: string[] = []
     clues: string[] = [];
     currentClueIndex = -1;
@@ -10,19 +10,18 @@ export class GuessTheMovieModel {
     category: string = "";
 
     async startNewRound() {
-        const movieData = await GuessingGameAPICall(this.category);
-        this.movie = movieData;
+        const titleData = await GuessingGameAPICall(this.category);
+        this.title = titleData;
         this.startingInfo = [
-            `Release year: ${movieData.release_year}`,
-            `Genres: ${movieData.genres}`,
+            `Release year: ${titleData.release_year}`,
+            `Genre(s): ${titleData.genres}`,
+            `TMDb Rating: ${titleData.tmdb_rating}`,
         ];
         this.clues = [
-            `Budget: $${(movieData.budget / 1_000_000).toFixed(1)} M`,
-            `Revenue: $${(movieData.revenue / 1_000_000).toFixed(1)} M`,
-            //`Keywords: ${movieData.keywords.join(", ")}`,
-            `Director: ${movieData.director}`,
-            `Actors: ${movieData.main_actors.join(", ")}`,
-            `Plot: ${movieData.description.split(".")[0]}.`,
+            `Director: ${titleData.director}`,
+            `Main Actors: ${titleData.main_actors}`,
+            `Characters: ${titleData.characters.join(", ")}`,
+            `Plot: ${titleData.description.split(".")[0]}.`,
         ];
 
         this.currentClueIndex = -1;
@@ -31,10 +30,10 @@ export class GuessTheMovieModel {
     }
 
     makeGuess(guess: string) {
-        if (this.gameOver || !this.movie) return;
+        if (this.gameOver || !this.title) return;
 
         const normalizedGuess = guess.trim().toLowerCase();
-        const normalizedTitle = this.movie.title.toLowerCase();
+        const normalizedTitle = this.title.title.toLowerCase();
 
         if (normalizedGuess === normalizedTitle) {
             const score = this.clues.length - this.currentClueIndex;
@@ -48,8 +47,6 @@ export class GuessTheMovieModel {
         this.currentClueIndex++;
         if (this.currentClueIndex >= this.clues.length) {
             this.gameOver = true;
-            // Highscore, leaderboard etc.
-            //this.totalScore = 0;
             return {
                 correct: false,
                 score: this.totalScore,
@@ -73,6 +70,6 @@ export class GuessTheMovieModel {
         this.totalScore = 0;
         this.gameOver = false;
         this.currentClueIndex = 0;
-        this.movie = null;
+        this.title = null;
     }
 }
