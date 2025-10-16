@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Content } from "../services/apiClient";
-import "../styles/Higherlower.css"
 import ChooseCategory from "../components/ChooseCategory";
 
 type Props = {

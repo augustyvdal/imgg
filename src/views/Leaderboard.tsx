@@ -38,7 +38,7 @@ export default function LeaderboardPage() {
               <option value="movie">Movies</option>
               <option value="tv">TV</option>
             </select>
-            <button className="border rounded px-3 py-1" onClick={load} disabled={loading}>
+            <button className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1" onClick={load} disabled={loading}>
               {loading ? "Loading…" : "Refresh"}
             </button>
           </div>

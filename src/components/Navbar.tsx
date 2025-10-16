@@ -1,4 +1,3 @@
-import "/src/styles/Navbar.css"
 import { useLocation, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
@@ -55,7 +54,7 @@ const Navbar = () => {
                 </button>
                 )}
             </div>
-            <div className="text-black dark:text-white text-xl flex flex-row justify-center font-sans font-bold">
+            <div className="text-black dark:text-white text-xl flex flex-row justify-center font-sans">
                 <Options isMobile closeAll={closeMobile} />
             </div>
         </header>
