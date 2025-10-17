@@ -24,7 +24,7 @@ export default function LeaderboardPage() {
   useEffect(() => { load(); }, [category]);
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
+    <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col">
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-black dark:text-white text-2xl font-semibold">Leaderboard</h1>
@@ -38,7 +38,7 @@ export default function LeaderboardPage() {
               <option value="movie">Movies</option>
               <option value="tv">TV</option>
             </select>
-            <button className="border rounded px-3 py-1" onClick={load} disabled={loading}>
+            <button className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1" onClick={load} disabled={loading}>
               {loading ? "Loading…" : "Refresh"}
             </button>
           </div>

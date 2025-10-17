@@ -28,19 +28,6 @@
     box-sizing: border-box;
 }
 
-.guess-form button {
-    flex-shrink: 0;
-    padding: 10px 18px;
-    background-color: #3c77a1;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.2s;
-    height: 100%;
-}
-
 .guess-form button:hover {
     background-color: #2e6488;
 }

@@ -1,4 +1,3 @@
-import "/src/styles/Navbar.css"
 import { useLocation, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
@@ -46,16 +45,16 @@ const Navbar = () => {
         <header className="bg-gray-50 dark:bg-gray-800 flex flex-row justify-between px-4 py-3 shadow-md">
             <div className="auth-buttons">
             {user ? (
-                <button className="nav-link" onClick={handleLogoutClick}>
+                <button className="text-red-700 dark:text-red-400 cursor-pointer border rounded px-3 py-2" onClick={handleLogoutClick}>
                     Sign out ({user.email})
                 </button>
              ) : (
-                <button className="nav-link" onClick={handleLoginClick}>
+                <button className="bg-blue-600 text-white rounded px-4 py-2 disabled:opacity-60" onClick={handleLoginClick}>
                     Login
                 </button>
                 )}
             </div>
-            <div className="text-black dark:text-white text-xl flex flex-row justify-center font-sans font-bold">
+            <div className="text-black dark:text-white text-xl flex flex-row justify-center font-sans">
                 <Options isMobile closeAll={closeMobile} />
             </div>
         </header>

@@ -85,7 +85,7 @@ export default function ProfilePage() {
   if (loading || !user) return null;
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+    <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
       <h1 className="text-black dark:text-white text-2xl font-semibold">Your Profile</h1>
 
       <div className="flex items-center gap-4">
@@ -94,7 +94,7 @@ export default function ProfilePage() {
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover border"
         />
-        <label className="text-black dark:text-white cursor-pointer border rounded px-3 py-2">
+        <label className="text-red-700 dark:text-red-400 cursor-pointer border rounded px-3 py-2">
           {uploading ? "Uploading..." : "Change avatar"}
           <input
             type="file"
@@ -109,7 +109,7 @@ export default function ProfilePage() {
       <form onSubmit={onSave} className="space-y-3">
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Email</label>
-          <input className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-500 w-full border rounded p-2" value={user.email} disabled />
+          <input className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-500 w-full border rounded p-2" value={user.email} disabled/>
         </div>
 
         <div>
@@ -134,7 +134,7 @@ export default function ProfilePage() {
       {ok && <p className="text-green-700">{ok}</p>}
 
       {/*Category select*/}
-      <div className="flex items-center gap-2 mb-4 w-full max-w-md">
+      <div className="flex items-center gap-2 mb-4 w-full max-w-md py-6">
         <select
           className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1"
           value={category}
@@ -144,7 +144,7 @@ export default function ProfilePage() {
           <option value="tv">TV Shows</option>
         </select>
         <button
-          className="border rounded px-3 py-1"
+          className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1"
           onClick={() => setCategory(category)}
           disabled={loadingGames}
         >
