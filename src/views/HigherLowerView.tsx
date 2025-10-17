@@ -48,7 +48,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                         <h3 className="text-black dark:text-white text-xl font-sans font-bold">OR</h3>
                         <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
                         {message && <p className="text-black dark:text-white text-xl font-sans font-bold">{message}</p>}
-                        {gameOver && <button onClick={prepareNewGame}>Play Again</button>}
+                        {gameOver && <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={prepareNewGame}>Play Again</button>}
                         <button className="text-red-700 dark:text-red-400 cursor-pointer border rounded px-3 py-2" onClick={() => window.location.href = "/"}>Quit</button>
                     </div>
 
