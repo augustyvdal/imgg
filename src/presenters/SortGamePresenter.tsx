@@ -1,8 +1,9 @@
 import SortGameView from "../views/SortGameView"
 import {observer} from "mobx-react-lite"
-import { use, useState } from "react";
+import { use, useState, useRef} from "react";
 import { SortGameModel } from "../models/SortGameModel";
 import { Content } from "../services/apiClient";
+import { submitSortStreak } from "../services/sortGameLeaderboardService"
 
 type SortGamePresenterProps = {
     model: SortGameModel;
@@ -22,7 +23,10 @@ export default observer (
         const [resetReady, setResetReady] = useState(false);
         const [submitReady, setSubmitReady] = useState(false);
 
+        const didSubmitRef = useRef(false);
+
         const handleCategorySelect = async (category: string) => {
+            didSubmitRef.current = false;
             model.chooseSortCategory(category);
             await model.GetAllContent(5)
             setContentList(model.returnAllContent());
@@ -60,6 +64,7 @@ export default observer (
                 setTimeout(() => setShake(false), 500);
                 setSubmitReady(true);
             } else {
+                submitRoundStreak();
                 setFeedbackMessage("That was your last try! Click 'try again' to restart!");
                 setResetReady(true);
             }
@@ -68,6 +73,7 @@ export default observer (
         };
 
         const newRoundOrReset = () => {
+            didSubmitRef.current = false;
             setFeedbackMessage(null);
             setTriesRemaining(model.maxTries);
             setContentList([]);
@@ -87,6 +93,18 @@ export default observer (
             newRoundOrReset();
             setStreak(model.roundStreak);
         };
+
+        const submitRoundStreak = async () => {
+                if (didSubmitRef.current) return;
+                if (model.roundStreak != null && model.sortCategory) {
+                    didSubmitRef.current = true;
+                    try {
+                        await submitSortStreak(model.roundStreak, model.sortCategory);
+                    } catch (e) {
+                        console.error("Failed to submit score:", e);
+                    }
+                }
+            };
 
         return (
         <SortGameView
