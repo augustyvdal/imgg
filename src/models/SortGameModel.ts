@@ -5,6 +5,7 @@ export class SortGameModel {
     sortCategory: string = "";
     maxTries: number = 3;
     triesRemaining: number = this.maxTries;
+    roundStreak: number = 0;
 
     async GetAllContent(amount: number) {
         const allContent = await GetContentForSort(amount, this.sortCategory);
@@ -56,10 +57,21 @@ export class SortGameModel {
         }
     }
 
+    incrementRoundStreak() {
+        this.roundStreak++
+    }
+
+    async newRound() {
+        this.triesRemaining = this.maxTries;
+        this.allContent = [];
+        await this.GetAllContent(5);
+    }
+
     resetSortGame() {
         this.triesRemaining = this.maxTries;
         this.allContent = [];
         this.sortCategory = "";
+        this.roundStreak = 0;
     }
 
 }

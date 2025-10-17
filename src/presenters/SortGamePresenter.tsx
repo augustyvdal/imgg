@@ -1,6 +1,6 @@
 import SortGameView from "../views/SortGameView"
 import {observer} from "mobx-react-lite"
-import { useState } from "react";
+import { use, useState } from "react";
 import { SortGameModel } from "../models/SortGameModel";
 import { Content } from "../services/apiClient";
 
@@ -16,6 +16,11 @@ export default observer (
         const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
         const [triesRemaining, setTriesRemaining] = useState(model.maxTries);
         const [shake, setShake] = useState(false);
+        const [streak, setStreak] = useState(model.roundStreak);
+
+        const [nextRoundReady, setNextRoundReady] = useState(false);
+        const [resetReady, setResetReady] = useState(false);
+        const [submitReady, setSubmitReady] = useState(false);
 
         const handleCategorySelect = async (category: string) => {
             model.chooseSortCategory(category);
@@ -23,6 +28,7 @@ export default observer (
             setContentList(model.returnAllContent());
             setFeedbackMessage(null);
             setTriesRemaining(model.maxTries);
+            setSubmitReady(true);
         };
 
         const handleReorder = (fromIndex: number, toIndex: number) => {
@@ -32,10 +38,17 @@ export default observer (
 
         const handleSubmit = () => {
             const correct = model.checkOrderCorrect();
+
+            setSubmitReady(false);
+            setNextRoundReady(false);
+            setResetReady(false);
             
             if (correct) {
-                setFeedbackMessage("CORRECT!!!")
-                return
+                setFeedbackMessage("CORRECT!!!");
+                model.incrementRoundStreak();
+                setStreak(model.roundStreak);
+                setNextRoundReady(true);
+                return;
             }
 
             model.decrementTriesRemaining();
@@ -44,20 +57,36 @@ export default observer (
             if (model.triesRemaining > 0) {
                 setFeedbackMessage(`Wrong order, try again. You had ${correctCount} out of ${model.allContent.length} in the correct place!`);
                 setShake(true);
-                setTimeout(() => setShake(false), 500)
+                setTimeout(() => setShake(false), 500);
+                setSubmitReady(true);
             } else {
                 setFeedbackMessage("That was your last try! Click 'try again' to restart!");
+                setResetReady(true);
             }
             
             setTriesRemaining(model.triesRemaining);
         };
 
-        const handleReset = async () => {
-            model.resetSortGame();
+        const newRoundOrReset = () => {
             setFeedbackMessage(null);
             setTriesRemaining(model.maxTries);
             setContentList([]);
+            setNextRoundReady(false);
+            setResetReady(false);
+            setSubmitReady(true);
         }
+
+        const handleNextRound = async () => {
+            newRoundOrReset();
+            await model.newRound();
+            setContentList(model.returnAllContent())
+        }
+
+        const handleReset = () => {
+            model.resetSortGame();
+            newRoundOrReset();
+            setStreak(model.roundStreak);
+        };
 
         return (
         <SortGameView
@@ -70,6 +99,11 @@ export default observer (
         category={model.sortCategory}
         triesLeft={triesRemaining}
         shake={shake}
+        nextRound={nextRoundReady}
+        reset={resetReady}
+        submit={submitReady}
+        onNextRound={handleNextRound}
+        streak={streak}
         />
         );
     }
