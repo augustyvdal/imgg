@@ -21,7 +21,7 @@ type Props = {
 
 export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo, query, onQueryChange, searchResults, onSelectSuggestion,}: Props) {
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
+        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
             <h1 className="text-black dark:text-white text-2xl flex justify-center font-sans font-bold">Guess the Movie</h1>
 
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
@@ -90,14 +90,14 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                         )}
                                     </div>
 
-                                    <button type="submit">Guess</button>
+                                    <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" type="submit">Guess</button>
                                 </form>
                             )}
 
                             {gameOver && (
                                 <div>
                                     <p className="text-black dark:text-white">Final Score: {score}</p>
-                                    <button onClick={onRestart}>Play Again</button>
+                                    <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={onRestart}>Play Again</button>
                                 </div>
                             )}
                         </>

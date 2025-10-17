@@ -30,7 +30,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+    <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
       <div className="max-w-md mx-auto p-6">
         <h1 className="text-black dark:text-white text-2xl font-semibold mb-4">Sign in</h1>
 
@@ -53,7 +53,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <button className="w-full border rounded p-2 mt-3" onClick={onSignup} disabled={loading}>
+        <button className="w-full bg-blue-600 text-white rounded disabled:opacity-60 p-2 mt-3" onClick={onSignup} disabled={loading}>
           Create account
         </button>
 

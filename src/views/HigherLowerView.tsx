@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Content } from "../services/apiClient";
-import "../styles/Higherlower.css"
 import ChooseCategory from "../components/ChooseCategory";
 
 type Props = {
@@ -25,7 +24,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
     if (loading) return <p>Loading random movie...</p>;
 
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
+        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
             <h1 className="text-black dark:text-white text-xl flex font-sans font-bold">Higher or Lower</h1>
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
@@ -45,12 +44,12 @@ export default function HigherLowerView({contentA, contentB, score, category, me
 
                     <div className="flex flex-col p-5 w-200 place-items-center-safe">
                         <h3 className="text-black dark:text-white text-xl font-sans font-bold">Is "{contentB?.title || contentB?.name}" rated</h3>
-                        <button className="flex" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
+                        <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
                         <h3 className="text-black dark:text-white text-xl font-sans font-bold">OR</h3>
-                        <button className="flex" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
+                        <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
                         {message && <p className="text-black dark:text-white text-xl font-sans font-bold">{message}</p>}
-                        {gameOver && <button onClick={prepareNewGame}>Play Again</button>}
-                        <button onClick={() => window.location.href = "/"}>Quit</button>
+                        {gameOver && <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={prepareNewGame}>Play Again</button>}
+                        <button className="text-red-700 dark:text-red-400 cursor-pointer border rounded px-3 py-2" onClick={() => window.location.href = "/"}>Quit</button>
                     </div>
 
                     <div className="flex flex-col p-5 place-items-center-safe">
