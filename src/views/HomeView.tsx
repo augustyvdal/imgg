@@ -8,10 +8,10 @@ export default function GeneralView() {
                     <div className='text-black dark:text-white text-xl flex justify-center font-sans font-bold'>The internet movie guessing game</div>
                 </div>
                 
-                <div className="flex flex-col space-y-4 mt-4">
-                <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game1"}>Go to Guess The Movie</button>
-                <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game2"}>Go to Higher or Lower</button>
-                <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game3"}>Go to Sort Game</button>
+                <div className="flex flex-col space-y-4 mt-2 p-5">
+                <button className="bg-yellow-400 hover:bg-yellow-500 text-black text-lg rounded h-12 w-full disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game1"}>Guess The Movie</button>
+                <button className="bg-yellow-400 hover:bg-yellow-500 text-black text-lg rounded h-12 w-full disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game2"}>Higher or Lower</button>
+                <button className="bg-yellow-400 hover:bg-yellow-500 text-black text-lg rounded h-12 w-full disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game3"}>Sort Game</button>
             </div>
             </div>
         </div>
