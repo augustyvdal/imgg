@@ -2,6 +2,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../services/supabaseClient";
 
 function Options({ isMobile = false, closeAll }: { isMobile?: boolean; closeAll?: () => void }) {
     const location = useLocation();
@@ -48,7 +49,7 @@ const Navbar = () => {
         <header className="bg-gray-50 dark:bg-gray-800 flex flex-row px-4 py-3 shadow-md">
             <div className="flex-1">
                 <Link to="/" onClick={closeMobile} className="text-2xl font-bold text-black dark:text-white">
-                    Home {/* Replace with logo later */}
+                    <img className="max-h-15 max-w-15 rounded" src="src/images/logo.png"/>
                 </Link>
             </div>
 
@@ -67,6 +68,16 @@ const Navbar = () => {
                 </button>
                 )}
             </div>
+            
+            <button>
+            <img
+            src={"https://placehold.co/96x96?text=👤"}
+            alt="avatar"
+            className="w-15 h-15 rounded-full object-cover border"/>
+            </button>
+
+
+            
         </header>
     );
 }
