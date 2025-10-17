@@ -9,9 +9,9 @@ export default function GeneralView() {
                 </div>
                 
                 <div className="flex flex-col space-y-4 mt-4">
-                <button onClick={() => window.location.href = "/game1"}>Go to Guess The Movie</button>
-                <button onClick={() => window.location.href = "/game2"}>Go to Higher or Lower</button>
-                <button onClick={() => window.location.href = "/game3"}>Go to Sort Game</button>
+                <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game1"}>Go to Guess The Movie</button>
+                <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game2"}>Go to Higher or Lower</button>
+                <button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={() => window.location.href = "/game3"}>Go to Sort Game</button>
             </div>
             </div>
         </div>

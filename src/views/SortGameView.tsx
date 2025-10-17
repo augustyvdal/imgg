@@ -23,11 +23,11 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
 
                 {category !== "" && (
             <div>
-                <ul className="flex flex-row gap-4 bg-gray-50 p-4 rounded-xl shadow-inner justify-center">
+                <ul className="flex flex-row gap-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-inner justify-center">
                     {content.map((item, index) => (
                         <li
                         key={item.id}
-                        className={`relative w-48 h-72 border rounded-lg shadow-md p-3 flex flex-col bg-white items-center overflow-hidden ${shake ? "shake" : ""}`}
+                        className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""}`}
                         draggable
                         onDragStart={(e) =>
                             e.dataTransfer.setData("fromIndex", index.toString())
@@ -38,10 +38,10 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                             onReorder(fromIndex, index);
                         }}
                         >
-                            <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">
+                            <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                                 #{index + 1}
                             </div>
-                            <p className="text-center text-sm font-medium mt-6 break-words leading-tight">
+                            <p className="text-gray-800 dark:text-gray-300 text-center text-sm font-medium mt-6 break-words leading-tight">
                                 {item.title || item.name} <span className="text-gray-500 text-xs">({item.year})</span>
                             </p>
                             <img className="h-35 w-70 object-contain"

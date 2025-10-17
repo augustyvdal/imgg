@@ -45,11 +45,11 @@ const Navbar = () => {
         <header className="bg-gray-50 dark:bg-gray-800 flex flex-row justify-between px-4 py-3 shadow-md">
             <div className="auth-buttons">
             {user ? (
-                <button className="nav-link" onClick={handleLogoutClick}>
+                <button className="bg-blue-600 text-white rounded px-4 py-2 disabled:opacity-60" onClick={handleLogoutClick}>
                     Sign out ({user.email})
                 </button>
              ) : (
-                <button className="nav-link" onClick={handleLoginClick}>
+                <button className="bg-blue-600 text-white rounded px-4 py-2 disabled:opacity-60" onClick={handleLoginClick}>
                     Login
                 </button>
                 )}
