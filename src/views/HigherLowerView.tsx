@@ -60,8 +60,8 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                             />
                             <p className="text-black dark:text-white text-2xl font-sans font-bold">{showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}</p>
                             <div className="flex gap-3 mt-4">
-                                <button className="bg-yellow-400 hover:bg-yellow-500 text-black text-lg rounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
-                                <button className="bg-yellow-400 hover:bg-yellow-500 text-black text-lg rounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
+                                <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg rounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
+                                <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg rounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
                             </div>
                         </div>
                 </div>
