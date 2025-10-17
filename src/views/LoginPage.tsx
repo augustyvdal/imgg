@@ -30,7 +30,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+    <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
       <div className="max-w-md mx-auto p-6">
         <h1 className="text-black dark:text-white text-2xl font-semibold mb-4">Sign in</h1>
 

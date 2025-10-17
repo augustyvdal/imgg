@@ -1,7 +1,7 @@
 export default function GeneralView() {
     
     return (
-        <div className="relative grid min-h-screen grid-cols-[1fr_2.5rem_auto_2.5rem_1fr] grid-rows-[1fr_1px_auto_1px_1fr] bg-white dark:bg-gray-900">
+        <div className="relative grid min-h-screen grid-cols-[1fr_2.5rem_auto_2.5rem_1fr] grid-rows-[1fr_1px_auto_1px_1fr] bg-gray-200 dark:bg-gray-900">
             <div className="col-start-3 row-start-3 flex max-w-lg flex-col place-content-center bg-white dark:bg-gray-800 p-5 rounded-lg">
                 <img src="src\images\logo.png"/>
                 <div className="col-start-3 row-start-3 flex max-w-lg flex-col">

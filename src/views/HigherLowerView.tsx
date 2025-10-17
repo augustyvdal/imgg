@@ -24,7 +24,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
     if (loading) return <p>Loading random movie...</p>;
 
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
+        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
             <h1 className="text-black dark:text-white text-xl flex font-sans font-bold">Higher or Lower</h1>
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 

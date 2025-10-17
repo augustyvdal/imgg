@@ -23,7 +23,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
 
                 {category !== "" && (
             <div>
-                <ul className="flex flex-row gap-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-inner justify-center">
+                <ul className="flex flex-row gap-4 bg-gray-200 dark:bg-gray-800 p-4 rounded-xl shadow-inner justify-center">
                     {content.map((item, index) => (
                         <li
                         key={item.id}

@@ -24,7 +24,7 @@ export default function LeaderboardPage() {
   useEffect(() => { load(); }, [category]);
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
+    <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col">
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-black dark:text-white text-2xl font-semibold">Leaderboard</h1>
