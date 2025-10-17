@@ -11,9 +11,14 @@ type SortGameViewProps = {
     category: string;
     triesLeft: number;
     shake: boolean;
+    nextRound: boolean;
+    reset: boolean;
+    submit: boolean;
+    onNextRound: () => void;
+    streak: number;
 };
 
-function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake }: Readonly<SortGameViewProps>) {
+function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak }: Readonly<SortGameViewProps>) {
 
     return (
         <div className="flex flex-col items-center gap-4">
@@ -51,24 +56,46 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                 }
             </ul>
             
-            {triesLeft > 0 ? (
-            <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                onClick={onSubmit}
-            >
-                Submit
-            </button>
-            ): (
-                <button className="px-4 py-2 bg-green-500 text-white rounded mt-3" onClick={onReset}>
-                    Try Again
+            {
+                (submit) ? (
+                <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                    onClick={onSubmit}
+                >
+                    Submit
                 </button>
-            )}
+                ): ""
+            }
+
+            {
+                (nextRound) ? (
+                <button 
+                    className="px-4 py-2 bg-green-500 text-white rounded mt-3" 
+                    onClick={onNextRound}
+                >
+                    Next Round!
+                </button>
+                ): ""
+            }
+
+            {
+                (reset) ? (
+                <button 
+                    className="px-4 py-2 bg-red-500 text-white rounded mt-3" 
+                    onClick={onReset}
+                >
+                    Reset
+                </button>
+                ): ""
+            }
 
             {feedback && (
                 <div className="mt-4 w-full max-w-xs bg-red-100 text-red-800 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
                     {feedback}
                 </div>
             )}
+
+            <div>{streak}</div>
 
             </div>
             )}
