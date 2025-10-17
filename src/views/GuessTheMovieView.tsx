@@ -22,14 +22,14 @@ type Props = {
 export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo, query, onQueryChange, searchResults, onSelectSuggestion,}: Props) {
     return (
         <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
-            <h1 className="text-black dark:text-white text-2xl flex justify-center font-sans font-bold">Guess the Movie</h1>
+            <h1 className="text-black dark:text-white text-2xl flex justify-center font-sans font-bold">Guess the {category === "tv" ? "TV Show" : "Movie"}</h1>
 
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
             {category !== "" && (
                 <>
                     {loading ? (
-                        <p className="text-black dark:text-white">Loading new movie...</p>
+                        <p className="text-black dark:text-white">Loading...</p>
                     ) : (
                         <>
                             <div className="text-black dark:text-white text-lg  flex flex-col justify-center font-sans">
