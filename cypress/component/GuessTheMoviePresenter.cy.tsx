@@ -41,7 +41,7 @@ function pickCategory() {
             buttons.find((b) => b.offsetParent !== null);
 
         if (match) cy.wrap(match).click({ force: true });
-  });
+    });
 }
 
 function typeGuessAndSubmit(text: string) {

@@ -19,24 +19,20 @@ class FakeModel {
   startNewGame = cy.stub().resolves();
   nextItem = cy.stub();
 
-  // wrong guess => presenter should show "Game Over"
   makeGuess = cy.stub().returns(false);
 }
 
 describe("HigherLowerPresenter (component)", () => {
-  it("shows Game Over on wrong guess", () => {
-    const model = new FakeModel();
+    it("shows Game Over on wrong guess", () => {
+      const model = new FakeModel();
 
-    cy.mount(<HigherLowerPresenter model={model as unknown as HigherLowerModel} />);
+      cy.mount(<HigherLowerPresenter model={model as unknown as HigherLowerModel} />);
 
-    // Sanity: presenter rendered the game view
-    cy.contains(/^Score:/i).should("exist");
+      cy.contains(/^Score:/i).should("exist");
 
-    // Interact: click Lower (could be Higher—makeGuess returns false anyway)
-    cy.contains("button", /Lower/i).click();
+      cy.contains("button", /Lower/i).click();
 
-    // Assert: UI reflects the outcome
-    cy.contains(/Game Over/i).should("be.visible");
-    cy.contains(/Play Again/i).should("exist"); // optional extra check
-  });
+      cy.contains(/Game Over/i).should("be.visible");
+      cy.contains(/Play Again/i).should("exist");
+    });
 });
