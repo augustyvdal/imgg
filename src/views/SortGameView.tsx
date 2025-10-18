@@ -89,7 +89,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                             className="px-4 py-2 bg-red-500 text-white cursor-pointer rounded mt-3" 
                                             onClick={onReset}
                                         >
-                                            Reset
+                                            Play Again!
                                         </button>
                                         ): ""
                                     }
