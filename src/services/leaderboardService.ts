@@ -15,10 +15,11 @@ export type LeaderboardRow = {
 export async function submitScore(score: number, category?: string) {
   if (score == null || Number.isNaN(score)) throw new Error("Invalid score");
 
+  // Ensure user is signed in, if not do nothing
   const { data: userData, error: userErr } = await supabase.auth.getUser();
-  if (userErr) throw userErr;
+  if (userErr) return;
   const user = userData.user;
-  if (!user) throw new Error("You must be signed in to submit a score");
+  if (!user) return;
 
   // get username from profiles table if available
   const { data: profile } = await supabase

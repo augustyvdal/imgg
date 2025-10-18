@@ -1,31 +1,14 @@
 import { supabase } from "./supabaseClient";
 
-export type MatchHistory = {
-  user_id: string;
-  username: string;
-  category: string | null;
-  game_1: number;
-  game_2: number;
-  game_3: number;
-  game_4: number;
-  game_5: number;
-  game_6: number;
-  game_7: number;
-  game_8: number;
-  game_9: number;
-  game_10: number;
-  created_at: string;
-};
-
 // Submit new game score for the signed in user.
 export async function submitGameScore(score: number, category?: string) {
     if (score == null || Number.isNaN(score)) throw new Error("Invalid score");
 
-    // Ensure user is signed in
+    // Ensure user is signed in, if not do nothing
     const { data: userData, error: userError } = await supabase.auth.getUser();
-    if (userError) throw userError;
+    if (userError) return;
     const user = userData.user;
-    if (!user) throw new Error("You must be signed in to submit a score");
+    if (!user) return;
 
     // Fetch username from profiles
     const { data: profile } = await supabase
