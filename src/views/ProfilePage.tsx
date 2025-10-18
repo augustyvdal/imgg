@@ -39,6 +39,9 @@ export default function ProfilePage() {
     })().catch(e => setErr(e.message));
   }, [user]);
 
+  const toReversed = <T,>(arr: readonly T[]) =>
+  arr.map((_, i, a) => a[a.length - 1 - i]);
+
   useEffect(() => {
     (async () => {
       if (!user) return;
@@ -46,7 +49,7 @@ export default function ProfilePage() {
       setErr(null);
       try {
         const matchHistory = await getMatchHistory(category);
-        setGames(matchHistory.filter((gameScore) => gameScore != null).reverse());
+        setGames(matchHistory.filter((gameScore) => gameScore != null).toReversed());
       } catch (e: any) {
         setErr(e.message);
       } finally {

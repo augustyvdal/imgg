@@ -5,11 +5,13 @@ import { FormEvent, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 export default function LoginPage() {
   const { signIn, signUp, loading } = useAuth() as any;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation() as any;
@@ -20,17 +22,30 @@ export default function LoginPage() {
     setErr(null);
     try { 
         await signIn(email, password); 
-        navigate(from, { replace: true });
+
+        setSuccess("You are now logged in.");
+        setTimeout(() => navigate(from, { replace: true }), 1300);
     } catch (e: any) { setErr(e.message); }
   };
+
   const onSignup = async (e: FormEvent) => {
     e.preventDefault();
     setErr(null);
-    try { await signUp(email, password); } catch (e: any) { setErr(e.message); }
+    try { 
+        await signUp(email, password); 
+        setSuccess("Account created! Check your email for a confirmation link.");
+      } catch (e: any) { setErr(e.message); }
   };
 
   return (
     <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+      {success && (
+        <div className="fixed top-[40%] left-1/2 -translate-x-1/2 z-50" role="status" aria-live="polite">
+          <div className="rounded-lg bg-green-600 text-white px-4 py-2 shadow-md">
+            {success}
+          </div>
+        </div>
+      )}
       <div className="max-w-md mx-auto p-6">
         <h1 className="text-black dark:text-white text-2xl font-semibold mb-4">Sign in</h1>
 

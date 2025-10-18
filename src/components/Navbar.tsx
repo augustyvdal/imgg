@@ -60,7 +60,7 @@ const Navbar = () => {
             <div className="flex-1 flex justify-end">
             {user ? (
                 <button className="text-red-700 dark:text-red-400 cursor-pointer border rounded px-3 py-2 hover:opacity-70" onClick={handleLogoutClick}>
-                    Sign out ({user.email})
+                    Sign out
                 </button>
              ) : (
                 <button className="bg-blue-600 text-white rounded px-4 py-2 disabled:opacity-60 hover:opacity-70" onClick={handleLoginClick}>

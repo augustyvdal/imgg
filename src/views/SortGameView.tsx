@@ -32,11 +32,11 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                         ) : (
                             <>
                                 <div>
-                                    <ul className="flex flex-row gap-4 bg-gray-200 dark:bg-gray-800 p-4 rounded-xl shadow-inner justify-center">
+                                    <ul className="flex flex-row gap-4 bg-gray-200 dark:bg-gray-800 p-4 cursor-pointer rounded-xl shadow-inner justify-center">
                                         {content.map((item, index) => (
                                             <li
                                             key={item.id}
-                                            className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""}`}
+                                            className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 cursor-pointer rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""}`}
                                             draggable
                                             onDragStart={(e) =>
                                                 e.dataTransfer.setData("fromIndex", index.toString())
@@ -47,10 +47,10 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                                 onReorder(fromIndex, index);
                                             }}
                                             >
-                                                <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                                                <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs cursor-pointer font-bold px-2 py-0.5 rounded-full">
                                                     #{index + 1}
                                                 </div>
-                                                <p className="text-gray-800 dark:text-gray-300 text-center text-sm font-medium mt-6 break-words leading-tight">
+                                                <p className="text-gray-800 dark:text-gray-300 text-center text-sm cursor-pointer font-medium mt-6 break-words leading-tight">
                                                     {item.title || item.name} <span className="text-gray-500 text-xs">({item.year})</span>
                                                 </p>
                                                 <img className="h-35 w-70 object-contain"
@@ -64,7 +64,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (submit) ? (
                                         <button
-                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                                            className="px-4 py-2 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600 transition"
                                             onClick={onSubmit}
                                         >
                                             Submit
@@ -75,7 +75,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (nextRound) ? (
                                         <button 
-                                            className="px-4 py-2 bg-green-500 text-white rounded mt-3" 
+                                            className="px-4 py-2 bg-green-500 text-white cursor-pointer rounded mt-3" 
                                             onClick={onNextRound}
                                         >
                                             Next Round!
@@ -86,7 +86,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (reset) ? (
                                         <button 
-                                            className="px-4 py-2 bg-red-500 text-white rounded mt-3" 
+                                            className="px-4 py-2 bg-red-500 text-white cursor-pointer rounded mt-3" 
                                             onClick={onReset}
                                         >
                                             Reset

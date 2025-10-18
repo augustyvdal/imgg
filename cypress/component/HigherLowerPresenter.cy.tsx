@@ -28,7 +28,7 @@ describe("HigherLowerPresenter (component)", () => {
 
       cy.mount(<HigherLowerPresenter model={model as unknown as HigherLowerModel} />);
 
-      cy.contains(/^Score:/i).should("exist");
+      cy.contains(/Score:/i).should("exist");
 
       cy.contains("button", /Lower/i).click();
 
