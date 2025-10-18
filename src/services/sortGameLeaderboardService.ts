@@ -12,11 +12,11 @@ export type SortRow = {
 export async function submitSortStreak(round_streak: number, category?: string) {
     if (round_streak == null || Number.isNaN(round_streak)) throw new Error("Invalid round streak");
 
-    // Ensure user is signed in
+    // Ensure user is signed in, if not do nothing
     const { data: userData, error: userError } = await supabase.auth.getUser();
-    if (userError) throw userError;
+    if (userError) return;
     const user = userData.user;
-    if (!user) throw new Error("You must be signed in to submit a score");
+    if (!user) return;
 
     // Fetch username from profiles
     const { data: profile } = await supabase

@@ -43,7 +43,7 @@ export async function fetchHigherLower(category: string): Promise<Content[]> {
   const data =  await fetchFromTmdb(`/discover/${category}?include_adult=false&language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
 
   // Filter out items without poster or vote_average of 0
-  return data.results.filter((content: any) => content.poster_path && content.vote_average > 0).map((content: any) => ({
+  return data.results.filter((content: any) => content.poster_path && content.vote_average > 0 && !content.adult).map((content: any) => ({
     id: content.id,
     title: content.title,
     name: content.name,
@@ -73,7 +73,7 @@ export async function GetContentForSort(amountOfResults: number, category: strin
       throw new Error("Unexpected API response format");
     }
 
-    return data.results.slice(0, amountOfResults).map((content: any) => ({
+    return data.results.filter((content: any) => content.poster_path && content.vote_average > 0 && !content.adult).slice(0, amountOfResults).map((content: any) => ({
       id: content.id,
       title: content.title,
       vote_average: content.vote_average,
@@ -94,7 +94,8 @@ export async function GuessingGameAPICall(category: string) {
     const randomPage = getRandomNumber(500);
 
     const data = await fetchFromTmdb(`/discover/${category}?language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
-    const randomTitle = data.results[Math.floor(Math.random() * data.results.length)];
+    const filteredResults = data.results.filter((content: any) => content.poster_path && content.vote_average > 0 && !content.adult);
+    const randomTitle = filteredResults[Math.floor(Math.random() * filteredResults.length)];
     const details = await fetchFromTmdb(`/${category}/${randomTitle.id}?append_to_response=credits`);
     const directorOrCreator = category === "movie" ? details.credits?.crew.find((c: any) => c.job === "Director")?.name || "Unknown" : details.created_by?.[0]?.name || "Unknown";
     const main_actors = details.credits?.cast?.slice(0, 3).map((a: any) => a.name).join(", ") || "Unknown";
