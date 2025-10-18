@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import HigherLowerView from "../views/HigherLowerView";
 import { HigherLowerModel } from "../models/HigherLowerModel";
 import { submitScore } from "../services/leaderboardService";
+import { set } from "mobx";
 
 type Props = {
   model: HigherLowerModel;
@@ -18,6 +19,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     // Boolean to check if content is fetched
     const [loading, setLoading] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
 
 
     const didSubmitRef = useRef(false); // Ref to track if score has been submitted
@@ -66,6 +68,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     // A new game is started only after a category is chosen
     const chooseCategory = async (category: "movie" | "tv") => {
         model.chosenCategory(category);
+        setSelectedCategory(category);
         didSubmitRef.current = false;
         setLoading(true);
         await model.startNewGame();
@@ -76,6 +79,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
         model.reset();                       
         setShowRatings(false);
         setButtonsDisabled(false);
+        setSelectedCategory("");
         setMessage("");
         setGameOver(false);
 
@@ -87,7 +91,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
         contentA = {model.contentA}
         contentB = {model.contentB}
         score = {model.score}
-        category = {model.category}
+        category = {selectedCategory}
         message = {message}
         showRatings = {showRatings}
         buttonsDisabled = {buttonsDisabled}
