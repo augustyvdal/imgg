@@ -47,7 +47,6 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                                     <div className="flex flex-col items-center gap-4">
                                         {message && <p className="text-black dark:text-white text-2xl font-sans font-bold">{message}</p>}
                                         {gameOver && <button className="bg-violet-600 hover:bg-violet-700 text-lg text-white cursor-pointer rounded disabled:opacity-60 font-bold w-full h-12" onClick={prepareNewGame}>Play Again!</button>}
-                                        {/*gameOver && <button className="text-red-700 dark:text-red-400 hover:opacity-70 text-lg cursor-pointer border rounded w-full h-12 font-bold" onClick={() => window.location.href = "/"}>Main Menu</button>*/}
                                     </div>
                                 </div>
 

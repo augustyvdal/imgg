@@ -97,7 +97,7 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                             {gameOver && (
                                 <div>
                                     <p className="text-black dark:text-white">Final Score: {score}</p>
-                                    <button className="bg-violet-600 hover:bg-violet-700 text-white cursor-pointer rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={onRestart}>Play Again</button>
+                                    <button className="bg-violet-600 hover:bg-violet-700 text-white cursor-pointer rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={onRestart}>Play Again!</button>
                                 </div>
                             )}
                         </>

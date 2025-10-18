@@ -79,7 +79,6 @@ export default observer (
 
         const newRoundOrReset = () => {
             didSubmitRef.current = false;
-            setSelectedCategory("");
             setFeedbackMessage(null);
             setTriesRemaining(model.maxTries);
             setContentList([]);
@@ -98,6 +97,7 @@ export default observer (
 
         const handleReset = () => {
             model.resetSortGame();
+            setSelectedCategory("");
             newRoundOrReset();
             setStreak(model.roundStreak);
         };
