@@ -10,9 +10,10 @@ import { HigherLowerModel } from "../models/HigherLowerModel";
 import GuessTheMoviePresenter from "../presenters/GuessTheMoviePresenter";
 import {GuessTheMovieModel} from "../models/GuessTheMovieModel";
 
+import HomePresenter from "../presenters/HomePresenter";
+
 import LoginPage from "../views/LoginPage";
 import ProfilePage from "../views/ProfilePage";
-import HomeView from "../views/HomeView";
 
 import LeaderboardPage from "../views/Leaderboard";
 
@@ -27,7 +28,7 @@ const AppRoutes = (): JSX.Element => {
     return (
         <div ref={nodeRef}>
             <Routes location={location}>
-                <Route path="/" element={<HomeView />} />
+                <Route path="/" element={<HomePresenter />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/game1" element={<GuessTheMoviePresenter model={guessTheMovieModel} />} />
