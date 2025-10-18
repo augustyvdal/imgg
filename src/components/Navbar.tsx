@@ -49,7 +49,7 @@ const Navbar = () => {
         <header className="bg-gray-50 dark:bg-gray-800 flex flex-row px-4 py-3 shadow-md">
             <div className="flex-1">
                 <Link to="/" onClick={closeMobile} className="text-2xl font-bold text-black dark:text-white">
-                    <img className="max-h-15 max-w-15 rounded" src="src/images/logo.png"/>
+                    <img className="max-h-15 max-w-15 rounded" src="public/logo.png"/>
                 </Link>
             </div>
 
