@@ -14,13 +14,13 @@ interface Props {
 
 export default function LeaderboardView({ higherLowerRows, sortRows, loading, error, category, onCategoryChange, onReload }: Readonly<Props>) {
   return (
-    <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col">
+    <div className="page-background">
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-black dark:text-white text-2xl font-semibold">Leaderboards</h1>
           <div className="flex gap-2">
             <select
-              className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1"
+              className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 cursor-pointer rounded px-2 py-1 flex-1"
               value={category ?? ""}
               onChange={(e) => onCategoryChange(e.target.value || undefined)}
             >
@@ -29,7 +29,7 @@ export default function LeaderboardView({ higherLowerRows, sortRows, loading, er
               <option value="tv">TV Shows</option>
             </select>
             <button
-              className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1"
+              className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600 cursor-pointer rounded px-2 py-1 flex-1"
               onClick={onReload}
               disabled={loading}
             >

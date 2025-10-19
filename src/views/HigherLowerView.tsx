@@ -2,6 +2,7 @@
 import React from "react";
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
+import Spinner from "../components/Spinner";
 
 type Props = {
         contentA: Content | null;
@@ -21,14 +22,14 @@ type Props = {
 export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, loading, chooseCategory, onGuess, prepareNewGame}: Props) {
 
     return (
-        <div className="pt-30 bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col items-center p-2 gap-2">
+        <div className="page-background flex flex-col items-center p-6">
             <h1 className="text-black dark:text-white text-2xl flex font-sans font-bold">Higher or Lower</h1>
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
             {category !== "" && (
                 <>
                     {loading ? (
-                        <p className="text-black dark:text-white">Loading...</p>
+                        <Spinner />
                     ) : (
                         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-7xl grid grid-cols-[1fr_auto_1fr] items-start gap-x-6">
                             <div className="flex flex-col items-center gap-1">
@@ -40,24 +41,26 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                                 <p className="text-black dark:text-white text-2xl font-sans font-bold">Rating: {contentA?.vote_average}</p>
                             </div>
 
-                            <div className="flex flex-col items-center justify-between h-3/7">
-                                <h2 className="mt-4 w-full max-w-xs bg-emerald-200 text-green-900 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Current Score: {score}</h2>
-                                <div className="flex flex-col items-center gap-4">
-                                    {message && <p className="text-black dark:text-white text-2xl font-sans font-bold">{message}</p>}
-                                    {gameOver && <button className="bg-violet-600 hover:bg-violet-700 text-lg text-white cursor-pointer rounded disabled:opacity-60 font-bold w-full h-12" onClick={prepareNewGame}>Play Again!</button>}
+                                <div className="flex flex-col items-center justify-between h-3/7">
+                                    <h2 className="mt-4 w-full max-w-xs bg-emerald-200 text-green-900 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Current Score: {score}</h2>
+                                    <div className="flex flex-col items-center gap-4">
+                                        {message && <p className="text-black dark:text-white text-2xl font-sans font-bold">{message}</p>}
+                                        {gameOver && <button className="btn-default" onClick={prepareNewGame}>Play Again!</button>}
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="flex flex-col items-center gap-1">
-                                <h3 className="text-black dark:text-white text-xl font-sans font-bold text-center w-full">{contentB?.title || contentB?.name}</h3>
-                                <img className="h-[350px] w-auto object-contain mb-2"
-                                    src={`https://image.tmdb.org/t/p/w200${contentB?.poster_path}`}
-                                    alt={contentB?.title || contentB?.name}
-                                />
-                                <p className="text-black dark:text-white text-2xl font-sans font-bold">{showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}</p>
-                                <div className="flex gap-3 mt-4">
-                                    <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointer rounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
-                                    <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointerrounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
+                                <div className="flex flex-col items-center gap-1">
+                                    <h3 className="text-black dark:text-white text-xl font-sans font-bold text-center w-full">{contentB?.title || contentB?.name}</h3>
+                                    <img className="h-[350px] w-auto object-contain mb-2"
+                                        src={`https://image.tmdb.org/t/p/w200${contentB?.poster_path}`}
+                                        alt={contentB?.title || contentB?.name}
+                                    />
+                                    <p className="text-black dark:text-white text-2xl font-sans font-bold">{showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}</p>
+                                    <div className="flex gap-3 mt-4">
+                                        <button className="btn-default" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
+                                        <button className="btn-default" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

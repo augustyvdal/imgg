@@ -1,6 +1,3 @@
-// Provides user authentication state across the app.
-// Wrap App with <AuthProvider>. Expose login, logout, currentUser.
-// Uses AuthService under the hood.
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../services/supabaseClient';
@@ -14,7 +11,7 @@ type AuthContextType = {
   signOut: () => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -28,14 +25,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check existing session
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for changes
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);

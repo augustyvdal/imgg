@@ -1,5 +1,6 @@
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
+import Spinner from "../components/Spinner";
 
 type SortGameViewProps = {
     content: Content[];
@@ -21,14 +22,15 @@ type SortGameViewProps = {
 
 function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading }: Readonly<SortGameViewProps>) {
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+        <div className="page-background">
+            <h1 className="text-black dark:text-white text-2xl flex font-sans font-bold">Sort Game</h1>
             <div className="flex flex-col items-center gap-4">
                 {category === "" && <ChooseCategory onSelect={onCategorySelect} />}
 
                 {category !== "" && (
                     <>
                         {loading ? (
-                            <p className="text-black dark:text-white">Loading...</p>
+                            <Spinner />
                         ) : (
                             <div>
                                 <ul className="flex flex-row gap-4 bg-gray-200 dark:bg-gray-800 p-4 cursor-pointer rounded-xl shadow-inner justify-center">
@@ -64,7 +66,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (submit) ? (
                                         <button
-                                            className="px-4 py-2 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600 transition"
+                                            className="btn-default mt-4"
                                             onClick={onSubmit}
                                         >
                                             Submit

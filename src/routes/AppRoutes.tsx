@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 
 
 import HigherLowerPresenter from "../presenters/HigherLowerPresenter";
-import { HigherLowerModel } from "../models/HigherLowerModel";
+import HigherLowerModel from "../models/HigherLowerModel";
 
 import funcSortGameModel from "../models/funcSortGameModel";
 import SortGamePresenter from "../presenters/funcSortGamePresenter";
@@ -13,12 +13,12 @@ import {GuessTheMovieModel} from "../models/GuessTheMovieModel";
 
 import HomePresenter from "../presenters/HomePresenter";
 
-import LoginPage from "../views/LoginPage";
-import ProfilePage from "../views/ProfilePage";
+import LoginPresenter from "../presenters/LoginPresenter";
+import ProfilePage from "../views/ProfileView";
 
 import LeaderboardPresenter from "../presenters/LeaderboardPresenter";
+import ProfilePresenter from "../presenters/ProfilePresenter";
 
-const higherLowerModel = new HigherLowerModel();
 const guessTheMovieModel = new GuessTheMovieModel();
 
 const AppRoutes = (): JSX.Element => {
@@ -29,10 +29,10 @@ const AppRoutes = (): JSX.Element => {
         <div ref={nodeRef}>
             <Routes location={location}>
                 <Route path="/" element={<HomePresenter />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/profile" element={<ProfilePresenter />} />
+                <Route path="/login" element={<LoginPresenter />} />
                 <Route path="/game1" element={<GuessTheMoviePresenter model={guessTheMovieModel} />} />
-                <Route path="/game2" element={<HigherLowerPresenter model={higherLowerModel} />} />
+                <Route path="/game2" element={<HigherLowerPresenter model={HigherLowerModel} />} />
                 <Route path="/game3" element={<SortGamePresenter model={funcSortGameModel} />} />
                 <Route path="/leaderboard" element={<LeaderboardPresenter />} />
             </Routes>
