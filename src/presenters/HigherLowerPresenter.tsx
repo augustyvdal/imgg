@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import HigherLowerView from "../views/HigherLowerView";
-import { HigherLowerModel } from "../models/HigherLowerModel";
+import HigherLowerModel from "../models/HigherLowerModel";
 import { submitScore } from "../services/leaderboardService";
 import { set } from "mobx";
 
-type Props = {
-  model: HigherLowerModel;
+type HigherLowerPresenterProps = {
+    model: typeof HigherLowerModel;
 };
 
-export default observer(function HigherLowerPresenter({ model }: Props) {
+export default observer(function HigherLowerPresenter({ model }: HigherLowerPresenterProps) {
+    const [state, setState] = useState(model.createInitialState());
     // Success or fail message after guess
     const [message, setMessage] = useState<string>("");
     // Boolean to show rating for content B after guess
@@ -26,15 +27,15 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
 
     // Resets the game everytime it renders. So if user goes back to menu and returns, game is reset.
     useEffect(() => {
-        model.reset();
+        setState(model.createInitialState());
     }, [model]);
 
     const submitIfNeeded = async () => {
         if (didSubmitRef.current) return;
-        if (model.score > 0 && model.category) {
+        if (state.score > 0 && state.category) {
             didSubmitRef.current = true;
             try {
-                await submitScore(model.score, model.category);
+                await submitScore(state.score, state.category);
             } catch (e) {
                 console.error("Failed to submit score:", e);
             }
@@ -44,7 +45,7 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     const onGuess = (guess: "higher" | "lower") => {
         if (buttonsDisabled) return;
 
-        const correct = model.makeGuess(guess);
+        const { state: newState, correct } = model.makeGuess(state, guess);
         setShowRatings(true);
         setButtonsDisabled(true);
 
@@ -52,7 +53,8 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
         setMessage("Correct!");
         // Wait 1.5s, then advance
         setTimeout(() => {
-            model.nextItem();
+            const next = model.nextItem(newState);
+            setState(next);
             setShowRatings(false);
             setButtonsDisabled(false);
             setMessage("");
@@ -67,30 +69,30 @@ export default observer(function HigherLowerPresenter({ model }: Props) {
     // Takes in the chosen category.
     // A new game is started only after a category is chosen
     const chooseCategory = async (category: "movie" | "tv") => {
-        model.chosenCategory(category);
+        const updated = model.chosenCategory(state, category);
         setSelectedCategory(category);
         didSubmitRef.current = false;
         setLoading(true);
-        await model.startNewGame();
+        const started = await model.startNewGame(updated);
+        setState(started);
         setLoading(false);
     };
 
-    const prepareNewGame = () => {
-        model.reset();                       
+    const prepareNewGame = () => {                      
+        setState(model.createInitialState());
         setShowRatings(false);
         setButtonsDisabled(false);
         setSelectedCategory("");
         setMessage("");
         setGameOver(false);
-
         didSubmitRef.current = false;
     };
 
     return (
         <HigherLowerView
-        contentA = {model.contentA}
-        contentB = {model.contentB}
-        score = {model.score}
+        contentA = {state.contentA}
+        contentB = {state.contentB}
+        score = {state.score}
         category = {selectedCategory}
         message = {message}
         showRatings = {showRatings}
