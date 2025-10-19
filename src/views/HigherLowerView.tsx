@@ -22,7 +22,7 @@ type Props = {
 export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, loading, chooseCategory, onGuess, prepareNewGame}: Props) {
 
     return (
-        <div className="page-background">
+        <div className="page-background flex flex-col items-center p-6">
             <h1 className="text-black dark:text-white text-2xl flex font-sans font-bold">Higher or Lower</h1>
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
