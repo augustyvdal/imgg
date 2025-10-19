@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import {  useState } from "react";
+import {  useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useProfileModel } from '../contexts/ProfileModelContext';
-import { use } from 'chai';
+import { supabase } from "../services/supabaseClient";
+import { getMyProfile } from "../services/profileService";
 
 function Options() {
 
@@ -24,9 +24,26 @@ function Options() {
 const Navbar = () => {
     const { user, signOut } = useAuth() as any;
     const navigate = useNavigate();
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-    const baseModel = useProfileModel();
-    const avatarUrl = baseModel?.avatarPublicUrl;
+    useEffect(() => {
+        (async () => {
+            if (!user) return setAvatarUrl(null);
+
+            try {
+                const profile = await getMyProfile();
+                if (profile?.avatar_url) {
+                    const { data } = supabase.storage.from("avatars").getPublicUrl(profile.avatar_url);
+                    setAvatarUrl(data.publicUrl);
+                } else {
+                    setAvatarUrl(null);
+                }
+            } catch (err) {
+                console.error("Failed to load avatar:", err);
+                setAvatarUrl(null);
+            }
+        })();
+    }, [user]);
 
     const handleLoginClick = () => {
         navigate("/login");
