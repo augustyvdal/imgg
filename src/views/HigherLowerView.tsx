@@ -45,7 +45,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                                     <h2 className="text-black dark:text-white text-3xl flex font-sans font-bold">Current Score: {score}</h2>
                                     <div className="flex flex-col items-center gap-4">
                                         {message && <p className="text-black dark:text-white text-2xl font-sans font-bold">{message}</p>}
-                                        {gameOver && <button className="bg-violet-600 hover:bg-violet-700 text-lg text-white cursor-pointer rounded disabled:opacity-60 font-bold w-full h-12" onClick={prepareNewGame}>Play Again!</button>}
+                                        {gameOver && <button className="btn-default" onClick={prepareNewGame}>Play Again!</button>}
                                     </div>
                                 </div>
 
@@ -57,8 +57,8 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                                     />
                                     <p className="text-black dark:text-white text-2xl font-sans font-bold">{showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}</p>
                                     <div className="flex gap-3 mt-4">
-                                        <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointer rounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
-                                        <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointerrounded h-12 w-38 disabled:opacity-60 font-bold" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
+                                        <button className="btn-default" onClick={() => onGuess("higher")} disabled={buttonsDisabled}>Higher</button>
+                                        <button className="btn-default" onClick={() => onGuess("lower")} disabled={buttonsDisabled}>Lower</button>
                                     </div>
                                 </div>
                             </div>
