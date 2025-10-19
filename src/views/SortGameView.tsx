@@ -21,7 +21,7 @@ type SortGameViewProps = {
 
 function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading }: Readonly<SortGameViewProps>) {
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+        <div className="page-background">
             <div className="flex flex-col items-center gap-4">
                 {category === "" && <ChooseCategory onSelect={onCategorySelect} />}
 
@@ -64,7 +64,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (submit) ? (
                                         <button
-                                            className="px-4 py-2 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600 transition"
+                                            className="btn-default mt-4"
                                             onClick={onSubmit}
                                         >
                                             Submit
