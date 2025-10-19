@@ -1,4 +1,3 @@
-import { shuffle } from "cypress/types/lodash";
 import { fetchHigherLower, Content } from "../services/apiClient";
 
 type HigherLowerState = {

@@ -1,51 +1,60 @@
-import { observer } from "mobx-react-lite";
-import { useProfileModel } from "../contexts/ProfileModelContext";
-import ProfileView from "../views/ProfileView";
+import { useEffect, useState, FormEvent } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState, FormEvent } from "react";
+import ProfileView from "../views/ProfileView";
 
-export default observer(function ProfilePresenter() {
-  const { user, loading } = useAuth() as any;
-  const navigate = useNavigate();
-  const model = useProfileModel();
+type ProfilePresenterProps = {
+    model: typeof import("../models/ProfileModel").default;
+};
 
-  const [username, setUsername] = useState("");
+export default function ProfilePresenter({ model }: ProfilePresenterProps) {
+    const { user, loading } = useAuth() as any;
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loading && !user) navigate("/login");
-  }, [loading, user, navigate]);
+    const [state, setState] = useState(model.createInitialState());
+    const [username, setUsername] = useState("");
+    const [category, setCategory] = useState<"movie" | "tv">("movie");
 
-  useEffect(() => {
-    if (model.profile) setUsername(model.profile.username ?? "");
-  }, [model.profile]);
+    useEffect(() => {
+        if (!loading && !user) navigate("/login");
+    }, [loading, user, navigate]);
 
-  const [category, setCategory] = useState<"movie" | "tv">("movie");
+    useEffect(() => {
+        if (!loading && user) {
+            model.init(state).then(setState);
+        }
+    }, [user, loading]);
 
-  const onSave = (e: FormEvent) => {
-    e.preventDefault();
-    model.setUsername(username || null);
-  };
+    useEffect(() => {
+        if (state.profile) setUsername(state.profile.username ?? "");
+    }, [state.profile]);
 
-  if (loading || !user) return null;
+    async function onSave(e: FormEvent) {
+        e.preventDefault();
+        const newState = await model.setUsername(state, username || null);
+        setState(newState);
+    }
 
-  return (
-    <ProfileView
-      userEmail={user.email}
-      username={username}
-      onUsernameChange={setUsername}
-      saving={model.saving}
-      onSave={onSave}
-      avatarUrl={model.avatarPublicUrl}
-      uploading={model.uploading}
-      onPickFile={(f) => f && model.setAvatar(f)}
-      err={model.error}
-      ok={null}
-      category={category}
-      onCategoryChange={setCategory}
-      loadingGames={false}
-      games={[]}
-      onRefresh={() => {}}
-    />
-  );
-});
+
+    if (loading || !user) return null;
+
+    return (
+        <ProfileView
+            userEmail={user.email}
+            username={username}
+            onUsernameChange={setUsername}
+            saving={state.saving}
+            onSave={onSave}
+            avatarUrl={state.avatarPublicUrl}
+            uploading={state.uploading}
+            onPickFile={(f) => f && model.setAvatar(state, f)}
+            err={state.error}
+            ok={null}
+            category={category}
+            onCategoryChange={setCategory}
+            loadingGames={false}
+            games={[]}
+            onRefresh={() => {}}
+        />
+    );
+}

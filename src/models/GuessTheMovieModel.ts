@@ -1,75 +1,112 @@
 ﻿import { GuessingGameAPICall } from "../services/apiClient";
 
-export class GuessTheMovieModel {
-    title: any = null;
-    startingInfo: string[] = []
-    clues: string[] = [];
-    currentClueIndex = -1;
-    totalScore: number = 0;
-    gameOver = false;
-    category: string = "";
+type GuessTheMovieState = {
+    title: any;
+    startingInfo: string[];
+    clues: string[];
+    currentClueIndex: number;
+    totalScore: number;
+    gameOver: boolean;
+    category: string;
+};
 
-    async startNewRound() {
-        const titleData = await GuessingGameAPICall(this.category);
-        this.title = titleData;
-        this.startingInfo = [
+export default {
+    createInitialState(): GuessTheMovieState {
+        return {
+            title: null,
+            startingInfo: [],
+            clues: [],
+            currentClueIndex: -1,
+            totalScore: 0,
+            gameOver: false,
+            category: "",
+        };
+    },
+
+    async startNewRound(state: GuessTheMovieState): Promise<GuessTheMovieState> {
+        const titleData = await GuessingGameAPICall(state.category);
+
+        const startingInfo = [
             `Release year: ${titleData.release_year}`,
             `Genre(s): ${titleData.genres}`,
             `TMDb Rating: ${titleData.tmdb_rating}`,
         ];
-        this.clues = [
+
+        const clues = [
             `Director: ${titleData.director}`,
             `Main Actors: ${titleData.main_actors}`,
             `Characters: ${titleData.characters.join(", ")}`,
             `Plot: ${titleData.description.split(".")[0]}.`,
         ];
 
-        this.currentClueIndex = -1;
+        return {
+            ...state,
+            title: titleData,
+            startingInfo,
+            clues,
+            currentClueIndex: -1,
+            gameOver: false,
+        };
+    },
 
-        return this.getCurrentClues();
-    }
-
-    makeGuess(guess: string) {
-        if (this.gameOver || !this.title) return;
+    makeGuess(state: GuessTheMovieState, guess: string): {
+        state: GuessTheMovieState;
+        correct: boolean;
+        lose?: boolean;
+        score: number;
+        nextClue?: string[];
+        remaining?: number;
+    } {
+        if (state.gameOver || !state.title)
+            return { state, correct: false, score: state.totalScore };
 
         const normalizedGuess = guess.trim().toLowerCase();
-        const normalizedTitle = this.title.title.toLowerCase();
+        const normalizedTitle = state.title.title.toLowerCase();
 
         if (normalizedGuess === normalizedTitle) {
-            const score = this.clues.length - this.currentClueIndex;
-            this.totalScore += score;
+            const score = state.clues.length - state.currentClueIndex;
+            const total = state.totalScore + score;
             return {
+                state: { ...state, totalScore: total },
                 correct: true,
-                score: this.totalScore
+                score: total,
             };
         }
 
-        this.currentClueIndex++;
-        if (this.currentClueIndex >= this.clues.length) {
-            this.gameOver = true;
-            return {
-                correct: false,
-                score: this.totalScore,
-                lose: true
-            };
-        }
-        return {
-            correct: false,
-            nextClue: this.getCurrentClues(),
-            remaining: this.clues.length - this.currentClueIndex,
-            score: this.totalScore
+        const nextClueIndex = state.currentClueIndex + 1;
+        const lose = nextClueIndex >= state.clues.length;
+
+        const updatedState: GuessTheMovieState = {
+            ...state,
+            currentClueIndex: nextClueIndex,
+            gameOver: lose,
         };
-    }
-    chosenCategory(category: "movie" | "tv") {
-        this.category = category;
-    }
-    getCurrentClues() {
-        return this.clues.slice(0, this.currentClueIndex + 1);
-    }
-    restartGame() {
-        this.totalScore = 0;
-        this.gameOver = false;
-        this.currentClueIndex = 0;
-        this.title = null;
-    }
-}
+
+        return {
+            state: updatedState,
+            correct: false,
+            lose,
+            score: state.totalScore,
+            nextClue: this.getCurrentClues(updatedState),
+            remaining: state.clues.length - nextClueIndex,
+        };
+    },
+
+    chosenCategory(state: GuessTheMovieState, category: "movie" | "tv"): GuessTheMovieState {
+        return { ...state, category };
+    },
+
+    getCurrentClues(state: GuessTheMovieState): string[] {
+        return state.clues.slice(0, state.currentClueIndex + 1);
+    },
+
+    restartGame(state: GuessTheMovieState): GuessTheMovieState {
+        return {
+            ...state,
+            totalScore: 0,
+            gameOver: false,
+            currentClueIndex: 0,
+            title: null,
+        };
+    },
+};

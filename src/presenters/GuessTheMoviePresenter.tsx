@@ -1,113 +1,107 @@
 import React, { useEffect, useRef, useState } from "react";
 import { searchTitles } from "../services/apiClient";
 import { observer } from "mobx-react-lite";
-import { GuessTheMovieModel } from "../models/GuessTheMovieModel";
-import GuessTheMovieView from "../views/GuessTheMovieView"
+import GuessTheMovieModel from "../models/GuessTheMovieModel";
+import GuessTheMovieView from "../views/GuessTheMovieView";
 import { Debounce } from "../utilities/Debounce";
 import { submitGameScore } from "../services/guessGameHistoryService";
 
-type Props = {
-    model: GuessTheMovieModel;
+type GuessTheMovieProps = {
+    model: typeof GuessTheMovieModel;
 };
 
-export default observer(function GuessTheMoviePresenter({ model }: Props) {
-    const [loading, setLoading] = useState(true);
+export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovieProps) {
+    const [state, setState] = useState(model.createInitialState());
     const [selectedCategory, setSelectedCategory] = useState<string>("");
-
-    const [clues, setClues] = useState<string[]>([]);
-    const [startingInfo, setStartingInfo] = useState<string[]>([]);
     const [message, setMessage] = useState("");
-    const [totalScore, setTotalScore] = useState<number>(0);
+    const [loading, setLoading] = useState(false);
     const [gameOver, setGameOver] = useState(false);
 
-    const [searchResults, setSearchResults] = useState<{ id: number; image: string; title: string;  }[]>([]);
+    const [searchResults, setSearchResults] = useState<{ id: number; image: string; title: string }[]>([]);
     const [query, setQuery] = useState("");
     const debouncedQuery = Debounce(query, 300);
-    const isStartingFlag = useRef(false);
-
 
     const didSubmitRef = useRef(false);
+    const isStartingFlag = useRef(false);
 
     useEffect(() => {
-        if (!model.category && selectedCategory === "") return;
-        (async () => {
-            await startNewRound()
-        })();
+        setState(model.createInitialState());
+    }, [model]);
+
+    useEffect(() => {
+        if (!selectedCategory) return;
     }, [selectedCategory]);
 
     useEffect(() => {
         (async () => {
             if (!debouncedQuery.trim()) return setSearchResults([]);
-            const titles = await searchTitles(debouncedQuery, model.category as "movie" | "tv");
+            const titles = await searchTitles(debouncedQuery, state.category as "movie" | "tv");
             setSearchResults(titles.slice(0, 5));
         })();
-    }, [debouncedQuery, model.category]);
+    }, [debouncedQuery, state.category]);
 
     async function startNewRound() {
         if (isStartingFlag.current) return;
         isStartingFlag.current = true;
 
-        didSubmitRef.current = false;
         setLoading(true);
-        await model.startNewRound();
-        setStartingInfo(model.startingInfo)
-        setClues(model.getCurrentClues());
+        const newState = await model.startNewRound(state);
+        setState(newState);
         setLoading(false);
 
         isStartingFlag.current = false;
     }
 
     async function makeGuess(guess: string) {
-        const result = model.makeGuess(guess);
-        if (!result) return;
+        const { state: newState, correct, lose } = model.makeGuess(state, guess);
+        setState(newState);
 
-        setTotalScore(result.score);
-        setClues(model.getCurrentClues());
-
-        if (result.correct) {
-            setMessage(`Correct! The movie was "${model.title.title}".`);
-            await submitScore();
-            setTimeout(async () => {
-                await startNewRound();
-            }, 1500);
-
-        } else if (result.lose) {
-            setMessage(`You lose! The movie was "${model.title.title}".`);
-            await submitScore();
+        if (correct) {
+            setMessage(`Correct! The movie was "${newState.title.title}".`);
+            await submitIfNeeded(newState);
+            setTimeout(() => startNewRound(), 1500);
+        } else if (lose) {
+            setMessage(`You lose! The movie was "${newState.title.title}".`);
+            await submitIfNeeded(newState);
             setGameOver(true);
-
         } else {
             setMessage("Wrong guess! Here's another clue...");
         }
     }
 
     async function chooseCategory(category: "movie" | "tv") {
+        const updated = model.chosenCategory(state, category);
         setSelectedCategory(category);
-        model.chosenCategory(category);
+        setState(updated);
+        didSubmitRef.current = false;
+        setLoading(true);
+        const started = await model.startNewRound(updated);
+        setState(started);
+        setLoading(false);
     }
 
-    async function reset() {
-        model.restartGame();
-        setTotalScore(0);
-        didSubmitRef.current = false;
+    function reset() {
+        const restarted = model.restartGame(state);
+        setState(restarted);
         setMessage("");
         setGameOver(false);
         setSelectedCategory("");
-        setClues([]);
-        setStartingInfo([]);
+        setSearchResults([]);
+        setQuery("");
+        didSubmitRef.current = false;
     }
 
-    const submitScore = async () => {
+    async function submitIfNeeded(currentState: typeof state) {
         if (didSubmitRef.current) return;
-        if (model.totalScore != null && model.category) {
+        if (currentState.totalScore > 0 && currentState.category) {
             didSubmitRef.current = true;
             try {
-                await submitGameScore(model.totalScore, model.category);
+                await submitGameScore(currentState.totalScore, currentState.category);
             } catch (e) {
                 console.error("Failed to submit score:", e);
             }
         }
-    };
+    }
 
     function onQueryChange(value: string) {
         setQuery(value);
@@ -121,19 +115,19 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     return (
         <GuessTheMovieView
             loading={loading}
-            clues={clues}
+            clues={model.getCurrentClues(state)}
             message={message}
-            score={totalScore}
+            score={state.totalScore}
             gameOver={gameOver}
             onGuess={makeGuess}
             onRestart={reset}
             category={selectedCategory}
             chooseCategory={chooseCategory}
-            startingInfo={startingInfo}
+            startingInfo={state.startingInfo}
             query={query}
             onQueryChange={onQueryChange}
             searchResults={searchResults}
             onSelectSuggestion={onSelectSuggestion}
         />
-);
+    );
 });
