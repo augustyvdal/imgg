@@ -23,6 +23,7 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     const [searchResults, setSearchResults] = useState<{ id: number; image: string; title: string;  }[]>([]);
     const [query, setQuery] = useState("");
     const debouncedQuery = Debounce(query, 300);
+    const isStartingFlag = useRef(false);
 
 
     const didSubmitRef = useRef(false);
@@ -43,12 +44,17 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
     }, [debouncedQuery, model.category]);
 
     async function startNewRound() {
+        if (isStartingFlag.current) return;
+        isStartingFlag.current = true;
+
         didSubmitRef.current = false;
         setLoading(true);
         await model.startNewRound();
         setStartingInfo(model.startingInfo)
         setClues(model.getCurrentClues());
         setLoading(false);
+
+        isStartingFlag.current = false;
     }
 
     async function makeGuess(guess: string) {
@@ -62,7 +68,6 @@ export default observer(function GuessTheMoviePresenter({ model }: Props) {
             setMessage(`Correct! The movie was "${model.title.title}".`);
             await submitScore();
             setTimeout(async () => {
-                setMessage("Next movie loading...");
                 await startNewRound();
             }, 1500);
 

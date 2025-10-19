@@ -59,7 +59,7 @@ function LeaderboardSection({
   isSort?: boolean;
 }) {
   return (
-    <div className="flex flex-col items-center mb-6">
+    <div className="pt-20 flex flex-col items-center mb-6">
       <h2 className="text-black dark:text-white text-2xl font-semibold mb-2">{title}</h2>
       <ol className="space-y-2">
         {rows.map((r) => (

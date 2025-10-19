@@ -1,6 +1,5 @@
 ﻿// src/views/HigherLowerView.tsx
-import React, { useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
+import React from "react";
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
 
@@ -22,7 +21,7 @@ type Props = {
 export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, loading, chooseCategory, onGuess, prepareNewGame}: Props) {
 
     return (
-        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col items-center p-2 gap-2">
+        <div className="pt-30 bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col items-center p-2 gap-2">
             <h1 className="text-black dark:text-white text-2xl flex font-sans font-bold">Higher or Lower</h1>
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
