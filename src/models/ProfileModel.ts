@@ -1,76 +1,92 @@
-import { makeAutoObservable, runInAction } from "mobx";
 import { supabase } from "../services/supabaseClient";
 import { getMyProfile, updateMyProfile, uploadAvatar, type Profile } from "../services/profileService";
 
-export class ProfileModel {
+type ProfileModelState = {
+    profile: Profile | null | undefined;
+    avatarPublicUrl: string | null;
+    loadingProfile: boolean;
+    saving: boolean;
+    uploading: boolean;
+    error: string | null;
+};
 
-  profile: Profile | null = null;
-  avatarPublicUrl: string | null = null;
-  loadingProfile = false;
-  saving = false;
-  uploading = false;
-  error: string | null = null;
+export default {
+    createInitialState(): ProfileModelState {
+        return {
+            profile: null,
+            avatarPublicUrl: null,
+            loadingProfile: false,
+            saving: false,
+            uploading: false,
+            error: null,
+        };
+    },
 
-  constructor() {
-    makeAutoObservable(this);
-  }
+    async init(state: ProfileModelState): Promise<ProfileModelState> {
+        try {
+            const p = await getMyProfile();
+            const avatarPublicUrl = p?.avatar_url
+                ? supabase.storage.from("avatars").getPublicUrl(p.avatar_url).data.publicUrl
+                : null;
 
+            return {
+                ...state,
+                profile: p,
+                avatarPublicUrl,
+                loadingProfile: false,
+                error: null,
+            };
+        } catch (e: any) {
+            return {
+                ...state,
+                error: e.message ?? "Failed to load profile",
+                loadingProfile: false,
+            };
+        }
+    },
 
-  async init() {
-    this.error = null;
-    this.loadingProfile = true;
-    try {
-      const p = await getMyProfile();
-      const avatarPublicUrl = p?.avatar_url
-        ? supabase.storage.from("avatars").getPublicUrl(p.avatar_url).data.publicUrl
-        : null;
+    async setUsername(state: ProfileModelState, username: string | null): Promise<ProfileModelState> {
+        try {
+            await updateMyProfile({ username });
+            return {
+                ...state,
+                saving: false,
+                error: null,
+                profile: state.profile ? { ...state.profile, username } : state.profile,
+            };
+        } catch (e: any) {
+            return {
+                ...state,
+                error: e.message ?? "Failed to update username",
+                saving: false,
+            };
+        }
+    },
 
-      runInAction(() => {
-        this.profile = p;
-        this.avatarPublicUrl = avatarPublicUrl;
-      });
-    } catch (e: any) {
-      runInAction(() => (this.error = e.message));
-    } finally {
-      runInAction(() => (this.loadingProfile = false));
-    }
-  }
+    async setAvatar(state: ProfileModelState, file: File): Promise<ProfileModelState> {
+        try {
+            const { publicUrl } = await uploadAvatar(file);
+            const updatedProfile = state.profile
+                ? { ...state.profile, avatar_url: state.profile.avatar_url ?? "" }
+                : state.profile;
 
+            return {
+                ...state,
+                uploading: false,
+                avatarPublicUrl: publicUrl,
+                profile: updatedProfile,
+                error: null,
+            };
+        } catch (e: any) {
+            return {
+                ...state,
+                error: e.message ?? "Failed to upload avatar",
+                uploading: false,
+            };
+        }
+    },
 
-  async setUsername(username: string | null) {
-    this.saving = true;
-    this.error = null;
-    try {
-      await updateMyProfile({ username });
-      runInAction(() => {
-        if (this.profile) this.profile.username = username;
-      });
-    } catch (e: any) {
-      runInAction(() => (this.error = e.message));
-    } finally {
-      runInAction(() => (this.saving = false));
-    }
-  }
-
-
-  async setAvatar(file: File) {
-    this.uploading = true;
-    this.error = null;
-    try {
-      const { publicUrl } = await uploadAvatar(file);
-      runInAction(() => {
-        this.avatarPublicUrl = publicUrl;
-        if (this.profile) this.profile.avatar_url = this.profile.avatar_url ?? ""; // path is updated in service
-      });
-    } catch (e: any) {
-      runInAction(() => (this.error = e.message));
-    } finally {
-      runInAction(() => (this.uploading = false));
-    }
-  }
-
-
-  get displayName() {
-    return this.profile?.username ?? null;
-  }
-}
+    displayName(state: ProfileModelState): string | null {
+        return state.profile?.username ?? null;
+    },
+};

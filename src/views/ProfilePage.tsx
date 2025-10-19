@@ -1,9 +1,9 @@
-import { useEffect, useState, FormEvent } from "react";
+﻿import { useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { getMyProfile, updateMyProfile, uploadAvatar, type Profile } from "../services/profileService";
 import { supabase } from "../services/supabaseClient";
-import { getMatchHistory } from "../services/guessGameHistoryService";
+import { getMatchHistory } from "../services/guessGameHistoryService"
 import Spinner from "../components/Spinner";
 
 export default function ProfilePage() {
