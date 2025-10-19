@@ -1,8 +1,4 @@
-/* Global styles (reset, fonts, base colors).
-   Can import Tailwind here if configured. */
-   @import "tailwindcss";
-
-/* Vi kan ändra här. Har bara skapat en "mall" med variabler etc att arbeta utifrån. */
+@import "tailwindcss";
 
 @keyframes shake {
     0%, 100% { transform: translateX(0); }

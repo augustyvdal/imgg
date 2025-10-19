@@ -1,5 +1,6 @@
-﻿import React from "react";
-import "../styles/Guessthemovie.css";
+﻿import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import ChooseCategory from "../components/ChooseCategory";
 
 type Props = {
@@ -19,10 +20,64 @@ type Props = {
     onSelectSuggestion: (title: string) => void;
 };
 
-export default function GuessTheMovieView({loading, clues, message, category, score, gameOver, onGuess, onRestart, chooseCategory, startingInfo, query, onQueryChange, searchResults, onSelectSuggestion,}: Props) {
+export default function GuessTheMovieView({
+                                              loading,
+                                              clues,
+                                              message,
+                                              category,
+                                              score,
+                                              gameOver,
+                                              onGuess,
+                                              onRestart,
+                                              chooseCategory,
+                                              startingInfo,
+                                              query,
+                                              onQueryChange,
+                                              searchResults,
+                                              onSelectSuggestion,
+                                          }: Props) {
+    const [showInfo, setShowInfo] = useState(false);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+
+    const handleSelectSuggestion = (title: string) => {
+        onSelectSuggestion(title);
+        setShowSuggestions(false);
+    };
+
     return (
-        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe">
-            <h1 className="text-black dark:text-white text-2xl flex justify-center font-sans font-bold">Guess the {category === "tv" ? "TV Show" : "Movie"}</h1>
+        <div className="pt-30 min-h-screen flex flex-col items-center justify-start bg-gray-200 dark:bg-gray-900 px-4 py-8">
+            <div className="flex items-center gap-2 mb-6">
+                <h1 className="text-3xl font-bold text-black dark:text-white">
+                    Guess the {category === "tv" ? "TV Show" : "Movie"}
+                </h1>
+                <button
+                    onClick={() => setShowInfo((prev) => !prev)}
+                    className="text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer transition-colors"
+                    title="How to play"
+                >
+                    <FontAwesomeIcon icon={faInfoCircle} size="lg" />
+                </button>
+            </div>
+
+            {showInfo && (
+                <div className="bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
+                    <p className="font-semibold mb-2">How to play:</p>
+                    <ol className="list-decimal list-inside space-y-1">
+                        <li>
+                            Read the starting clues and make your first guess. After each
+                            guess, you’ll receive new clues.
+                        </li>
+                        <li>
+                            You have a total of <strong>five tries</strong>. If you guess
+                            correctly, you’ll earn points equal to{" "}
+                            <strong>5 minus the number of clues</strong> you used.
+                        </li>
+                        <li>
+                            Try to achieve a high score and compare it on the leaderboard!
+                        </li>
+                    </ol>
+                </div>
+            )}
 
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
@@ -31,14 +86,14 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                     {loading ? (
                         <p className="text-black dark:text-white">Loading...</p>
                     ) : (
-                        <>
-                            <div className="text-black dark:text-white text-lg  flex flex-col justify-center font-sans">
+                        <div className="w-full max-w-lg">
+                            <div className="text-black dark:text-white space-y-1 mb-4 text-center">
                                 {startingInfo.map((info, i) => (
                                     <p key={i}>{info}</p>
                                 ))}
                             </div>
 
-                            <div className="text-black dark:text-white">
+                            <div className="text-black dark:text-white space-y-1 mb-4 text-center">
                                 {clues.map((clue, i) => (
                                     <p key={i}>
                                         <strong>Clue {i + 1}:</strong> {clue}
@@ -46,43 +101,62 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                 ))}
                             </div>
 
-                            {message && <p className="text-black dark:text-white">{message}</p>}
+                            {message && (
+                                <p className="text-black dark:text-white font-medium mb-4 text-center">
+                                    {message}
+                                </p>
+                            )}
 
                             {!gameOver && (
                                 <form
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        onGuess(query);
-                                        onQueryChange("");
+                                        if (query.trim() !== "") {
+                                            onGuess(query);
+                                            onQueryChange("");
+                                        }
                                     }}
-                                    className="guess-form"
+                                    className="flex flex-col items-center gap-3"
                                 >
-                                    <div className="input-wrapper">
+                                    <div className="relative w-full max-w-md">
                                         <input
                                             type="text"
                                             value={query}
-                                            onChange={(e) => onQueryChange(e.target.value)}
+                                            onChange={(e) => {
+                                                onQueryChange(e.target.value);
+                                                setShowSuggestions(e.target.value.trim() !== "");
+                                            }}
                                             placeholder="Your guess..."
                                             autoComplete="off"
+                                            onFocus={() =>
+                                                setShowSuggestions(query.trim() !== "")
+                                            }
+                                            className="w-full border border-gray-300 rounded-md py-2 px-3 text-black dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500"
                                         />
 
-                                        {searchResults.length > 0 && (
-                                            <ul className="suggestions">
+                                        {showSuggestions && searchResults.length > 0 && (
+                                            <ul className="absolute top-full left-0 right-0 bg-white dark:bg-gray-800 border border-gray-300 rounded-md mt-1 shadow-lg max-h-56 overflow-y-auto z-50">
                                                 {searchResults.map((s, i) => (
                                                     <li
                                                         key={i}
-                                                        onClick={() => onSelectSuggestion(s.title)}
+                                                        onClick={() =>
+                                                            handleSelectSuggestion(s.title)
+                                                        }
+                                                        className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                                     >
                                                         {s.image ? (
                                                             <img
                                                                 src={`https://image.tmdb.org/t/p/w92${s.image}`}
                                                                 alt={s.title}
+                                                                className="w-[60px] h-[80px] object-cover rounded-md"
                                                             />
                                                         ) : (
-                                                            <div className="placeholder-poster" />
+                                                            <div className="w-[60px] h-[80px] bg-gray-300 dark:bg-gray-700 rounded-md" />
                                                         )}
-                                                        <div className="suggestion-text">
-                                                            <div>{s.title}</div>
+                                                        <div className="flex flex-col">
+                                                            <span className="font-medium text-black dark:text-white">
+                                                                {s.title}
+                                                            </span>
                                                         </div>
                                                     </li>
                                                 ))}
@@ -90,17 +164,43 @@ export default function GuessTheMovieView({loading, clues, message, category, sc
                                         )}
                                     </div>
 
-                                    <button className="bg-violet-600 hover:bg-violet-700 text-white cursor-pointer rounded px-4 py-2 disabled:opacity-60 font-bold" type="submit">Guess</button>
+                                    <div className="flex justify-center gap-4">
+                                        <button
+                                            type="submit"
+                                            disabled={query.trim() === ""}
+                                            className={`px-5 py-2 rounded-md font-semibold text-white transition-colors ${
+                                                query.trim() === ""
+                                                    ? "bg-violet-400 cursor-not-allowed opacity-70"
+                                                    : "bg-violet-600 hover:bg-violet-700 cursor-pointer"
+                                            }`}
+                                        >
+                                            Guess
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => onGuess("")}
+                                            className="px-5 py-2 rounded-md font-semibold text-white cursor-pointer bg-gray-600 hover:bg-gray-700 transition-colors"
+                                        >
+                                            Skip
+                                        </button>
+                                    </div>
                                 </form>
                             )}
 
                             {gameOver && (
-                                <div>
-                                    <p className="text-black dark:text-white">Final Score: {score}</p>
-                                    <button className="bg-violet-600 hover:bg-violet-700 text-white cursor-pointer rounded px-4 py-2 disabled:opacity-60 font-bold" onClick={onRestart}>Play Again!</button>
+                                <div className="text-center mt-6">
+                                    <p className="text-black dark:text-white text-lg mb-3">
+                                        Final Score: <strong>{score}</strong>
+                                    </p>
+                                    <button
+                                        className="bg-violet-600 hover:bg-violet-700 text-white rounded px-5 py-2 font-bold transition-colors cursor-pointer"
+                                        onClick={onRestart}
+                                    >
+                                        Play Again!
+                                    </button>
                                 </div>
                             )}
-                        </>
+                        </div>
                     )}
                 </>
             )}

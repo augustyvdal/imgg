@@ -93,8 +93,8 @@ export async function GuessingGameAPICall(category: string) {
     const today = new Date().toISOString().split("T")[0];
     const randomPage = getRandomNumber(500);
 
-    const data = await fetchFromTmdb(`/discover/${category}?language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
-    const filteredResults = data.results.filter((content: any) => content.poster_path && content.vote_average > 0 && !content.adult);
+    const data = await fetchFromTmdb(`/discover/${category}?include_adult=false?language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
+    const filteredResults = data.results.filter((content: any) => content.poster_path && content.vote_average > 0);
     const randomTitle = filteredResults[Math.floor(Math.random() * filteredResults.length)];
     const details = await fetchFromTmdb(`/${category}/${randomTitle.id}?append_to_response=credits`);
     const directorOrCreator = category === "movie" ? details.credits?.crew.find((c: any) => c.job === "Director")?.name || "Unknown" : details.created_by?.[0]?.name || "Unknown";

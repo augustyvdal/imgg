@@ -88,7 +88,7 @@ export default function ProfilePage() {
   if (loading || !user) return null;
 
   return (
-    <div className="bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+    <div className="top-20 bg-gray-200 dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
       <h1 className="text-black dark:text-white text-2xl font-semibold">Your Profile</h1>
 
       <div className="flex items-center gap-4">
