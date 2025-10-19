@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import {  useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../services/supabaseClient";
+import { useProfileModel } from '../contexts/ProfileModelContext';
+import { use } from 'chai';
 
 function Options() {
 
@@ -23,6 +24,9 @@ function Options() {
 const Navbar = () => {
     const { user, signOut } = useAuth() as any;
     const navigate = useNavigate();
+
+    const baseModel = useProfileModel();
+    const avatarUrl = baseModel?.avatarPublicUrl;
 
     const handleLoginClick = () => {
         navigate("/login");
@@ -55,7 +59,7 @@ const Navbar = () => {
                         </button>
                         <Link to="/profile" className="ml-2">
                         <img
-                        src={"https://placehold.co/96x96?text=👤"}
+                        src={avatarUrl ?? "https://placehold.co/96x96?text=👤"}
                         alt="avatar"
                         className="w-15 h-15 rounded-full object-cover border"/>
                         </Link>
