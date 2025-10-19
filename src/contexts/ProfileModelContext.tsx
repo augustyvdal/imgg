@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo } from "react";
 import { ProfileModel } from "../models/ProfileModel";
 import { useAuth } from "./AuthContext";
 
-const ProfileModelCtx = createContext<ProfileModel | null>(null);
+export const ProfileModelCtx = createContext<ProfileModel | null>(null);
 
 export function ProfileModelProvider({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
