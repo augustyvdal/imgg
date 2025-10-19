@@ -15,9 +15,9 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                 </div>
                 
                 <div className="flex flex-col space-y-4 mt-4">
-                <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold" onClick={onStartGuessTheMovie}>Guess The Movie</button>
-                <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold" onClick={onStartHigherLower}>Higher or Lower</button>
-                <button className="bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold" onClick={onStartSortGame}>Sort Game</button>
+                <button className="btn-default" onClick={onStartGuessTheMovie}>Guess The Movie</button>
+                <button className="btn-default" onClick={onStartHigherLower}>Higher or Lower</button>
+                <button className="btn-default" onClick={onStartSortGame}>Sort Game</button>
             </div>
             </div>
         </div>

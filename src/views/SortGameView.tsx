@@ -64,7 +64,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (submit) ? (
                                         <button
-                                            className="px-4 py-2 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600 transition"
+                                            className="btn-default mt-4"
                                             onClick={onSubmit}
                                         >
                                             Submit
