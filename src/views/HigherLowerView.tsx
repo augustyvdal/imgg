@@ -48,7 +48,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                                         {gameOver && <button className="btn-default" onClick={prepareNewGame}>Play Again!</button>}
                                     </div>
                                 </div>
-                            </div>
+
 
                                 <div className="flex flex-col items-center gap-1">
                                     <h3 className="text-black dark:text-white text-xl font-sans font-bold text-center w-full">{contentB?.title || contentB?.name}</h3>
@@ -63,7 +63,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
                     )}
                 </>
             )}
