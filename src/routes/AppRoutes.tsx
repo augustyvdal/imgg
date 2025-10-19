@@ -1,11 +1,12 @@
 import {type JSX, useRef} from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import SortGamePresenter from "../presenters/SortGamePresenter";
-import { SortGameModel } from "../models/SortGameModel"
 
 import HigherLowerPresenter from "../presenters/HigherLowerPresenter";
 import { HigherLowerModel } from "../models/HigherLowerModel";
+
+import funcSortGameModel from "../models/funcSortGameModel";
+import SortGamePresenter from "../presenters/funcSortGamePresenter";
 
 import GuessTheMoviePresenter from "../presenters/GuessTheMoviePresenter";
 import {GuessTheMovieModel} from "../models/GuessTheMovieModel";
@@ -18,7 +19,6 @@ import ProfilePage from "../views/ProfilePage";
 import LeaderboardPresenter from "../presenters/LeaderboardPresenter";
 
 const higherLowerModel = new HigherLowerModel();
-const sortGameModel = new SortGameModel();
 const guessTheMovieModel = new GuessTheMovieModel();
 
 const AppRoutes = (): JSX.Element => {
@@ -33,7 +33,7 @@ const AppRoutes = (): JSX.Element => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/game1" element={<GuessTheMoviePresenter model={guessTheMovieModel} />} />
                 <Route path="/game2" element={<HigherLowerPresenter model={higherLowerModel} />} />
-                <Route path="/game3" element={<SortGamePresenter model={sortGameModel} />} />
+                <Route path="/game3" element={<SortGamePresenter model={funcSortGameModel} />} />
                 <Route path="/leaderboard" element={<LeaderboardPresenter />} />
             </Routes>
         </div>

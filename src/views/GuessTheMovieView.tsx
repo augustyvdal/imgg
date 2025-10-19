@@ -189,7 +189,7 @@ export default function GuessTheMovieView({
 
                             {gameOver && (
                                 <div className="text-center mt-6">
-                                    <p className="text-black dark:text-white text-lg mb-3">
+                                    <p className="mt-4 w-full max-w-xs bg-emerald-200 text-green-900 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
                                         Final Score: <strong>{score}</strong>
                                     </p>
                                     <button
