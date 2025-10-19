@@ -7,7 +7,7 @@ type Props = {
 
 export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onStartSortGame }: Props) {
     return (
-        <div className="page-background flex justify-center">
+        <div className="page-background">
             <div className="mt-5 col-start-3 row-start-3 flex flex-col bg-white dark:bg-gray-800 p-5 rounded-lg items-center-safe">
                 <img alt="logo" className="max-h-70 max-w-70 rounded-2xl" src="/logo.png"/>
                 <div className="col-start-3 row-start-3 flex max-w-lg flex-col">
