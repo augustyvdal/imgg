@@ -1,5 +1,6 @@
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
+import Spinner from "../components/Spinner";
 
 type SortGameViewProps = {
     content: Content[];
@@ -28,7 +29,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                 {category !== "" && (
                     <>
                         {loading ? (
-                            <p className="text-black dark:text-white">Loading...</p>
+                            <Spinner />
                         ) : (
                             <>
                                 <div>

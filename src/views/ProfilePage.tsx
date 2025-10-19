@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { getMyProfile, updateMyProfile, uploadAvatar, type Profile } from "../services/profileService";
 import { supabase } from "../services/supabaseClient";
 import { getMatchHistory } from "../services/guessGameHistoryService";
+import Spinner from "../components/Spinner";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth() as any;
@@ -162,7 +163,7 @@ export default function ProfilePage() {
         </h2>
 
         {loadingGames ? (
-          <p className="text-gray-500">Loading games…</p>
+          <Spinner />
         ) : games.length ? (
           <ol className="space-y-1">
             {games.map((gameScore, i) => (
