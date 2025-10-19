@@ -2,6 +2,7 @@
 import React from "react";
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
+import Spinner from "../components/Spinner";
 
 type Props = {
         contentA: Content | null;
@@ -28,7 +29,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
             {category !== "" && (
                 <>
                     {loading ? (
-                        <p className="text-black dark:text-white">Loading...</p>
+                        <Spinner />
                     ) : (
                         <>
                             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-7xl grid grid-cols-[1fr_auto_1fr] items-start gap-x-6">

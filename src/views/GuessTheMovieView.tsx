@@ -2,6 +2,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import ChooseCategory from "../components/ChooseCategory";
+import Spinner from "../components/Spinner";
 
 type Props = {
     loading: boolean;
@@ -84,7 +85,7 @@ export default function GuessTheMovieView({
             {category !== "" && (
                 <>
                     {loading ? (
-                        <p className="text-black dark:text-white">Loading...</p>
+                        <Spinner />
                     ) : (
                         <div className="w-full max-w-lg">
                             <div className="text-black dark:text-white space-y-1 mb-4 text-center">
