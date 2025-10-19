@@ -21,7 +21,7 @@ type SortGameViewProps = {
 
 function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading }: Readonly<SortGameViewProps>) {
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col place-items-center-safe justify-center">
+        <div className="page-background">
             <div className="flex flex-col items-center gap-4">
                 {category === "" && <ChooseCategory onSelect={onCategorySelect} />}
 

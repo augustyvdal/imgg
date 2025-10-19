@@ -10,6 +10,10 @@
     animation: shake 0.4s ease-in-out;
 }
 
+.page-background {
+    @apply bg-gray-200 dark:bg-gray-900 min-h-screen mt-20
+}
+
 .btn-default {
     @apply bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold
 }
