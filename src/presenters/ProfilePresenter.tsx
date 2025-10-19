@@ -2,6 +2,8 @@ import { useEffect, useState, FormEvent } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ProfileView from "../views/ProfileView";
+import { getMatchHistory } from "../services/guessGameHistoryService";
+
 
 type ProfilePresenterProps = {
     model: typeof import("../models/ProfileModel").default;
@@ -14,6 +16,10 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
     const [state, setState] = useState(model.createInitialState());
     const [username, setUsername] = useState("");
     const [category, setCategory] = useState<"movie" | "tv">("movie");
+    const [games, setGames] = useState<number[]>([]);
+    const [loadingGames, setLoadingGames] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
+
 
     useEffect(() => {
         if (!loading && !user) navigate("/login");
@@ -28,6 +34,25 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
     useEffect(() => {
         if (state.profile) setUsername(state.profile.username ?? "");
     }, [state.profile]);
+
+    useEffect(() => {
+    if (!user) return;
+
+    setLoadingGames(true);
+    setGames([]);
+
+    getMatchHistory(category)
+        .then(list => {
+        // ensure it's an array of numbers & newest first
+        const clean = (list ?? []).filter((x): x is number => typeof x === "number");
+        setGames(clean.slice().reverse());
+        })
+        .catch(e => {
+        console.error("Failed to load match history:", e);
+        })
+        .finally(() => setLoadingGames(false));
+    }, [user, category, refreshKey]);
+
 
     async function onSave(e: FormEvent) {
         e.preventDefault();
@@ -52,9 +77,9 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
             ok={null}
             category={category}
             onCategoryChange={setCategory}
-            loadingGames={false}
-            games={[]}
-            onRefresh={() => {}}
+            loadingGames={loadingGames}
+            games={games}
+            onRefresh={() => setRefreshKey(k => k + 1)}
         />
     );
 }
