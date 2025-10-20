@@ -33,7 +33,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                 </h1>
                 <button
                     onClick={() => setShowInfo((prev) => !prev)}
-                    className="text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 cursor-pointer transition-colors"
+                    className="btn-info"
                     title="How to play"
                 >
                     <FontAwesomeIcon icon={faInfoCircle} size="lg" />
