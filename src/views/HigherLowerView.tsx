@@ -5,6 +5,7 @@ import ChooseCategory from "../components/ChooseCategory";
 import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {InfoContent, Popup} from "../components/Popup";
 
 type Props = {
         contentA: Content | null;
@@ -40,20 +41,9 @@ export default function HigherLowerView({contentA, contentB, score, category, me
             </div>
 
             {showInfo && (
-                <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
-                    <p className="font-semibold mb-2">How to play:</p>
-                    <ol className="list-decimal list-inside space-y-1">
-                        <li>
-                            You will receive two movies or TV shows. The rating of the leftmost one is visible, while the rating of the one to the right is hidden.
-                        </li>
-                        <li>
-                            You have a to guess if the TMDB rating of the right movie is higher or lower than the left one.
-                        </li>
-                        <li>
-                            Try to get as many right guesses as possible in a row to get a high score!
-                        </li>
-                    </ol>
-                </div>
+                <Popup onClose={() => setShowInfo(false)}>
+                    <InfoContent onClose={() => setShowInfo(false)} />
+                </Popup>
             )}
             
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}

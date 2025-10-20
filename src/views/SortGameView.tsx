@@ -1,9 +1,10 @@
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
 import Spinner from "../components/Spinner";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {InfoContent, Popup} from "../components/Popup";
 
 type SortGameViewProps = {
     content: Content[];
@@ -44,21 +45,9 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
             </div>
 
             {showInfo && (
-                <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
-                    <p className="font-semibold mb-2">How to play:</p>
-                    <ol className="list-decimal list-inside space-y-1">
-                        <li>
-                            You will receive five movies or TV shows. Your job is to sort them by their TMDB rating.
-                        </li>
-                        <li>
-                            The movie furthest to the <strong>left should have the highest rating</strong> and the movie furthest to the <strong>right should have the lowest rating</strong>.
-                            
-                        </li>
-                        <li>
-                            You have <strong>3 tries</strong> to get the correct order.
-                        </li>
-                    </ol>
-                </div>
+                <Popup onClose={() => setShowInfo(false)}>
+                    <InfoContent onClose={() => setShowInfo(false)} />
+                </Popup>
             )}
 
             <div className="flex flex-col items-center gap-4">
