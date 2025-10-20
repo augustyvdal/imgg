@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import ChooseCategory from "../components/ChooseCategory";
 import Spinner from "../components/Spinner";
+import {Popup, InfoContent} from "../components/Popup";
 
 type Props = {
     loading: boolean;
@@ -61,23 +62,9 @@ export default function GuessTheMovieView({
             </div>
 
             {showInfo && (
-                <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
-                    <p className="font-semibold mb-2">How to play:</p>
-                    <ol className="list-decimal list-inside space-y-1">
-                        <li>
-                            Read the starting clues and make your first guess. After each
-                            guess, you’ll receive new clues.
-                        </li>
-                        <li>
-                            You have a total of <strong>five tries</strong>. If you guess
-                            correctly, you’ll earn points equal to{" "}
-                            <strong>5 minus the number of clues</strong> you used.
-                        </li>
-                        <li>
-                            Try to achieve a high score and compare it on the leaderboard!
-                        </li>
-                    </ol>
-                </div>
+                <Popup onClose={() => setShowInfo(false)}>
+                    <InfoContent onClose={() => setShowInfo(false)} />
+                </Popup>
             )}
 
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
