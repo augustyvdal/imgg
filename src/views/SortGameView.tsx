@@ -63,7 +63,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {content.map((item, index) => (
                                         <li
                                         key={item.id}
-                                        className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 cursor-pointer rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""}`}
+                                        className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 cursor-pointer data-cy="sort-item" rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""}`}
                                         draggable
                                         onDragStart={(e) =>
                                             e.dataTransfer.setData("fromIndex", index.toString())
@@ -93,6 +93,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                         (submit) ? (
                                         <button
                                             className="btn-default mt-4"
+                                            data-cy="submit"
                                             onClick={onSubmit}
                                         >
                                             Submit
@@ -104,6 +105,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                         (nextRound) ? (
                                         <button 
                                             className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
+                                            data-cy="next-round"
                                             onClick={onNextRound}
                                         >
                                             Next Round!
@@ -115,6 +117,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                         (reset) ? (
                                         <button 
                                             className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
+                                            data-cy="reset"
                                             onClick={onReset}
                                         >
                                             Play Again!

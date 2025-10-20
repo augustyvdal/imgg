@@ -2,11 +2,9 @@ import React, { useState, FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import LoginView from "../views/LoginView";
-import {supabase} from "../services/supabaseClient";
-import type {User} from "@supabase/supabase-js";
 
 export default function LoginPresenter() {
-    const { loading } = useAuth() as any;
+    const { loading, signIn, signUp } = useAuth() as any;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [err, setErr] = useState<string | null>(null);
@@ -39,26 +37,6 @@ export default function LoginPresenter() {
             setErr(e.message);
         }
     };
-
-    async function signIn(email: string, password: string) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-    }
-
-    async function signUp(email: string, password: string) {
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-    }
-    async function signOut() {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-    }
-
-    async function getCurrentUser(): Promise<User | null> {
-        const { data, error } = await supabase.auth.getUser();
-        if (error) throw error;
-        return data.user ?? null;
-    }
 
     return (
         <LoginView

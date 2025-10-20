@@ -2,117 +2,108 @@
 
 import React from "react";
 import GuessTheMoviePresenter from "../../src/presenters/GuessTheMoviePresenter";
-import type { GuessTheMovieModel } from "../../src/models/GuessTheMovieModel";
 
-type TitleLike = { title: string };
+const initialState = () => ({
+  totalScore: 0,
+  category: "" as "" | "movie" | "tv",
+  title: { title: "Terminator 2: Judgment Day" },
+  startingInfo: ["Year: 1991", "Action, Thriller, Science Fiction"],
+});
 
-class FakeModel {
-    category: "movie" | "tv" = "movie";
-    totalScore = 0;
+const clues = [
+  "Director: James Cameron",
+  "Main Actors: Arnold Schwarzenegger, Linda Hamilton, Edward Furlong",
+  "Characters: The Terminator, Sarah Connor, John Connor",
+  "Plot: Ten years after the events of the original, a reprogrammed T-800 is sent back in time to protect young John Connor from the shape-shifting T-1000.",
+];
 
-    startingInfo: string[] = ["Year: 1991", "Action, Thriller, Science Fiction"];
-    title: TitleLike = { title: "Terminator 2: Judgment Day" };
+function makeFakeModel() {
+  return {
+    createInitialState: cy.stub().callsFake(initialState),
 
-    chosenCategory = cy.stub();
-    restartGame   = cy.stub();
+    chosenCategory: cy.stub().callsFake((state: ReturnType<typeof initialState>, category: "movie" | "tv") => ({
+      ...state,
+      category,
+    })),
 
-    startNewRound = cy.stub().callsFake(async () => {
-        this.totalScore = 0;
-    });
+    startNewRound: cy.stub().callsFake(async (state: ReturnType<typeof initialState>) => {
+      return state;
+    }),
 
-    getCurrentClues = cy.stub().callsFake(() => [
-        "Director: James Cameron",
-        "Main Actors: Arnold Schwarzenegger, Linda Hamilton, Edward Furlong",
-        "Characters: The Terminator, Sarah Connor, John Connor",
-        "Plot: Ten years after the events of the original, a reprogrammed T-800 is sent back in time to protect young John Connor from the shape-shifting T-1000.",
-    ]);
+    getCurrentClues: cy.stub().callsFake((_state: ReturnType<typeof initialState>) => clues),
 
-    makeGuess = cy.stub().returns({ score: 0, correct: false, lose: false });
+    makeGuess: cy.stub().callsFake((state: ReturnType<typeof initialState>, guess: string) => {
+      if (guess.trim().toLowerCase() === "terminator 2: judgment day".toLowerCase()) {
+        return { state: { ...state, totalScore: state.totalScore + 10 }, correct: true, lose: false };
+      }
+      return { state, correct: false, lose: true };
+    }),
+
+    restartGame: cy.stub().callsFake((_state: ReturnType<typeof initialState>) => initialState()),
+  };
 }
 
 function pickCategory() {
-    cy.get("body").then(($body) => {
-        const buttons = Array.from(
-            $body[0].querySelectorAll("button")
-        ) as HTMLButtonElement[];
-
-        const match =
-            buttons.find((b) => /movie|movies|tv|series/i.test(b.innerText)) ??
-            buttons.find((b) => b.offsetParent !== null);
-
-        if (match) cy.wrap(match).click({ force: true });
-    });
+  cy.get("body").then(($body) => {
+    const btn = Array.from($body[0].querySelectorAll("button"))
+      .map((n) => n as HTMLButtonElement)
+      .find((b) => /movie|movies|tv|series/i.test(b.innerText)) ?? undefined;
+    if (btn) cy.wrap(btn).click({ force: true });
+  });
 }
 
 function typeGuessAndSubmit(text: string) {
-    cy.get('input[type="text"], input:not([type])').first().type(text, { force: true });
+  cy.get('input[type="text"], input:not([type])').first().type(text, { force: true });
 
-    cy.get("body").then(($body) => {
-        const buttons = Array.from(
-            $body[0].querySelectorAll("button")
-        ) as HTMLButtonElement[];
-
-        const btn =
-            buttons.find(
-            (b) =>
-                /guess|submit|enter/i.test(b.innerText) && !b.disabled && b.offsetParent !== null
-            ) ?? buttons.find((b) => !b.disabled && b.offsetParent !== null);
-
-        if (btn) cy.wrap(btn).click({ force: true });
-    });
+  cy.get("body").then(($body) => {
+    const btn = Array.from($body[0].querySelectorAll("button"))
+      .map((n) => n as HTMLButtonElement)
+      .find((b) => /guess|submit|enter/i.test(b.innerText) && !b.disabled && b.offsetParent !== null);
+    if (btn) cy.wrap(btn).click({ force: true });
+  });
 }
 
 describe("GuessTheMoviePresenter (component)", () => {
-    it("shows clues after starting a round", () => {
-        const model = new FakeModel();
+  it("shows clues after starting a round", () => {
+    const model = makeFakeModel();
+    cy.mount(<GuessTheMoviePresenter model={model} />);
 
-        cy.mount(<GuessTheMoviePresenter model={model as unknown as GuessTheMovieModel} />);
+    pickCategory();
 
-        pickCategory();
+    cy.wrap(model.startNewRound).its("callCount").should("be.gte", 1);
 
-        cy.wrap(model.startNewRound).its("callCount").should("be.gte", 1);
+    cy.contains(/Director:/i).should("be.visible");
+    cy.contains(/Main Actors:/i).should("be.visible");
+    cy.contains(/Characters:/i).should("be.visible");
+    cy.contains(/Plot:/i).should("be.visible");
+  });
 
-        cy.contains(/Director:/i).should("be.visible");
-        cy.contains(/Main Actors:/i).should("be.visible");
-        cy.contains(/Characters:/i).should("be.visible");
-        cy.contains(/Plot:/i).should("be.visible");
-    });
+  it("on correct guess shows 'Correct!' then queues next round", () => {
+    cy.clock();
 
-    it("on correct guess shows 'Correct!' then queues next round", () => {
-        cy.clock();
+    const model = makeFakeModel();
+    cy.mount(<GuessTheMoviePresenter model={model} />);
 
-        const model = new FakeModel();
-        model.makeGuess.returns({ score: 10, correct: true, lose: false });
+    pickCategory();
+    cy.wrap(model.startNewRound).its("callCount").should("be.gte", 1);
 
-        cy.mount(<GuessTheMoviePresenter model={model as unknown as GuessTheMovieModel} />);
+    typeGuessAndSubmit("Terminator 2: Judgment Day");
 
-        pickCategory();
-        cy.wrap(model.startNewRound).its("callCount").should("be.gte", 1);
+    cy.contains(/Correct!\s*The movie was "Terminator 2: Judgment Day"/i).should("be.visible");
 
-        typeGuessAndSubmit("Terminator 2: Judgment Day");
+    cy.tick(1500);
+    cy.wrap(model.startNewRound).its("callCount").should("be.gte", 2);
+  });
 
-        cy.contains(/Correct!\s*The movie was "Terminator 2: Judgment Day"/i).should(
-            "be.visible"
-        );
+  it("on losing guess shows 'You lose!' and game over", () => {
+    const model = makeFakeModel();
+    cy.mount(<GuessTheMoviePresenter model={model} />);
 
-        cy.tick(1500);
+    pickCategory();
+    cy.wrap(model.startNewRound).its("callCount").should("be.gte", 1);
 
-        cy.wrap(model.startNewRound).its("callCount").should("be.gte", 2);
-    });
+    typeGuessAndSubmit("Wrong title");
 
-    it("on losing guess shows 'You lose!' and game over", () => {
-        const model = new FakeModel();
-        model.makeGuess.returns({ score: 7, correct: false, lose: true });
-
-        cy.mount(<GuessTheMoviePresenter model={model as unknown as GuessTheMovieModel} />);
-
-        pickCategory();
-        cy.wrap(model.startNewRound).its("callCount").should("be.gte", 1);
-
-        typeGuessAndSubmit("Wrong title");
-
-        cy.contains(/You lose!\s*The movie was "Terminator 2: Judgment Day"/i).should(
-            "be.visible"
-        );
-    });
+    cy.contains(/You lose!\s*The movie was "Terminator 2: Judgment Day"/i).should("be.visible");
+  });
 });
