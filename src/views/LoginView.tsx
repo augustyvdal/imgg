@@ -21,7 +21,7 @@ export default function LoginView({
     <div className="page-background">
       {success && (
         <div className="fixed top-[40%] left-1/2 -translate-x-1/2 z-50" role="status" aria-live="polite">
-          <div className="rounded-lg bg-green-600 text-white px-4 py-2 shadow-md">{success}</div>
+          <div className="rounded-lg bg-col2 text-white px-4 py-2 shadow-md">{success}</div>
         </div>
       )}
 

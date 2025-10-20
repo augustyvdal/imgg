@@ -19,8 +19,7 @@ cd your-repo-name
 
 ### 3. Set up Enviroment Variables
 Create a .env file in the project root and add the following lines:
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+
 
 ### 4. Run the app
 In terminal write:
