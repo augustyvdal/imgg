@@ -75,16 +75,22 @@ const Navbar = () => {
                 <div className="flex-1 flex justify-end">
                 {user ? (
                     <div className="flex flex-row items-center">
-                        <button className="text-col1 dark:text-carmine cursor-pointer border rounded px-3 py-2 hover:opacity-70" onClick={handleLogoutClick}>
-                        Sign out
-                        </button>
-                        
-                        <img
-                        src={avatarUrl ?? "https://placehold.co/96x96?text=👤"}
-                        onClick={toProfile}
-                        alt="avatar"
-                        className="w-15 h-15 rounded-full object-cover ml-2 cursor-pointer"/>
-                        
+                        <div className="dropdown relative inline-block focus-within:outline-none">
+                            <img
+                                src={avatarUrl ?? "https://placehold.co/96x96?text=👤"}
+                                alt="avatar"
+                                tabIndex={0} // make it focusable
+                                className="dropimg"
+                            />
+                            <div className="dropdown-content hidden absolute bg-white dark:bg-gray-700 min-w-[160px] shadow-lg rounded-md mt-2 z-10">
+                                <Link to="/profile" className="block text-gray-800 dark:text-gray-200 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md">
+                                Profile
+                                </Link>
+                                <button className="text-col1 dark:text-carmine cursor-pointer border rounded px-3 py-2 hover:opacity-70" onClick={handleLogoutClick}>
+                                Sign out
+                                </button>
+                            </div>
+                        </div>
                     </div>
                  ) : (
                     <button className="btn-default" onClick={handleLoginClick}>
