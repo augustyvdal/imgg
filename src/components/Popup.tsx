@@ -78,7 +78,7 @@ export function InfoContent({ onClose }: { onClose: () => void }) {
             </ol>
             <div className="text-center mt-4 ">
                 <button
-                    className="btn-default"
+                    className="text-white hover:opacity-70 font-bold underline text-lg"
                     onClick={onClose}
                 >
                     Let's Play!

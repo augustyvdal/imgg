@@ -83,7 +83,7 @@ export default function ProfileView({
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Username</label>
           <input
-            className="text-gray-800 dark:text-gray-300 w-full border border-gray-700 dark:border-gray-400 rounded p-2"
+            className="text-gray-800 dark:text-gray-300 w-full border border-gray-700 dark:border-gray-400 rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
             placeholder="Pick a username"
             value={username}
             onChange={(e) => onUsernameChange(e.target.value)}
