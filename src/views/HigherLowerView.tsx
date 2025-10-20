@@ -42,7 +42,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                             </div>
 
                                 <div className="flex flex-col items-center justify-between h-3/7">
-                                    <h2 className="mt-4 w-full max-w-xs bg-emerald-200 text-green-900 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Current Score: {score}</h2>
+                                    <h2 className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Current Score: {score}</h2>
                                     <div className="flex flex-col items-center gap-4">
                                         {message && <p className="text-black dark:text-white text-2xl font-sans font-bold">{message}</p>}
                                         {gameOver && <button className="btn-default" onClick={prepareNewGame}>Play Again!</button>}

@@ -61,7 +61,7 @@ const Navbar = () => {
     return (
         <header className="fixed top-0 z-50 w-full h-20 bg-gray-50 dark:bg-gray-800 flex flex-row px-4 py-3 shadow-md">
                 <div className="flex-1">
-                        <img alt="logo" className="max-h-15 max-w-15 rounded text-2xl font-bold text-black dark:text-white cursor-pointer" src="/logo.png" onClick={handleLogoClick}/>
+                        <img alt="logo" className="max-h-15 max-w-15 rounded text-2xl font-bold text-black dark:text-white cursor-pointer" src="/logo_solid_bg.png" onClick={handleLogoClick}/>
                 </div>
 
                 <div className="flex-1 flex justify-center text-black dark:text-white text-xl font-sans">
@@ -71,7 +71,7 @@ const Navbar = () => {
                 <div className="flex-1 flex justify-end">
                 {user ? (
                     <div className="flex flex-row items-center">
-                        <button className="text-red-700 dark:text-red-400 cursor-pointer border rounded px-3 py-2 hover:opacity-70" onClick={handleLogoutClick}>
+                        <button className="text-col1 dark:text-carmine cursor-pointer border rounded px-3 py-2 hover:opacity-70" onClick={handleLogoutClick}>
                         Sign out
                         </button>
                         <Link to="/profile" className="ml-2">
@@ -82,7 +82,7 @@ const Navbar = () => {
                         </Link>
                     </div>
                  ) : (
-                    <button className="bg-blue-600 text-white rounded px-4 py-2 disabled:opacity-60 hover:opacity-70" onClick={handleLoginClick}>
+                    <button className="btn-default" onClick={handleLoginClick}>
                         Login
                     </button>
                     )}

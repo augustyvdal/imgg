@@ -48,7 +48,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                             onReorder(fromIndex, index);
                                         }}
                                         >
-                                            <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs cursor-pointer font-bold px-2 py-0.5 rounded-full">
+                                            <div className="absolute top-2 left-2 bg-col1 text-white text-xs cursor-pointer font-bold px-2 py-0.5 rounded-full">
                                                 #{index + 1}
                                             </div>
                                             <p className="text-gray-800 dark:text-gray-300 text-center text-sm cursor-pointer font-medium mt-6 break-words leading-tight">
