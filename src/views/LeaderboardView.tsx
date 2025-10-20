@@ -10,13 +10,15 @@ interface Props {
   category?: string;
   onCategoryChange: (value?: string) => void;
   onReload: () => void;
+  goToHome: () => void;
 }
 
-export default function LeaderboardView({ higherLowerRows, sortRows, loading, error, category, onCategoryChange, onReload }: Readonly<Props>) {
+export default function LeaderboardView({ higherLowerRows, sortRows, loading, error, category, onCategoryChange, onReload, goToHome }: Readonly<Props>) {
   return (
     <div className="page-background">
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center justify-between mb-4">
+          <button className="btn--default absolute left-6" onClick={goToHome}>Main Menu</button>
           <h1 className="text-black dark:text-white text-2xl font-semibold">Leaderboards</h1>
           <div className="flex gap-2">
             <select

@@ -22,9 +22,10 @@ type SortGameViewProps = {
     onNextRound: () => void;
     streak: number;
     loading: boolean;
+    goToHome: () => void;
 };
 
-function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading }: Readonly<SortGameViewProps>) {
+function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading, goToHome }: Readonly<SortGameViewProps>) {
     const [showInfo, setShowInfo] = useState(false);
     
     
@@ -32,6 +33,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
         <div className="page-background">
             
            <div className="flex items-center gap-2 mb-6">
+            <button className="btn--default absolute left-6" onClick={goToHome}>Main Menu</button>
             <h1 className="text-3xl font-bold text-black dark:text-white">
                     Sort Game
                 </h1>

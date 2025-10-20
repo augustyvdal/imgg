@@ -20,6 +20,7 @@ type Props = {
     onQueryChange: (q: string) => void;
     searchResults: { id: number; image: string; title: string }[];
     onSelectSuggestion: (title: string) => void;
+    goToHome: () => void;
 };
 
 export default function GuessTheMovieView({
@@ -37,6 +38,7 @@ export default function GuessTheMovieView({
                                               onQueryChange,
                                               searchResults,
                                               onSelectSuggestion,
+                                              goToHome,
                                           }: Props) {
     const [showInfo, setShowInfo] = useState(false);
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -49,6 +51,7 @@ export default function GuessTheMovieView({
     return (
         <div className="page-background">
             <div className="flex items-center gap-2 mb-6">
+                <button className="btn--default absolute left-6" onClick={goToHome}>Main Menu</button>
                 <h1 className="text-3xl font-bold text-black dark:text-white">
                     Guess the {category === "tv" ? "TV Show" : "Movie"}
                 </h1>

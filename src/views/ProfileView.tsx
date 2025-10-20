@@ -3,6 +3,7 @@ import React, { FormEvent } from "react";
 
 
 type Props = {
+  goToHome: () => void;
   // identity / gating
   userEmail: string;
 
@@ -45,9 +46,11 @@ export default function ProfileView({
   loadingGames,
   games,
   onRefresh,
+  goToHome,
 }: Props) {
   return (
     <div className="page-background">
+      <button className="btn--default absolute left-6" onClick={goToHome}>Main Menu</button>
       <h1 className="text-black dark:text-white text-2xl font-semibold">Your Profile</h1>
 
       {/* Avatar */}
