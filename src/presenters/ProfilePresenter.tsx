@@ -56,9 +56,20 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
 
     async function onSave(e: FormEvent) {
         e.preventDefault();
+        setState(s => ({ ...s, saving: true, error: null }));
+
         const newState = await model.setUsername(state, username || null);
         setState(newState);
     }
+
+    
+    async function handlePickFile(file: File) {
+        setState(s => ({ ...s, uploading: true, error: null }));
+
+        const newState = await model.setAvatar(state, file);
+        setState(newState);
+    }
+
 
 
     if (loading || !user) return null;
@@ -72,7 +83,7 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
             onSave={onSave}
             avatarUrl={state.avatarPublicUrl}
             uploading={state.uploading}
-            onPickFile={(f) => f && model.setAvatar(state, f)}
+            onPickFile={(f) => f && handlePickFile(f)}
             err={state.error}
             ok={null}
             category={category}

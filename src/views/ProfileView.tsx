@@ -1,6 +1,7 @@
 // src/views/ProfileView.tsx
 import React, { FormEvent } from "react";
 
+
 type Props = {
   // identity / gating
   userEmail: string;
