@@ -65,7 +65,7 @@ const Navbar = () => {
     return (
         <header className="fixed top-0 z-50 w-full h-20 flex flex-row px-4 py-3">
                 <div className="flex-1">
-                        <img alt="logo" className="max-h-15 max-w-15 rounded text-2xl font-bold text-black dark:text-white cursor-pointer" src="/logo_solid_bg.png" onClick={handleLogoClick}/>
+                        <img alt="logo" className="max-h-15 max-w-15 rounded text-2xl font-bold text-black dark:text-white cursor-pointer hover:scale-104 transition-transform" src="/logo_solid_bg.png" onClick={handleLogoClick}/>
                 </div>
 
                 <div className="flex-1 flex justify-center text-black dark:text-white text-xl font-sans">
@@ -80,20 +80,20 @@ const Navbar = () => {
                                 src={avatarUrl ?? "https://placehold.co/96x96?text=👤"}
                                 alt="avatar"
                                 tabIndex={0} // make it focusable
-                                className="dropimg"
+                                className="dropdown__trigger"
                             />
-                            <div className="dropdown-content hidden absolute bg-white dark:bg-gray-700 min-w-[160px] shadow-lg rounded-md mt-2 z-10 right-0 p-1">
-                                <Link to="/profile" className="block text-gray-800 dark:text-gray-200 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md">
+                            <div className="dropdown__content hidden absolute bg-white dark:bg-gray-700 min-w-[160px] shadow-lg rounded-md mt-2 z-10 right-0 p-1">
+                                <Link to="/profile" className="dropdown__item">
                                 Profile
                                 </Link>
-                                <button className="text-col1 text-left dark:text-carmine cursor-pointer border rounded px-4 py-2 hover:opacity-70 w-full" onClick={handleLogoutClick}>
+                                <button className="dropdown__item btn--signout" onClick={handleLogoutClick}>
                                 Sign out
                                 </button>
                             </div>
                         </div>
                     </div>
                  ) : (
-                    <button className="btn-default" onClick={handleLoginClick}>
+                    <button className="btn--default" onClick={handleLoginClick}>
                         Login
                     </button>
                     )}

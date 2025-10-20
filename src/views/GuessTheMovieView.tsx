@@ -54,7 +54,7 @@ export default function GuessTheMovieView({
                 </h1>
                 <button
                     onClick={() => setShowInfo((prev) => !prev)}
-                    className="btn-info"
+                    className="btn--info"
                     title="How to play"
                 >
                     <FontAwesomeIcon icon={faInfoCircle} size="lg" />
@@ -176,8 +176,8 @@ export default function GuessTheMovieView({
                             )}
 
                             {gameOver && (
-                                <div className="text-center mt-6">
-                                    <p className="mt-4 w-full max-w-xs bg-emerald-200 text-green-900 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
+                                <div className="text-center mt-6 flex flex-col items-center-safe gap-y-3">
+                                    <p className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
                                         Final Score: <strong>{score}</strong>
                                     </p>
                                     <button

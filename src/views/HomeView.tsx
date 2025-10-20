@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import MovingBackground from "../components/MovingBackground";
 
 type Props = {
-    onStartGuessTheMovie: () => void;
-    onStartHigherLower: () => void;
-    onStartSortGame: () => void;
+  onStartGuessTheMovie: () => void;
+  onStartHigherLower: () => void;
+  onStartSortGame: () => void;
 };
 
 export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onStartSortGame }: Props) {
@@ -74,3 +74,5 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
         </div>
     );
 }
+
+

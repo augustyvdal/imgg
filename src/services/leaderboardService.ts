@@ -1,5 +1,3 @@
-// Handles storing and retrieving highscores from backend (Firebase/Supabase).
-// Exports saveHighscore, getLeaderboard.
 import { supabase } from "./supabaseClient";
 
 export type LeaderboardRow = {
@@ -11,17 +9,15 @@ export type LeaderboardRow = {
   created_at: string;
 };
 
-// Submit a score for the current user. Requires the user to be signed in.
 export async function submitScore(score: number, category?: string) {
   if (score == null || Number.isNaN(score)) throw new Error("Invalid score");
 
-  // Ensure user is signed in, if not do nothing
+
   const { data: userData, error: userErr } = await supabase.auth.getUser();
   if (userErr) return;
   const user = userData.user;
   if (!user) return;
 
-  // get username from profiles table if available
   const { data: profile } = await supabase
     .from("profiles")
     .select("username")
@@ -30,7 +26,6 @@ export async function submitScore(score: number, category?: string) {
 
   const username: string | null = profile?.username ?? null;
 
-  // check if user already has a score for this category
   const { data: existing } = await supabase
     .from("leaderboard")
     .select("id, score")
@@ -39,7 +34,6 @@ export async function submitScore(score: number, category?: string) {
     .maybeSingle();
 
   if (existing) {
-    // if new score is higher, update it
     if (score > existing.score) {
       const { error: updateErr } = await supabase
         .from("leaderboard")
@@ -48,7 +42,6 @@ export async function submitScore(score: number, category?: string) {
       if (updateErr) throw updateErr;
     }
   } else {
-    // no existing score → insert a new one
     const { error: insertErr } = await supabase.from("leaderboard").insert({
       user_id: user.id,
       username,
@@ -60,7 +53,7 @@ export async function submitScore(score: number, category?: string) {
 }
 
 
-// Only keep top score per user
+
 export async function getTopScores(limit = 20, category?: string) {
   const { data, error } = await supabase.rpc("get_top_scores", {
     p_category: category ?? null,
@@ -70,7 +63,6 @@ export async function getTopScores(limit = 20, category?: string) {
   return (data ?? []) as LeaderboardRow[];
 }
 
-/** (Optional) Get the current user's best score, optionally per category. */
 export async function getMyBestScore(category?: string) {
   const { data: userData, error: userErr } = await supabase.auth.getUser();
   if (userErr) throw userErr;
