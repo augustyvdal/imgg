@@ -82,11 +82,11 @@ const Navbar = () => {
                                 tabIndex={0} // make it focusable
                                 className="dropimg"
                             />
-                            <div className="dropdown-content hidden absolute bg-white dark:bg-gray-700 min-w-[160px] shadow-lg rounded-md mt-2 z-10">
+                            <div className="dropdown-content hidden absolute bg-white dark:bg-gray-700 min-w-[160px] shadow-lg rounded-md mt-2 z-10 right-0 p-1">
                                 <Link to="/profile" className="block text-gray-800 dark:text-gray-200 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md">
                                 Profile
                                 </Link>
-                                <button className="text-col1 dark:text-carmine cursor-pointer border rounded px-3 py-2 hover:opacity-70" onClick={handleLogoutClick}>
+                                <button className="text-col1 text-left dark:text-carmine cursor-pointer border rounded px-4 py-2 hover:opacity-70 w-full" onClick={handleLogoutClick}>
                                 Sign out
                                 </button>
                             </div>
