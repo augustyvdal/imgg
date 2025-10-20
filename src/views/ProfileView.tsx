@@ -57,7 +57,7 @@ export default function ProfileView({
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover"
         />
-        <label className="text-col1 dark:text-col1 cursor-pointer border rounded px-3 py-2">
+        <label className="text-$primary_1 dark:text-$primary_1 cursor-pointer border rounded px-3 py-2">
           {uploading ? "Uploading..." : "Change avatar"}
           <input
             type="file"
@@ -83,7 +83,7 @@ export default function ProfileView({
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Username</label>
           <input
-            className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300 w-full border border-gray-700 dark:border-gray-400 rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
+            className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300 w-full border border-gray-700 dark:border-gray-400 rounded p-2 focus:outline-none focus:ring-2 focus:ring-$primary_1"
             placeholder="Pick a username"
             value={username}
             onChange={(e) => onUsernameChange(e.target.value)}

@@ -74,7 +74,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                             onReorder(fromIndex, index);
                                         }}
                                         >
-                                            <div className="absolute top-2 left-2 bg-col1 text-white text-xs cursor-pointer font-bold px-2 py-0.5 rounded-full">
+                                            <div className="absolute top-2 left-2 bg-$primary_1 text-white text-xs cursor-pointer font-bold px-2 py-0.5 rounded-full">
                                                 #{index + 1}
                                             </div>
                                             <p className="text-gray-800 dark:text-gray-300 text-center text-sm cursor-pointer font-medium mt-6 break-words leading-tight">
@@ -104,7 +104,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (nextRound) ? (
                                         <button 
-                                            className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
+                                            className="px-4 py-2 bg-$primary_1 text-white cursor-pointer rounded mt-3"
                                             data-cy="next-round"
                                             onClick={onNextRound}
                                         >
@@ -116,7 +116,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (reset) ? (
                                         <button 
-                                            className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
+                                            className="px-4 py-2 bg-$primary_1 text-white cursor-pointer rounded mt-3" 
                                             data-cy="reset"
                                             onClick={onReset}
                                         >
@@ -132,7 +132,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                             </div>
                                         )}
 
-                                    <p className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Win streak: {streak}</p>
+                                    <p className="mt-4 w-full max-w-xs bg-$primary_2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Win streak: {streak}</p>
                                 </div>
                             </div>
                         )}

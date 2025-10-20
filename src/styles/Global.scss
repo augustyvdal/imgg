@@ -5,14 +5,13 @@
     20%, 60% { transform: translateX(-5px); }
     40%, 80% { transform: translateX(5px); }
 }
+/* define primary colors */
+$primary_1: #A30015;
+$primary_2: #580e26;
+$primary_3: #25283d;
+$primary_4: #e3e3e3;
+$primary_5: #c3a995;
 
-@theme {
-    --color-col1: #A30015;
-    --color-col2: #580e26;
-    --color-col3: #25283d;
-    --color-col4: #e3e3e3;
-    --color-col5: #c3a995;
-}
 
 /* Dropdown Block */
 .dropdown {
@@ -52,7 +51,7 @@
 }
 
 .btn--default {
-  @apply bg-col1 text-white hover:opacity-70 cursor-pointer rounded px-14 py-2 font-bold;
+  @apply bg-$primary_1 text-white hover:opacity-70 cursor-pointer rounded px-14 py-2 font-bold;
 }
 
 .btn--default:hover {
@@ -64,13 +63,13 @@
 }
 
 .btn--info {
-  @apply text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 transition-colors;
+  @apply text-gray-600 dark:text-gray-300 hover:text-$primary_1 dark:hover:text-$primary_1 transition-colors;
 }
 
 .btn--signout {
-  @apply text-col1 dark:text-col1 text-left border border-col1 px-4 py-2 rounded w-full;
+  @apply text-$primary_1 dark:text-$primary_1 text-left border border-$primary_1 px-4 py-2 rounded w-full;
 }
 
 .btn--signout:hover {
-  @apply bg-col1 text-col2 border-col2;
+  @apply bg-$primary_1 text-$primary_2 border-$primary_2;
 }

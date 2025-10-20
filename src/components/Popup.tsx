@@ -14,7 +14,7 @@ export function Popup({ onClose, children }: Props) {
             onClick={onClose}
         >
             <div
-                className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-6 shadow-2xl max-w-lg w-full animate-fadeIn"
+                className="bg-blue-100 dark:bg-$primary_2 text-$primary_1 dark:text-blue-100 rounded-xl p-6 shadow-2xl max-w-lg w-full animate-fadeIn"
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}
@@ -71,7 +71,7 @@ export const infoText = {
 
 export function InfoContent({ onClose }: { onClose: () => void }) {
     return (
-        <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
+        <div className="bg-blue-100 dark:bg-$primary_2 text-$primary_1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
             <p className="font-semibold mb-2">How to play:</p>
             <ol className="list-decimal list-inside space-y-1">
                 {infoText[window.location.pathname as keyof typeof infoText]}

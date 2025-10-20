@@ -29,24 +29,24 @@ export default function LoginView({
 
         <form className="space-y-3" onSubmit={onLogin}>
           <input
-            className="text-black dark:text-white w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
+            className="text-black dark:text-white w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-$primary_1"
             placeholder="email"
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
           />
           <input
-            className="text-black dark:text-white w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
+            className="text-black dark:text-white w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-$primary_1"
             type="password"
             placeholder="password"
             value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
           />
-          <button className="w-full bg-col1 text-white rounded p-2" disabled={loading}>
+          <button className="w-full bg-$primary_1 text-white rounded p-2" disabled={loading}>
             Sign in
           </button>
         </form>
 
-        <button className="w-full bg-col1 text-white rounded disabled:opacity-60 p-2 mt-3" onClick={onSignup} disabled={loading}>
+        <button className="w-full bg-$primary_1 text-white rounded disabled:opacity-60 p-2 mt-3" onClick={onSignup} disabled={loading}>
           Create account
         </button>
 

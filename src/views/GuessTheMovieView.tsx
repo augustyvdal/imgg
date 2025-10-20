@@ -119,7 +119,7 @@ export default function GuessTheMovieView({
                                             onFocus={() =>
                                                 setShowSuggestions(query.trim() !== "")
                                             }
-                                            className="w-full border border-gray-300 rounded-md py-2 px-3 text-black dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-col1"
+                                            className="w-full border border-gray-300 rounded-md py-2 px-3 text-black dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-$primary_1"
                                         />
 
                                         {showSuggestions && searchResults.length > 0 && (
@@ -158,8 +158,8 @@ export default function GuessTheMovieView({
                                             disabled={query.trim() === ""}
                                             className={`px-5 py-2 rounded-md font-semibold text-white transition-colors ${
                                                 query.trim() === ""
-                                                    ? "bg-col1 cursor-not-allowed opacity-70"
-                                                    : "bg-col1 hover:opacity-70 cursor-pointer"
+                                                    ? "bg-$primary_1 cursor-not-allowed opacity-70"
+                                                    : "bg-$primary_1 hover:opacity-70 cursor-pointer"
                                             }`}
                                         >
                                             Guess
@@ -181,7 +181,7 @@ export default function GuessTheMovieView({
                                         Final Score: <strong>{score}</strong>
                                     </p>
                                     <button
-                                        className="bg-col1 hover:opacity-70 text-white rounded px-5 py-2 font-bold transition-colors cursor-pointer"
+                                        className="btn--default"
                                         onClick={onRestart}
                                     >
                                         Play Again!
