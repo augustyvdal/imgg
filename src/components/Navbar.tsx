@@ -25,6 +25,7 @@ const Navbar = () => {
     const { user, signOut } = useAuth() as any;
     const navigate = useNavigate();
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+    const isHome = location.pathname === "/";
 
     useEffect(() => {
         (async () => {
@@ -63,7 +64,12 @@ const Navbar = () => {
     }
 
     return (
-        <header className="fixed top-0 z-50 w-full h-20 flex flex-row px-4 py-3">
+        <header className={`
+                fixed top-0 z-50 w-full h-20 flex flex-row px-6 py-3 transition-all duration-500
+                ${isHome
+                    ? "bg-transparent text-white"
+                    : "dark:bg-[var(--color-col3)] bg:gray-50 shadow-lg text-white dark:text-gray-200"}
+                `}>
                 <div className="flex-1">
                         <img alt="logo" className="max-h-15 max-w-15 rounded text-2xl font-bold text-black dark:text-white cursor-pointer hover:scale-104 transition-transform" src="/logo_solid_bg.png" onClick={handleLogoClick}/>
                 </div>
