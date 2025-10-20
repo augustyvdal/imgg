@@ -20,14 +20,17 @@ type Props = {
         chooseCategory: (category: "movie" | "tv") => void;
         onGuess: (guess: "higher" | "lower") => void;
         prepareNewGame: () => void;
+        goToHome: () => void;
     };
 
-export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, loading, chooseCategory, onGuess, prepareNewGame}: Props) {
+export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, loading, chooseCategory, onGuess, prepareNewGame, goToHome}: Props) {
     const [showInfo, setShowInfo] = useState(false);
     
     return (
         <div className="page-background flex flex-col items-center p-6">
            <div className="flex items-center gap-2 mb-6">
+            <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
+
             <h1 className="text-3xl font-bold text-black dark:text-white">
                     Higher or Lower?
                 </h1>
