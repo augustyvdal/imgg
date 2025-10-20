@@ -25,3 +25,7 @@
 .btn-default {
     @apply bg-col1 hover:opacity-70 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold
 }
+
+.btn-info {
+    @apply text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 cursor-pointer transition-colors
+}
