@@ -55,7 +55,7 @@ export default function ProfileView({
         <img
           src={avatarUrl ?? "https://placehold.co/96x96?text=👤"}
           alt="avatar"
-          className="w-24 h-24 rounded-full object-cover border"
+          className="w-24 h-24 rounded-full object-cover"
         />
         <label className="text-col1 dark:text-col1 cursor-pointer border rounded px-3 py-2">
           {uploading ? "Uploading..." : "Change avatar"}
@@ -74,7 +74,7 @@ export default function ProfileView({
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Email</label>
           <input
-            className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-500 w-full border rounded p-2"
+            className="bg-gray-300 dark:bg-gray-800 text-gray-500 dark:text-gray-500 w-full border border-gray-400 dark:border-gray-600 rounded p-2"
             value={userEmail}
             disabled
           />
@@ -83,7 +83,7 @@ export default function ProfileView({
         <div>
           <label className="text-black dark:text-white block text-sm mb-1">Username</label>
           <input
-            className="text-gray-800 dark:text-gray-300 w-full border border-gray-700 dark:border-gray-400 rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
+            className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300 w-full border border-gray-700 dark:border-gray-400 rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
             placeholder="Pick a username"
             value={username}
             onChange={(e) => onUsernameChange(e.target.value)}
