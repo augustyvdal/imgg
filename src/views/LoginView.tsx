@@ -29,13 +29,13 @@ export default function LoginView({
 
         <form className="space-y-3" onSubmit={onLogin}>
           <input
-            className="text-black dark:text-white w-full border rounded p-2"
+            className="text-black dark:text-white w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
             placeholder="email"
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
           />
           <input
-            className="text-black dark:text-white w-full border rounded p-2"
+            className="text-black dark:text-white w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-col1"
             type="password"
             placeholder="password"
             value={password}

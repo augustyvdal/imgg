@@ -76,12 +76,12 @@ export function InfoContent({ onClose }: { onClose: () => void }) {
             <ol className="list-decimal list-inside space-y-1">
                 {infoText[window.location.pathname as keyof typeof infoText]}
             </ol>
-            <div className="text-center mt-4 ">
+            <div className="text-center mt-4">
                 <button
-                    className="btn-default"
+                    className="text-white hover:underline hover:opacity-80 font-bold text-lg"
                     onClick={onClose}
                 >
-                    Let's Play!
+                    Close
                 </button>
             </div>
         </div>

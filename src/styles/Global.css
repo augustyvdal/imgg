@@ -14,6 +14,30 @@
     --color-col5: #c3a995;
 }
 
+.dropdown {
+  @apply relative justify-items-end inline-block focus-within:outline-none;
+}
+
+.dropimg {
+  @apply  w-16 h-16 rounded-full object-cover ml-2 cursor-pointer transition-transform;
+}
+
+.dropdown-content {
+  @apply hidden absolute bg-white dark:bg-gray-700 min-w-[160px] shadow-lg rounded-md mt-2 z-10;
+}
+
+.dropdown:focus-within .dropdown-content {
+  @apply block;
+}
+
+.dropdown-content a {
+  @apply block text-gray-800 dark:text-gray-200 px-4 py-2 no-underline transition-colors;
+}
+
+.dropdown-content a:hover {
+  @apply bg-gray-100 dark:bg-gray-600 rounded-md;
+}
+
 .shake {
     animation: shake 0.4s ease-in-out;
 }
