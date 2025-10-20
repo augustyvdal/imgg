@@ -54,7 +54,7 @@ export default function GuessTheMovieView({
                 </h1>
                 <button
                     onClick={() => setShowInfo((prev) => !prev)}
-                    className="btn-info"
+                    className="btn--info"
                     title="How to play"
                 >
                     <FontAwesomeIcon icon={faInfoCircle} size="lg" />
