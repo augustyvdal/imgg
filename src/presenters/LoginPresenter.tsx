@@ -17,6 +17,10 @@ export default function LoginPresenter() {
     const onLogin = async (e: FormEvent) => {
         e.preventDefault();
         setErr(null);
+        if (!email.includes("@") || !password) {
+            setErr("Please enter a valid email and password.");
+            return;
+        }
         try {
             await signIn(email, password);
             setSuccess("You are now logged in.");
@@ -29,6 +33,10 @@ export default function LoginPresenter() {
     const onSignup = async (e: FormEvent) => {
         e.preventDefault();
         setErr(null);
+        if (!email.includes("@") || !password) {
+            setErr("Please enter a valid email and password.");
+            return;
+        }
         try {
             await signUp(email, password);
             setSuccess("Account created! Check your email for a confirmation link.");
