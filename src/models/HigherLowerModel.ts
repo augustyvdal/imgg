@@ -1,4 +1,5 @@
-import { fetchHigherLower, Content } from "../services/apiClient";
+import { get } from "cypress/types/lodash";
+import { GetContentFromTMDB, Content } from "../services/apiClient";
 
 type HigherLowerState = {
   allContent: Content[];
@@ -26,7 +27,7 @@ export default {
 
     // Calls fetchHigherLower from apiClient and sets allContent, contentA, contentB and score
     async startNewGame(state: HigherLowerState): Promise<HigherLowerState> {
-        const allContent = await fetchHigherLower(state.category);
+        const allContent = await GetContentFromTMDB(30, state.category);
 
         // Shuffle content
         const shuffledContent = this.shuffleArray(allContent);

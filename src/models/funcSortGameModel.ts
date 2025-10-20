@@ -1,5 +1,5 @@
 //import { faFolderMinus } from "@fortawesome/free-solid-svg-icons";
-import { GetContentForSort, Content } from "../services/apiClient";
+import { GetContentFromTMDB, Content } from "../services/apiClient";
 
 export type SortGameState = {
         allContent: Content[];
@@ -25,7 +25,7 @@ export default {
         state: SortGameState,
         amount: number
     ): Promise<SortGameState> {
-        const allContent = await GetContentForSort(amount, state.sortCategory);
+        const allContent = await GetContentFromTMDB(amount, state.sortCategory);
         return { ...state, allContent};
     },
 

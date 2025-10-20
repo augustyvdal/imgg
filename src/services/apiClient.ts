@@ -57,8 +57,10 @@ export async function fetchFromTmdbSafe(url: string) {
   return json;
 }
 
-const filterTheResults = (data: any): Content[] =>
-  (Array.isArray(data.results) ? data.results : []).map((content: any) => ({
+const filterMapTheResults = (data: any): Content[] =>
+  (Array.isArray(data.results) ? data.results : []).filter((content: any) =>
+    content.poster_path && content.vote_average > 0 && !content.adult
+  ).map((content: any) => ({
     id: content.id,
     title: content.title,
     name: content.name,
@@ -71,25 +73,8 @@ const filterTheResults = (data: any): Content[] =>
         : "Year N/A", 
   }));
 
-
-// Fetches movies for higher lower game
-export async function fetchHigherLower(category: string): Promise<Content[]> {
-  const today = new Date().toISOString().split("T")[0];
-  const randomPage = getRandomNumber(500);
-  const data =  await fetchFromTmdb(`/discover/${category}?include_adult=false&language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
-
-  // Filter out items without poster or vote_average of 0
-  return data.results.filter((content: any) => content.poster_path && content.vote_average > 0 && !content.adult).map((content: any) => ({
-    id: content.id,
-    title: content.title,
-    name: content.name,
-    poster_path: content.poster_path,
-    vote_average: content.vote_average,
-  }));
-}
-
-
-export async function GetContentForSort(
+  
+export async function GetContentFromTMDB(
   amountOfResults: number, 
   category: string,
   minVotes: number = 1500,
@@ -114,9 +99,9 @@ export async function GetContentForSort(
   try {
     const response = await fetchFromTmdbSafe(url);
 
-    const mappedAndFilteredRes = filterTheResults(response);
+    const mappedAndFilteredRes = filterMapTheResults(response);
 
-    return GetContentForSort (amountOfResults, category, minVotes, today, newUsedPages, [...results, ...mappedAndFilteredRes]); //recurse for all results
+    return GetContentFromTMDB (amountOfResults, category, minVotes, today, newUsedPages, [...results, ...mappedAndFilteredRes]); //recurse for all results
 
   } catch (err) {
     console.error("Error fetching content for sort:", err);
