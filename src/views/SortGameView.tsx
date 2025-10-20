@@ -1,6 +1,9 @@
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
 import Spinner from "../components/Spinner";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 type SortGameViewProps = {
     content: Content[];
@@ -21,9 +24,43 @@ type SortGameViewProps = {
 };
 
 function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading }: Readonly<SortGameViewProps>) {
+    const [showInfo, setShowInfo] = useState(false);
+    
+    
     return (
         <div className="page-background">
-            <h1 className="text-black dark:text-white text-2xl flex font-sans font-bold">Sort Game</h1>
+            
+           <div className="flex items-center gap-2 mb-6">
+            <h1 className="text-3xl font-bold text-black dark:text-white">
+                    Sort Game
+                </h1>
+                <button
+                    onClick={() => setShowInfo((prev) => !prev)}
+                    className="text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 cursor-pointer transition-colors"
+                    title="How to play"
+                >
+                    <FontAwesomeIcon icon={faInfoCircle} size="lg" />
+                </button>
+            </div>
+
+            {showInfo && (
+                <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
+                    <p className="font-semibold mb-2">How to play:</p>
+                    <ol className="list-decimal list-inside space-y-1">
+                        <li>
+                            You will receive five movies or TV shows. Your job is to sort them by their TMDB rating.
+                        </li>
+                        <li>
+                            The movie furthest to the <strong>left should have the highest rating</strong> and the movie furthest to the <strong>right should have the lowest rating</strong>.
+                            
+                        </li>
+                        <li>
+                            You have <strong>3 tries</strong> to get the correct order.
+                        </li>
+                    </ol>
+                </div>
+            )}
+
             <div className="flex flex-col items-center gap-4">
                 {category === "" && <ChooseCategory onSelect={onCategorySelect} />}
 
@@ -77,7 +114,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (nextRound) ? (
                                         <button 
-                                            className="px-4 py-2 bg-green-500 text-white cursor-pointer rounded mt-3" 
+                                            className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
                                             onClick={onNextRound}
                                         >
                                             Next Round!
@@ -88,7 +125,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (reset) ? (
                                         <button 
-                                            className="px-4 py-2 bg-red-500 text-white cursor-pointer rounded mt-3" 
+                                            className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
                                             onClick={onReset}
                                         >
                                             Play Again!
@@ -103,7 +140,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                             </div>
                                         )}
 
-                                    <p className="mt-4 w-full max-w-xs bg-emerald-200 text-green-900 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Win streak: {streak}</p>
+                                    <p className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Win streak: {streak}</p>
                                 </div>
                             </div>
                         )}
