@@ -5,7 +5,7 @@ import { getRandomNumber } from "../utilities/RandomNumber";
 const BASE_URL = "https://api.themoviedb.org/3";
 const TOKEN = import.meta.env.VITE_TMDB_READACCESS_TOKEN;
 
-const MAX_PAGES = 100;
+const MAX_PAGES = 500;
 const MAX_TRIES = 50;
 
 export type Content = {
@@ -17,8 +17,8 @@ export type Content = {
   year?: string;
 };
 
-const buildUrl = (category: string, page: number, today: string, minVot: number) =>
-  `${BASE_URL}/discover/${category}?include_adult=false&include_video=false&language=en-US&release_date.lte=${today}&page=${page}&sort_by=popularity.desc&vote_count.gte=${minVot}`;
+const buildUrl = (category: string, page: number) =>
+  `${BASE_URL}/${category}/popular?language=en-US&page=${page}`;
 
 
 export async function fetchFromTmdb(endpoint: string) {
@@ -57,9 +57,9 @@ export async function fetchFromTmdbSafe(url: string) {
   return json;
 }
 
-const filterMapTheResults = (data: any): Content[] =>
+const filterMapTheResults = (data: any, minVotes: number): Content[] =>
   (Array.isArray(data.results) ? data.results : []).filter((content: any) =>
-    content.poster_path && content.vote_average > 0 && !content.adult
+    content.poster_path && content.vote_average > 0 && !content.adult && content.vote_count >= minVotes
   ).map((content: any) => ({
     id: content.id,
     title: content.title,
@@ -77,48 +77,56 @@ const filterMapTheResults = (data: any): Content[] =>
 export async function GetContentFromTMDB(
   amountOfResults: number, 
   category: string,
-  minVotes: number = 1500,
   today: string = new Date().toISOString().split("T")[0],
   usedPages: ReadonlySet<number> = new Set(),
   results: Content[] = []
 ): Promise<Content[]> {
+
+  console.log(results.length, "results collected so far");
 
   //stop if we have enough, or too many tries
   if (results.length >= amountOfResults || usedPages.size >= MAX_TRIES) {
     return results.slice(0, amountOfResults);
   }
 
+  console.log(usedPages.size, "pages used so far");
+
   const remainingPages = Array.from({length: MAX_PAGES }, (_,i) => i + 1).filter(
     (pg) => !usedPages.has(pg)
   );
 
   const randomPage = remainingPages[Math.floor(Math.random() * remainingPages.length)];
-  const url = buildUrl(category, randomPage, today, minVotes);
-  const newUsedPages = new Set([...usedPages, randomPage])
+  const url = buildUrl(category, randomPage);
+  const newUsedPages = new Set([...usedPages, randomPage]);
+
+  // Min votes depends on category
+  const minVotes = category === "movie" ? 1000 : 400;
+
 
   try {
     const response = await fetchFromTmdbSafe(url);
 
-    const mappedAndFilteredRes = filterMapTheResults(response);
+    const mappedAndFilteredRes = filterMapTheResults(response, minVotes);
 
-    return GetContentFromTMDB (amountOfResults, category, minVotes, today, newUsedPages, [...results, ...mappedAndFilteredRes]); //recurse for all results
+    return GetContentFromTMDB (amountOfResults, category, today, newUsedPages, [...results, ...mappedAndFilteredRes]); //recurse for all results
 
   } catch (err) {
     console.error("Error fetching content for sort:", err);
-    return [];
+
+    return results;
   }
 }
 
 export async function GuessingGameAPICall(category: string) {
-    const today = new Date().toISOString().split("T")[0];
     const randomPage = getRandomNumber(500);
+    // Min votes depends on category
+    const minVotes = category === "movie" ? 1000 : 400;
 
-    const data = await fetchFromTmdb(`/discover/${category}?include_adult=false?language=en-US&sort_by=popularity.desc&release_date.lte=${today}&page=${randomPage}`);
+    const data = await fetchFromTmdb(`/${category}/popular?language=en-US&page=${randomPage}`);
 
-    const filteredResults = data.results.filter((content: any) => content.poster_path && content.vote_average > 0);
+    const filteredResults = data.results.filter((content: any) => content.poster_path && content.vote_average > 0 && !content.adult && content.vote_count >= minVotes);
 
     const randomTitle = filteredResults[Math.floor(Math.random() * filteredResults.length)];
-
 
     const details = await fetchFromTmdb(`/${category}/${randomTitle.id}?append_to_response=credits`);
 
