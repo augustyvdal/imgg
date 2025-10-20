@@ -65,9 +65,9 @@ export default {
 
     async setAvatar(state: ProfileModelState, file: File): Promise<ProfileModelState> {
         try {
-            const { publicUrl } = await uploadAvatar(file);
+            const { path, publicUrl } = await uploadAvatar(file);
             const updatedProfile = state.profile
-                ? { ...state.profile, avatar_url: state.profile.avatar_url ?? "" }
+                ? { ...state.profile, avatar_url: path }
                 : state.profile;
 
             return {
