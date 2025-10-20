@@ -14,27 +14,28 @@
     --color-col5: #c3a995;
 }
 
+/* Dropdown Block */
 .dropdown {
-  @apply relative justify-items-end inline-block focus-within:outline-none;
+  @apply relative inline-block focus-within:outline-none;
 }
 
-.dropimg {
-  @apply  w-16 h-16 rounded-full object-cover ml-2 cursor-pointer transition-transform;
+.dropdown__trigger {
+  @apply w-16 h-16 rounded-full object-cover ml-2 cursor-pointer transition-transform;
 }
 
-.dropdown-content {
+.dropdown__content {
   @apply hidden absolute bg-white dark:bg-gray-700 min-w-[160px] shadow-lg rounded-md mt-2 z-10;
 }
 
-.dropdown:focus-within .dropdown-content {
+.dropdown:focus-within .dropdown__content {
   @apply block;
 }
 
-.dropdown-content a {
+.dropdown__item {
   @apply block text-gray-800 dark:text-gray-200 px-4 py-2 no-underline transition-colors;
 }
 
-.dropdown-content a:hover {
+.dropdown__item:hover {
   @apply bg-gray-100 dark:bg-gray-600 rounded-md;
 }
 
@@ -43,13 +44,33 @@
 }
 
 .page-background {
-    @apply bg-gray-200 dark:bg-gray-900 min-h-screen mt-20 flex flex flex-col items-center p-6
+    @apply bg-gray-200 dark:bg-gray-900 min-h-screen mt-20 flex flex-col items-center p-6;
 }
 
-.btn-default {
-    @apply bg-col1 hover:opacity-70 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold
+.btn {
+  @apply text-lg cursor-pointer font-bold rounded px-14 py-2;
 }
 
-.btn-info {
-    @apply text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 cursor-pointer transition-colors
+.btn--default {
+  @apply bg-col1 text-white hover:opacity-70 cursor-pointer rounded px-14 py-2 font-bold;
+}
+
+.btn--default:hover {
+  @apply opacity-70;
+}
+
+.btn--default:disabled {
+  @apply opacity-60 cursor-not-allowed;
+}
+
+.btn--info {
+  @apply text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 transition-colors;
+}
+
+.btn--signout {
+  @apply text-col1 dark:text-col1 text-left border border-col1 px-4 py-2 rounded w-full;
+}
+
+.btn--signout:hover {
+  @apply bg-col1 text-col2 border-col2;
 }

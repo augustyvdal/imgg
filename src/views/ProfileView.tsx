@@ -91,7 +91,7 @@ export default function ProfileView({
         </div>
 
         <button
-          className="btn-default"
+          className="btn--default"
           disabled={saving}
         >
           {saving ? "Saving..." : "Save changes"}

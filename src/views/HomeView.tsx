@@ -15,9 +15,9 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                 </div>
                 
                 <div className="flex flex-col space-y-4 mt-4">
-                    <button className="btn-default" data-cy="start-guess" onClick={onStartGuessTheMovie}>Guess the Movie</button>
-                    <button className="btn-default" data-cy="start-higher" onClick={onStartHigherLower}>Higher / Lower</button>
-                    <button className="btn-default" data-cy="start-sort" onClick={onStartSortGame}>Sort Game</button>
+                    <button className="btn--default" data-cy="start-guess" onClick={onStartGuessTheMovie}>Guess the Movie</button>
+                    <button className="btn--default" data-cy="start-higher" onClick={onStartHigherLower}>Higher / Lower</button>
+                    <button className="btn--default" data-cy="start-sort" onClick={onStartSortGame}>Sort Game</button>
             </div>
             </div>
         </div>

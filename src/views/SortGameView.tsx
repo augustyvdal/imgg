@@ -37,7 +37,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                 </h1>
                 <button
                     onClick={() => setShowInfo((prev) => !prev)}
-                    className="btn-info"
+                    className="btn--info"
                     title="How to play"
                 >
                     <FontAwesomeIcon icon={faInfoCircle} size="lg" />
@@ -92,7 +92,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {
                                         (submit) ? (
                                         <button
-                                            className="btn-default mt-4"
+                                            className="btn--default mt-4"
                                             data-cy="submit"
                                             onClick={onSubmit}
                                         >
