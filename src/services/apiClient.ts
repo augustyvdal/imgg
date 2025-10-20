@@ -82,14 +82,10 @@ export async function GetContentFromTMDB(
   results: Content[] = []
 ): Promise<Content[]> {
 
-  console.log(results.length, "results collected so far");
-
   //stop if we have enough, or too many tries
   if (results.length >= amountOfResults || usedPages.size >= MAX_TRIES) {
     return results.slice(0, amountOfResults);
   }
-
-  console.log(usedPages.size, "pages used so far");
 
   const remainingPages = Array.from({length: MAX_PAGES }, (_,i) => i + 1).filter(
     (pg) => !usedPages.has(pg)
