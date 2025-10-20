@@ -56,7 +56,7 @@ export default function ProfileView({
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover border"
         />
-        <label className="text-red-700 dark:text-red-400 cursor-pointer border rounded px-3 py-2">
+        <label className="text-col1 dark:text-col1 cursor-pointer border rounded px-3 py-2">
           {uploading ? "Uploading..." : "Change avatar"}
           <input
             type="file"
@@ -90,7 +90,7 @@ export default function ProfileView({
         </div>
 
         <button
-          className="bg-blue-600 text-white rounded px-4 py-2 disabled:opacity-60 cursor-pointer"
+          className="btn-default"
           disabled={saving}
         >
           {saving ? "Saving..." : "Save changes"}

@@ -6,6 +6,14 @@
     40%, 80% { transform: translateX(5px); }
 }
 
+@theme {
+    --color-col1: #A30015;
+    --color-col2: #580e26;
+    --color-col3: #25283d;
+    --color-col4: #e3e3e3;
+    --color-col5: #c3a995;
+}
+
 .shake {
     animation: shake 0.4s ease-in-out;
 }
@@ -15,5 +23,5 @@
 }
 
 .btn-default {
-    @apply bg-violet-600 hover:bg-violet-700 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold
+    @apply bg-col1 hover:opacity-70 text-white text-lg cursor-pointer rounded px-14 py-2 disabled:opacity-60 font-bold
 }

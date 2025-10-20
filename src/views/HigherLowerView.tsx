@@ -1,8 +1,10 @@
 ﻿// src/views/HigherLowerView.tsx
-import React from "react";
+import React, { useState } from "react";
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
 import Spinner from "../components/Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
         contentA: Content | null;
@@ -20,10 +22,40 @@ type Props = {
     };
 
 export default function HigherLowerView({contentA, contentB, score, category, message, showRatings, buttonsDisabled, gameOver, loading, chooseCategory, onGuess, prepareNewGame}: Props) {
-
+    const [showInfo, setShowInfo] = useState(false);
+    
     return (
         <div className="page-background flex flex-col items-center p-6">
-            <h1 className="text-black dark:text-white text-2xl flex font-sans font-bold">Higher or Lower</h1>
+           <div className="flex items-center gap-2 mb-6">
+            <h1 className="text-3xl font-bold text-black dark:text-white">
+                    Higher or Lower?
+                </h1>
+                <button
+                    onClick={() => setShowInfo((prev) => !prev)}
+                    className="text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 cursor-pointer transition-colors"
+                    title="How to play"
+                >
+                    <FontAwesomeIcon icon={faInfoCircle} size="lg" />
+                </button>
+            </div>
+
+            {showInfo && (
+                <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
+                    <p className="font-semibold mb-2">How to play:</p>
+                    <ol className="list-decimal list-inside space-y-1">
+                        <li>
+                            You will receive two movies or TV shows. The rating of the leftmost one is visible, while the rating of the one to the right is hidden.
+                        </li>
+                        <li>
+                            You have a to guess if the TMDB rating of the right movie is higher or lower than the left one.
+                        </li>
+                        <li>
+                            Try to get as many right guesses as possible in a row to get a high score!
+                        </li>
+                    </ol>
+                </div>
+            )}
+            
             {category === "" && <ChooseCategory onSelect={chooseCategory} />}
 
             {category !== "" && (
@@ -42,7 +74,7 @@ export default function HigherLowerView({contentA, contentB, score, category, me
                             </div>
 
                                 <div className="flex flex-col items-center justify-between h-3/7">
-                                    <h2 className="mt-4 w-full max-w-xs bg-emerald-200 text-green-900 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Current Score: {score}</h2>
+                                    <h2 className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Current Score: {score}</h2>
                                     <div className="flex flex-col items-center gap-4">
                                         {message && <p className="text-black dark:text-white text-2xl font-sans font-bold">{message}</p>}
                                         {gameOver && <button className="btn-default" onClick={prepareNewGame}>Play Again!</button>}

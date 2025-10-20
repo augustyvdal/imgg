@@ -53,7 +53,7 @@ export default function GuessTheMovieView({
                 </h1>
                 <button
                     onClick={() => setShowInfo((prev) => !prev)}
-                    className="text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer transition-colors"
+                    className="text-gray-600 dark:text-gray-300 hover:text-col1 dark:hover:text-col1 cursor-pointer transition-colors"
                     title="How to play"
                 >
                     <FontAwesomeIcon icon={faInfoCircle} size="lg" />
@@ -61,7 +61,7 @@ export default function GuessTheMovieView({
             </div>
 
             {showInfo && (
-                <div className="bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
+                <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
                     <p className="font-semibold mb-2">How to play:</p>
                     <ol className="list-decimal list-inside space-y-1">
                         <li>
@@ -132,7 +132,7 @@ export default function GuessTheMovieView({
                                             onFocus={() =>
                                                 setShowSuggestions(query.trim() !== "")
                                             }
-                                            className="w-full border border-gray-300 rounded-md py-2 px-3 text-black dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                            className="w-full border border-gray-300 rounded-md py-2 px-3 text-black dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-col1"
                                         />
 
                                         {showSuggestions && searchResults.length > 0 && (
@@ -171,8 +171,8 @@ export default function GuessTheMovieView({
                                             disabled={query.trim() === ""}
                                             className={`px-5 py-2 rounded-md font-semibold text-white transition-colors ${
                                                 query.trim() === ""
-                                                    ? "bg-violet-400 cursor-not-allowed opacity-70"
-                                                    : "bg-violet-600 hover:bg-violet-700 cursor-pointer"
+                                                    ? "bg-col1 cursor-not-allowed opacity-70"
+                                                    : "bg-col1 hover:opacity-70 cursor-pointer"
                                             }`}
                                         >
                                             Guess
@@ -194,7 +194,7 @@ export default function GuessTheMovieView({
                                         Final Score: <strong>{score}</strong>
                                     </p>
                                     <button
-                                        className="bg-violet-600 hover:bg-violet-700 text-white rounded px-5 py-2 font-bold transition-colors cursor-pointer"
+                                        className="bg-col1 hover:opacity-70 text-white rounded px-5 py-2 font-bold transition-colors cursor-pointer"
                                         onClick={onRestart}
                                     >
                                         Play Again!
