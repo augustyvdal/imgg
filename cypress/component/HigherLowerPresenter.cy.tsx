@@ -2,31 +2,52 @@
 
 import React from "react";
 import HigherLowerPresenter from "../../src/presenters/HigherLowerPresenter";
-import type { HigherLowerModel } from "../../src/models/HigherLowerModel";
 import type { Content } from "../../src/services/apiClient";
 
-class FakeModel {
-  category: "movie" | "tv" = "movie";
-  score = 2;
+const C = (id: number, title: string, vote: number): Content => ({
+  id,
+  title,
+  name: title,
+  poster_path: undefined,
+  vote_average: vote,
+});
 
-  allContent: Content[] = [];
-  reset = cy.stub();
+const FakeModel: typeof import("../../src/models/HigherLowerModel").default = {
+  createInitialState() {
+    return {
+      allContent: [],
+      contentA: C(1, "A", 8),
+      contentB: C(2, "B", 7),
+      score: 2,
+      category: "movie",
+    };
+  },
 
-  contentA: Content = { id: 1, title: "A", name: "A", poster_path: undefined, vote_average: 8 };
-  contentB: Content = { id: 2, title: "B", name: "B", poster_path: undefined, vote_average: 7 };
+  shuffleArray(arr) { return arr; },
 
-  chosenCategory = cy.stub();
-  startNewGame = cy.stub().resolves();
-  nextItem = cy.stub();
+  chosenCategory(state, category) {
+    return { ...state, category };
+  },
 
-  makeGuess = cy.stub().returns(false);
-}
+  async startNewGame(state) {
+    return state;
+  },
+
+  makeGuess(state, _guess) {
+    return { state, correct: false };
+  },
+
+  nextItem(state) {
+    return state;
+  },
+};
+
 
 describe("HigherLowerPresenter (component)", () => {
     it("shows Game Over on wrong guess", () => {
-      const model = new FakeModel();
+      cy.mount(<HigherLowerPresenter model={FakeModel} />);
+      cy.contains("button", /movie|tv/i).first().click({ force: true });
 
-      cy.mount(<HigherLowerPresenter model={model as unknown as HigherLowerModel} />);
 
       cy.contains(/Score:/i).should("exist");
 
