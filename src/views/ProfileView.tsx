@@ -1,5 +1,6 @@
 // src/views/ProfileView.tsx
 import React, { FormEvent } from "react";
+import WysiwygEditor from "../components/WysiwygEditor";
 
 
 type Props = {
@@ -88,6 +89,11 @@ export default function ProfileView({
             value={username}
             onChange={(e) => onUsernameChange(e.target.value)}
           />
+        </div>
+
+        <div>
+          <label className="text-black dark:text-white block text-sm mb-1">Bio</label>
+          <WysiwygEditor />
         </div>
 
         <button
