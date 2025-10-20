@@ -1,4 +1,5 @@
 ﻿import Marquee from "react-fast-marquee";
+//
 
 export default function MovingBackground({ images, reverse }: { images: string[]; reverse?: boolean }) {
     return (
