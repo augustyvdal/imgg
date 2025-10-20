@@ -68,9 +68,9 @@
 }
 
 .btn--signout {
-  @apply text-white bg-col2 text-left px-4 py-2 rounded w-full;
+  @apply text-white text-left px-4 py-2 rounded w-full;
 }
 
 .btn--signout:hover {
-  @apply bg-col1;
+  @apply bg-col1 opacity-80;
 }
