@@ -4,6 +4,7 @@ import { useState, useRef, useEffect} from "react";
 import funcSortGameModel from "../models/funcSortGameModel"
 import { Content } from "../services/apiClient";
 import { submitSortStreak } from "../services/sortGameLeaderboardService"
+import { useNavigate } from "react-router-dom";
 import { set } from "mobx";
 
 type SortGamePresenterProps = {
@@ -13,6 +14,7 @@ type SortGamePresenterProps = {
 
 export default observer (
     function SortGamePresenter({model}: SortGamePresenterProps) {
+        const navigate = useNavigate();
         const [sortState, setSortState] = useState(model.createInitSortGameState());
         const [loading, setLoading] = useState(false);
         const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
@@ -104,6 +106,10 @@ export default observer (
             newRoundOrReset();
         };
 
+        const goToHome = () => {
+            navigate("/");
+        };
+
         const submitRoundStreak = async () => {
             if (didSubmitRef.current) return;
 
@@ -134,6 +140,7 @@ export default observer (
         onNextRound={handleNextRound}
         streak={sortState.roundStreak}
         loading={loading}
+        goToHome={goToHome}
         />
         );
     }

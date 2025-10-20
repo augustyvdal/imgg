@@ -10,11 +10,12 @@ type Props = {
   onPasswordChange: (v: string) => void;
   onLogin: (e: FormEvent) => void;
   onSignup: (e: FormEvent) => void;
+  goToHome: () => void;
 };
 
 export default function LoginView({
   email, password, loading, err, success,
-  onEmailChange, onPasswordChange, onLogin, onSignup,
+  onEmailChange, onPasswordChange, onLogin, onSignup, goToHome
 }: Props) {
   return (
     <div className="page-background">
@@ -25,6 +26,7 @@ export default function LoginView({
       )}
 
       <div className="max-w-md mx-auto p-6">
+        <button className="btn--default absolute left-6" onClick={goToHome}>Main Menu</button>
         <h1 className="text-black dark:text-white text-2xl font-semibold mb-4">Sign in</h1>
 
         <form className="space-y-3" onSubmit={onLogin}>
