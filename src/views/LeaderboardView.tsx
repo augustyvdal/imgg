@@ -18,7 +18,7 @@ export default function LeaderboardView({ higherLowerRows, sortRows, loading, er
     <div className="page-background">
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center justify-between mb-4">
-          <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
+          {/*<button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>*/}
           <h1 className="text-black dark:text-white text-2xl font-semibold">Leaderboards</h1>
           <div className="flex gap-2">
             <select

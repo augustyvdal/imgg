@@ -50,7 +50,7 @@ export default function ProfileView({
 }: Props) {
   return (
     <div className="page-background">
-      <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
+      {/*<button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>*/}
       <h1 className="text-black dark:text-white text-2xl font-semibold">Your Profile</h1>
 
       {/* Avatar */}
