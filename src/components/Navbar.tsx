@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabaseClient";
 import { getMyProfile } from "../services/profileService";
+import logo from "/assets/images/logo_solid_bg.png";
 
 function Options() {
 
@@ -71,7 +72,7 @@ const Navbar = () => {
                     : "dark:bg-[var(--color-col3)] bg:gray-50 shadow-lg text-white dark:text-gray-200"}
                 `}>
                 <div className="flex-1">
-                        <img alt="logo" className="max-h-15 max-w-15 rounded text-2xl font-bold text-black dark:text-white cursor-pointer hover:scale-104 transition-transform" src="/logo_solid_bg.png" onClick={handleLogoClick}/>
+                        <img alt="logo" className="max-h-15 max-w-15 rounded text-2xl font-bold text-black dark:text-white cursor-pointer hover:scale-104 transition-transform" src={logo} onClick={handleLogoClick}/>
                 </div>
 
                 <div className="flex-1 flex justify-center text-black dark:text-white text-xl font-sans">

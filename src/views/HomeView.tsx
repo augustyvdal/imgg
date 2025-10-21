@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
 import MovingBackground from "../components/MovingBackground";
+import poster1 from "/assets/images/poster1.jpg";
+import poster2 from "/assets/images/poster2.webp";
+import poster3 from "/assets/images/poster3.png";
+import poster4 from "/assets/images/poster4.jpg";
+import poster5 from "/assets/images/poster5.webp";
+import poster6 from "/assets/images/poster6.jpg";
+
 
 type Props = {
   onStartGuessTheMovie: () => void;
@@ -12,15 +19,15 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
         <div className="relative min-h-screen overflow-hidden text-col4 bg-col4/70 font-sans">
             <div className="absolute inset-0 grid grid-rows-3 gap-0">
                 <MovingBackground
-                    images={["/poster1.jpg", "/poster2.webp", "/star.jpg", "poster5.webp"]}
+                    images={[poster1, poster2, poster6, poster5]}
                     reverse={false}
                 />
                 <MovingBackground
-                    images={["/star.jpg", "/poster3.png", "/poster4.jpg", "/poster5.webp"]}
+                    images={[poster6, poster3, poster4, poster5]}
                     reverse={true}
                 />
                 <MovingBackground
-                    images={["/poster2.webp", "/poster1.jpg", "/poster3.png", "/poster4.jpg"]}
+                    images={[poster2, poster1, poster3, poster4]}
                     reverse={false}
                 />
             </div>

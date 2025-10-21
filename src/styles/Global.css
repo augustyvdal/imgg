@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: "Ubuntu";
-    src: url("../fonts/Ubuntu-Medium.ttf") format("truetype");
+    src: url("../../public/assets/fonts/Ubuntu-Medium.ttf") format("truetype");
 }
 
 @theme {

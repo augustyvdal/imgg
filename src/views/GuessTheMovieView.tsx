@@ -63,7 +63,7 @@ export default function GuessTheMovieView({
         <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col3">
             <div className="absolute inset-0">
                 <img
-                    src="/img.jpg"
+                    src="/assets/images/img.jpg"
                     alt="background"
                     className="w-full h-full object-cover opacity-10"
                 />
