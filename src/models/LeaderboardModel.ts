@@ -1,16 +1,36 @@
-import { getTopScores, type LeaderboardRow } from "../services/leaderboardService";
-import { getSortLeaderboard, type SortRow } from "../services/sortGameLeaderboardService";
+export interface LeaderboardRow {
+  id: string;
+  username: string | null;
+  score?: number;
+  round_streak?: number;
+  category: string | null;
+  created_at: string;
+}
 
 export interface LeaderboardData {
   higherLowerRows: LeaderboardRow[];
-  sortRows: SortRow[];
+  sortRows: LeaderboardRow[];
 }
 
 export async function fetchLeaderboardData(
-  limit: number,
+  limit = 20,
   category?: string
 ): Promise<LeaderboardData> {
-  const higherLowerRows = await getTopScores(limit, category);
-  const sortRows = await getSortLeaderboard(limit, category);
-  return { higherLowerRows, sortRows };
+  const query = new URLSearchParams();
+  query.append("limit", String(limit));
+  if (category) query.append("category", category);
+
+  const response = await fetch(`/api/leaderboard?${query.toString()}`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch leaderboard: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  // Expecting backend to return { higherLowerRows, sortRows }
+  return {
+    higherLowerRows: data.higherLowerRows ?? [],
+    sortRows: data.sortRows ?? [],
+  };
 }

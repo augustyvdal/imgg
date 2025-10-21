@@ -1,10 +1,9 @@
 import React from "react";
-import type { LeaderboardRow } from "../services/leaderboardService";
-import type { SortRow } from "../services/sortGameLeaderboardService";
+import type { LeaderboardRow } from "../models/LeaderboardModel";
 
 interface Props {
   higherLowerRows: LeaderboardRow[];
-  sortRows: SortRow[];
+  sortRows: LeaderboardRow[];
   loading: boolean;
   error: string | null;
   category?: string;
