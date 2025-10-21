@@ -31,12 +31,12 @@ export default observer (
         }, [model]);
 
         const handleCategorySelect = async (category: string) => {
+            const stateWithCategory = model.chooseSortCategory(sortState, category);
+            setSortState(stateWithCategory);
+            
             setLoading(true);
             didSubmitRef.current = false;
             
-            const stateWithCategory = model.chooseSortCategory(sortState, category);
-            //setSortState(stateWithCategory);
-
             const stateWithFetchedContent = await model.GetAllContent(stateWithCategory, 5);
             setSortState(stateWithFetchedContent);
             
