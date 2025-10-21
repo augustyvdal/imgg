@@ -3,7 +3,6 @@ import {observer} from "mobx-react-lite"
 import { useState, useRef, useEffect} from "react";
 import funcSortGameModel from "../models/funcSortGameModel"
 import { Content } from "../services/apiClient";
-import { submitSortStreak } from "../services/sortGameLeaderboardService"
 import { useNavigate } from "react-router-dom";
 import { set } from "mobx";
 
@@ -113,19 +112,6 @@ export default observer (
 
         const goToHome = () => {
             navigate("/");
-        };
-
-        const submitRoundStreak = async () => {
-            if (didSubmitRef.current) return;
-
-            if (sortState.roundStreak != null && sortState.sortCategory) {
-                didSubmitRef.current = true;
-                try {
-                    await submitSortStreak(sortState.roundStreak, sortState.sortCategory);
-                } catch (e) {
-                    console.error("Failed to submit score:", e);
-                }
-            }
         };
 
         return (
