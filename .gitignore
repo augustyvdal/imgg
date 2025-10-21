@@ -14,7 +14,6 @@ yarn-error.log*
 .DS_Store
 .idea
 *.local
-*d.ts
 *config.ts
 nginx.conf
 
