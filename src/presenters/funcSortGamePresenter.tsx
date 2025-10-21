@@ -77,8 +77,11 @@ export default observer (
                 setSubmitReady(true);
             } else {
                 submitRoundStreak();
-                setFeedbackMessage("That was your last try!");
+                const revealed = model.revealCorrectOrder(stateWithTriesDec);
+                setSortState(revealed);
+                setFeedbackMessage("That was your last try! The correct order has been revealed.");
                 setResetReady(true);
+                setNextRoundReady(false);
             }
         };
 

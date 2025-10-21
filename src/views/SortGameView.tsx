@@ -65,13 +65,15 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                                     {content.map((item, index) => (
                                         <li
                                         key={item.id}
-                                        className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 cursor-pointer data-cy="sort-item" rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""}`}
-                                        draggable
-                                        onDragStart={(e) =>
+                                        className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 cursor-pointer data-cy="sort-item" rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""} ${submit ? "cursor-pointer" : "cursor-not-allowed opacity-70"}`}
+                                        draggable={submit}
+                                        onDragStart={(e) => {
+                                            if (!submit) {e.preventDefault(); return; }
                                             e.dataTransfer.setData("fromIndex", index.toString())
-                                        }
-                                        onDragOver={(e) => e.preventDefault()}
+                                        }}
+                                        onDragOver={(e) => submit ? e.preventDefault() : undefined}
                                         onDrop={(e) => {
+                                            if (!submit) return
                                             const fromIndex = parseInt(e.dataTransfer.getData("fromIndex"));
                                             onReorder(fromIndex, index);
                                         }}
