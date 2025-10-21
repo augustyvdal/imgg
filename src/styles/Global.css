@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: "Ubuntu";
+    src: url("../../public/assets/fonts/Ubuntu-Medium.ttf") format("truetype");
+}
+
+@theme {
+    --font-ubuntu: "Ubuntu";
+}
+
+
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     20%, 60% { transform: translateX(-5px); }
@@ -73,4 +83,16 @@
 
 .btn--signout:hover {
   @apply bg-col1 opacity-80;
+}
+
+.text--default {
+    @apply text-col3 dark:text-col4 px-4 py-2 font-ubuntu;
+}
+
+.text--header {
+    @apply text-col3 dark:text-col4 py-2 font-bold text-9xl leading-tight font-ubuntu;
+}
+
+.text--subheader {
+    @apply text-col3 dark:text-col4 text-xl font-medium font-ubuntu;
 }
