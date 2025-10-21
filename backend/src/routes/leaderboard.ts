@@ -42,23 +42,55 @@ leaderboardRouter.get("/", async (req: Request, res: Response) => {
 
 /** POST /api/leaderboard */
 leaderboardRouter.post("/", async (req: Request, res: Response) => {
-  const { username, score, category } = req.body;
-
-  if (!username || typeof score !== "number") {
-    return res.status(400).json({ error: "Missing or invalid fields" });
-  }
-
   try {
-    const { error } = await supabase.from("leaderboard").insert([
-      {
+    const { score, category } = req.body;
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(401).json({ error: "Missing Authorization header" });
+    }
+
+    const token = authHeader.replace("Bearer ", "").trim();
+    const { data: userData, error: userError } = await supabase.auth.getUser(token);
+
+    if (userError || !userData?.user) {
+        return res.status(401).json({ error: "Unauthorized user" });
+    }
+
+    const user = userData.user;
+
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+
+    const username = profile?.username ?? "Anonymous";
+
+    const { data: existing } = await supabase
+    .from("leaderboard")
+    .select("id, score")
+    .eq("user_id", user.id)
+    .eq("category", category ?? null)
+    .maybeSingle();
+
+    if (existing) {
+      if (score > existing.score) {
+        const { error: updateErr } = await supabase
+          .from("leaderboard")
+          .update({ score, username })
+          .eq("id", existing.id);
+        if (updateErr) throw updateErr;
+      }
+    } else {
+      const { error: insertErr } = await supabase.from("leaderboard").insert({
+        user_id: user.id,
         username,
         score,
         category: category ?? null,
-        created_at: new Date().toISOString(),
-      },
-    ]);
-
-    if (error) throw error;
+      });
+      if (insertErr) throw insertErr;
+    }
 
     res.status(201).json({ message: "Score submitted successfully" });
   } catch (err) {

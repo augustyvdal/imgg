@@ -76,7 +76,12 @@ export default observer (
                 setTimeout(() => setShake(false), 500);
                 setSubmitReady(true);
             } else {
-                submitRoundStreak();
+                if (sortState.roundStreak > 0 && sortState.sortCategory) {
+                    didSubmitRef.current = true;
+                    model.gameScoreSave(stateWithTriesDec).catch((e) => {
+                    console.error("Failed to submit score:", e);
+                    });
+                }
                 setFeedbackMessage("That was your last try!");
                 setResetReady(true);
             }
@@ -144,6 +149,6 @@ export default observer (
         />
         );
     }
-)
+);
 
 

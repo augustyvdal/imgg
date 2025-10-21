@@ -75,7 +75,7 @@ guessGameRouter.post("/", async (req: Request, res: Response) => {
 guessGameRouter.get("/", async (req: Request, res: Response) => {
     try {
         const authHeader = req.headers.authorization;
-        const { category } = req.body;
+        const category = req.query.category as string;
 
         if (!authHeader) {
             return res.status(401).json({ error: "Missing Authorization header" });

@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import GuessTheMovieModel from "../models/GuessTheMovieModel";
 import GuessTheMovieView from "../views/GuessTheMovieView";
 import { Debounce } from "../utilities/Debounce";
-import { submitGameScore } from "../services/guessGameHistoryService";
 import { useNavigate } from "react-router-dom";
 
 type GuessTheMovieProps = {
@@ -66,9 +65,12 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
         } else if (lose) {
             setMessage(`You lose! The movie was "${newState.title.title}".`);
             setLastScore(prevScore);
-            model.gameScoreSave(newState).catch((e) => {
+            if (state.totalScore != null && state.category){
+                didSubmitRef.current = true;
+                model.gameScoreSave(newState).catch((e) => {
                 console.error("Failed to submit score:", e);
             });
+        }
             setGameOver(true);
         } else {
             setMessage("Wrong guess! Here's another clue...");
