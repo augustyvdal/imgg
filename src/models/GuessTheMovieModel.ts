@@ -1,4 +1,5 @@
 ﻿import { GuessingGameAPICall } from "../services/apiClient";
+import { supabase } from "../services/supabaseClient";
 
 type GuessTheMovieState = {
     title: any;
@@ -21,6 +22,32 @@ export default {
             gameOver: false,
             category: "",
         };
+    },
+
+    async gameScoreSave(state: GuessTheMovieState): Promise<void> {
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+
+        if (userError || !userData?.user) {
+            throw new Error("User not logged in or token invalid");
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+
+        const response = await fetch("/api/guessGame", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                score: state.totalScore,
+                category: state.category,
+            }),
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to save game score: ${response.statusText}`);
+        }
     },
 
     async startNewRound(state: GuessTheMovieState): Promise<GuessTheMovieState> {
