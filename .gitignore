@@ -17,3 +17,5 @@ yarn-error.log*
 *d.ts
 *config.ts
 nginx.conf
+
+!backend/
