@@ -1,6 +1,6 @@
 ﻿import ReactDOM from "react-dom";
 import React from "react";
-
+import { motion } from "framer-motion";
 
 type Props = {
     onClose: () => void;
@@ -10,15 +10,18 @@ type Props = {
 export function Popup({ onClose, children }: Props) {
     return ReactDOM.createPortal(
         <div
-            className="fixed inset-0 flex items-center justify-center bg-black/40 z-50"
+            className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-50"
             onClick={onClose}
         >
-            <div
-                className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-6 shadow-2xl max-w-lg w-full animate-fadeIn"
+            <motion.div
+                initial={{ opacity: 0.3, y: "-80%" }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type:"spring", duration: .7 }}
+                className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xs p-6 shadow-2xl max-w-lg w-full animate-fadeIn"
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}
-            </div>
+            </motion.div>
         </div>,
         document.body
     );
@@ -71,14 +74,14 @@ export const infoText = {
 
 export function InfoContent({ onClose }: { onClose: () => void }) {
     return (
-        <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 rounded-xl p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
+        <div className="bg-blue-100 dark:bg-col2 text-col1 dark:text-blue-100 p-4 mb-6 text-sm leading-relaxed w-full max-w-lg animate-fadeIn">
             <p className="font-semibold mb-2">How to play:</p>
             <ol className="list-decimal list-inside space-y-1">
                 {infoText[window.location.pathname as keyof typeof infoText]}
             </ol>
             <div className="text-center mt-4">
                 <button
-                    className="text-white hover:underline hover:opacity-80 font-bold text-lg"
+                    className="text-white hover:underline hover:opacity-80 font-bold text-lg cursor-pointer"
                     onClick={onClose}
                 >
                     Close
