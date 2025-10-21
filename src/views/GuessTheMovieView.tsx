@@ -112,7 +112,7 @@ export default function GuessTheMovieView({
                             onClick={goToHome}
                             className="btn--default"
                         >
-                            Main Menu
+                            Game Hub
                         </motion.button>
                     </motion.div>
                 ) : (
