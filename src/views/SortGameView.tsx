@@ -33,7 +33,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
         <div className="page-background">
             
            <div className="flex items-center gap-2 mb-6">
-            {/*<button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>*/}
+            <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
             <h1 className="text-3xl font-bold text-black dark:text-white">
                     Sort Game
                 </h1>
