@@ -22,9 +22,10 @@ type SortGameViewProps = {
     onNextRound: () => void;
     streak: number;
     loading: boolean;
+    goToHome: () => void;
 };
 
-function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading }: Readonly<SortGameViewProps>) {
+function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, triesLeft, shake, nextRound, reset, submit, onNextRound, streak, loading, goToHome }: Readonly<SortGameViewProps>) {
     const [showInfo, setShowInfo] = useState(false);
     
     
@@ -32,6 +33,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
         <div className="page-background">
             
            <div className="flex items-center gap-2 mb-6">
+            <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
             <h1 className="text-3xl font-bold text-black dark:text-white">
                     Sort Game
                 </h1>
@@ -59,7 +61,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                             <Spinner />
                         ) : (
                             <div>
-                                <ul className="flex flex-row gap-4 bg-gray-200 dark:bg-gray-800 p-4 cursor-pointer rounded-xl shadow-inner justify-center">
+                                <ul className="flex flex-row gap-4 bg-gray-200 dark:bg-gray-800 p-4 cursor-pointer rounded-xl shadow-inner justify-center transform scale-40 sm:scale-50 md:scale-75 lg:scale-90 xl:scale-110">
                                     {content.map((item, index) => (
                                         <li
                                         key={item.id}

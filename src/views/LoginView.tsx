@@ -10,21 +10,23 @@ type Props = {
   onPasswordChange: (v: string) => void;
   onLogin: (e: FormEvent) => void;
   onSignup: (e: FormEvent) => void;
+  goToHome: () => void;
 };
 
 export default function LoginView({
   email, password, loading, err, success,
-  onEmailChange, onPasswordChange, onLogin, onSignup,
+  onEmailChange, onPasswordChange, onLogin, onSignup, goToHome
 }: Props) {
   return (
     <div className="page-background">
       {success && (
         <div className="fixed top-[40%] left-1/2 -translate-x-1/2 z-50" role="status" aria-live="polite">
-          <div className="rounded-lg bg-green-600 text-white px-4 py-2 shadow-md">{success}</div>
+          <div className="rounded-lg bg-col2 text-white px-4 py-2 shadow-md">{success}</div>
         </div>
       )}
 
       <div className="max-w-md mx-auto p-6">
+        <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
         <h1 className="text-black dark:text-white text-2xl font-semibold mb-4">Sign in</h1>
 
         <form className="space-y-3" onSubmit={onLogin}>

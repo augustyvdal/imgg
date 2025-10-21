@@ -5,12 +5,14 @@ import GuessTheMovieModel from "../models/GuessTheMovieModel";
 import GuessTheMovieView from "../views/GuessTheMovieView";
 import { Debounce } from "../utilities/Debounce";
 import { submitGameScore } from "../services/guessGameHistoryService";
+import { useNavigate } from "react-router-dom";
 
 type GuessTheMovieProps = {
     model: typeof GuessTheMovieModel;
 };
 
 export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovieProps) {
+    const navigate = useNavigate();
     const [state, setState] = useState(model.createInitialState());
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [message, setMessage] = useState("");
@@ -112,6 +114,10 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
         setSearchResults([]);
     }
 
+    const goToHome = () => {
+        navigate("/");
+    };
+
     return (
         <GuessTheMovieView
             loading={loading}
@@ -128,6 +134,7 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
             onQueryChange={onQueryChange}
             searchResults={searchResults}
             onSelectSuggestion={onSelectSuggestion}
+            goToHome={goToHome}
         />
     );
 });
