@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { getTopScores, type LeaderboardRow } from "../services/leaderboardService";
-import { getSortLeaderboard, type SortRow } from "../services/sortGameLeaderboardService";
+import { fetchLeaderboardData, LeaderboardData, LeaderboardRow } from "../models/LeaderboardModel";
 import LeaderboardView from "../views/LeaderboardView";
 import { useNavigate } from "react-router-dom";
 
-type Props = {
-  loadHigherLower?: (limit: number, category?: string) => Promise<LeaderboardRow[]>;
-  loadSort?: (limit: number, category?: string) => Promise<SortRow[]>;
-};
 
+<<<<<<< Updated upstream
 export default function LeaderboardPresenter({
   loadHigherLower = getTopScores,
   loadSort = getSortLeaderboard,    
@@ -16,6 +12,10 @@ export default function LeaderboardPresenter({
   const navigate = useNavigate();
   const [higherLowerRows, setHigherLowerRows] = useState<LeaderboardRow[]>([]);
   const [sortRows, setSortRows] = useState<SortRow[]>([]);
+=======
+export default function LeaderboardPresenter() {
+  const [data, setData] = useState<LeaderboardData>({ higherLowerRows: [], sortRows: [] });
+>>>>>>> Stashed changes
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [category, setCategory] = useState<string | undefined>(undefined);
@@ -24,11 +24,8 @@ export default function LeaderboardPresenter({
     setLoading(true);
     setError(null);
     try {
-      const higherLowerData = await loadHigherLower(20, category);
-      setHigherLowerRows(higherLowerData);
-
-      const sortData = await loadSort(20, category);
-      setSortRows(sortData);
+      const result = await fetchLeaderboardData(20, category);
+      setData(result);
     } catch (e: any) {
       setError(e.message || "Failed to load leaderboard data");
     } finally {
@@ -46,8 +43,8 @@ export default function LeaderboardPresenter({
 
   return (
     <LeaderboardView
-      higherLowerRows={higherLowerRows}
-      sortRows={sortRows}
+      higherLowerRows={data.higherLowerRows}
+      sortRows={data.sortRows}
       loading={loading}
       error={error}
       category={category}
