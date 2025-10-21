@@ -1,4 +1,4 @@
-﻿﻿// src/views/HigherLowerView.tsx
+﻿// src/views/HigherLowerView.tsx
 import React, { useState } from "react";
 import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
