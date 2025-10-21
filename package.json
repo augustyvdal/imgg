@@ -13,13 +13,10 @@
     "@fortawesome/react-fontawesome": "^3.1.0",
     "@supabase/supabase-js": "^2.75.1",
     "@tailwindcss/vite": "^4.1.14",
-<<<<<<< Updated upstream
     "framer-motion": "^12.23.24",
-=======
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
->>>>>>> Stashed changes
     "mobx": "^6.15.0",
     "mobx-react-lite": "^4.1.1",
     "react": "^18.3.1",

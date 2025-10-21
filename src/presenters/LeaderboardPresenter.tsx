@@ -4,18 +4,9 @@ import LeaderboardView from "../views/LeaderboardView";
 import { useNavigate } from "react-router-dom";
 
 
-<<<<<<< Updated upstream
-export default function LeaderboardPresenter({
-  loadHigherLower = getTopScores,
-  loadSort = getSortLeaderboard,    
-}: Props) {
-  const navigate = useNavigate();
-  const [higherLowerRows, setHigherLowerRows] = useState<LeaderboardRow[]>([]);
-  const [sortRows, setSortRows] = useState<SortRow[]>([]);
-=======
 export default function LeaderboardPresenter() {
+  const navigate = useNavigate();
   const [data, setData] = useState<LeaderboardData>({ higherLowerRows: [], sortRows: [] });
->>>>>>> Stashed changes
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [category, setCategory] = useState<string | undefined>(undefined);
