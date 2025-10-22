@@ -1,18 +1,31 @@
-import { forwardRef, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
+
 
 
 export type WysiwygEditorHandle = {
   getContent: () => string;
+  setContent: (html: string) => void;
+  focus: () => void;
 };
 
 /* loosely based on https://cruip.com/build-a-wysiwyg-editor-with-tailwind-css/ */
 const WysiwygEditor = forwardRef<WysiwygEditorHandle>((props, ref) => {
   const editorRef = useRef<HTMLDivElement>(null);
 
+  useImperativeHandle(ref, () => ({
+    getContent: () => editorRef.current?.innerHTML ?? "",
+    setContent: (html: string) => {
+      if (editorRef.current) editorRef.current.innerHTML = html;
+    },
+    focus: () => editorRef.current?.focus(),
+  }));
+  
   const exec = (command: string) => {
     document.execCommand(command, false, undefined);
     editorRef.current?.focus();
   };
+
+  
 
   return (
     <div className="w-full max-w-xl mx-auto text-center bg-white dark:bg-gray-900 rounded border border-gray-700 dark:border-gray-400 p-2 focus:outline-none focus:ring-2 focus:ring-col1">
