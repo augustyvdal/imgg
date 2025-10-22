@@ -97,6 +97,13 @@ export default {
     );
     },
 
+    revealCorrectOrder(state: SortGameState): SortGameState {
+        const sorted = [...state.allContent].sort(
+        (a, b) => (b.vote_average || 0) - (a.vote_average || 0)
+    );
+        return { ...state, allContent: sorted };
+    },
+
     decrementTriesRemaining(state: SortGameState): SortGameState {
     return {
         ...state,
@@ -129,5 +136,6 @@ export default {
         sortCategory: "",
         roundStreak: 0,
     };
+    
     },
 }

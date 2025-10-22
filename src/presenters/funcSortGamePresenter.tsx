@@ -30,12 +30,12 @@ export default observer (
         }, [model]);
 
         const handleCategorySelect = async (category: string) => {
+            const stateWithCategory = model.chooseSortCategory(sortState, category);
+            setSortState(stateWithCategory);
+            
             setLoading(true);
             didSubmitRef.current = false;
             
-            const stateWithCategory = model.chooseSortCategory(sortState, category);
-            //setSortState(stateWithCategory);
-
             const stateWithFetchedContent = await model.GetAllContent(stateWithCategory, 5);
             setSortState(stateWithFetchedContent);
             
@@ -81,8 +81,13 @@ export default observer (
                     console.error("Failed to submit score:", e);
                     });
                 }
-                setFeedbackMessage("That was your last try!");
+
+                const revealed = model.revealCorrectOrder(stateWithTriesDec);
+                setSortState(revealed);
+                setFeedbackMessage("That was your last try! The correct order has been revealed.");
+              
                 setResetReady(true);
+                setNextRoundReady(false);
             }
         };
 
