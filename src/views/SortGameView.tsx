@@ -2,6 +2,7 @@ import { Content } from "../services/apiClient";
 import ChooseCategory from "../components/ChooseCategory";
 import Spinner from "../components/Spinner";
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import {InfoContent, Popup} from "../components/Popup";
@@ -30,119 +31,144 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
     
     
     return (
-        <div className="page-background">
-            
-           <div className="flex items-center gap-2 mb-6">
-            <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
-            <h1 className="text-3xl font-bold text-black dark:text-white">
-                    Sort Game
+        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col3 pt-16 md:pt-20">
+            <div className="absolute inset-0">
+                <img
+                src="/assets/images/img.jpg"
+                alt="background"
+                className="w-full h-full object-cover opacity-10"
+                />
+            </div>
+            {category === "" && (
+            <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-12">
+                <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight drop-shadow-lg mb-6 text-center">
+                Sort Game
                 </h1>
+
                 <button
-                    onClick={() => setShowInfo((prev) => !prev)}
-                    className="btn--info"
-                    title="How to play"
+                onClick={() => setShowInfo(true)}
+                className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
+                title="How to play"
                 >
-                    <FontAwesomeIcon icon={faInfoCircle} size="lg" />
+                <FontAwesomeIcon icon={faInfoCircle} />
+                <span className="font-medium">How to Play</span>
                 </button>
             </div>
-
+            )}
             {showInfo && (
                 <Popup onClose={() => setShowInfo(false)}>
                     <InfoContent onClose={() => setShowInfo(false)} />
                 </Popup>
             )}
+            <AnimatePresence mode="wait">
+            {category === "" ? (
+                <motion.div
+                key="menu"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="relative z-10 flex flex-col items-center justify-center"
+                >
+                <ChooseCategory onSelect={onCategorySelect} />
+                <button className="btn--default" onClick={goToHome}>Game Hub</button>
+                </motion.div>
+            ) : (
+                <motion.div
+                key="game"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="relative z-10 flex flex-col items-center justify-center bg-col3/30 backdrop-blur-[3px] rounded-xl mx-auto px-6 py-8 md:px-12 md:py-10 mt-0 max-w-6xl w-[95%] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
+                >
+                {loading ? (
+                    <Spinner />
+                ) : (
+                    <div className="w-full flex flex-col items-center justify-center gap-6">
+                        <ul className="flex flex-row flex-wrap gap-4 bg-col2/20 dark:bg-col2/30 p-4 rounded-xl shadow-inner justify-center">
+                        {content.map((item, index) => (
+                            <li
+                            key={item.id}
+                            className={`bg-col2/30 dark:bg-col2/40 relative w-48 h-72 rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""} ${submit ? "cursor-pointer" : "cursor-not-allowed opacity-70"}`}
+                            draggable={submit}
+                            onDragStart={(e) => {
+                                if (!submit) { e.preventDefault(); return; }
+                                e.dataTransfer.setData("fromIndex", index.toString());
+                            }}
+                            onDragOver={(e) => (submit ? e.preventDefault() : undefined)}
+                            onDrop={(e) => {
+                                if (!submit) return;
+                                const fromIndex = parseInt(e.dataTransfer.getData("fromIndex"));
+                                onReorder(fromIndex, index);
+                            }}
+                            >
+                            <div className="absolute top-2 left-2 bg-col1 text-white text-xs cursor-pointer font-bold px-2 py-0.5 rounded-full">
+                                #{index + 1}
+                            </div>
+                            <p className="text-col4 text-center text-sm font-medium mt-6 break-words leading-tight">
+                                {item.title || item.name} <span className="text-col4/70 text-xs">({item.year})</span>
+                            </p>
+                            <img
+                                className="h-40 w-80 object-contain"
+                                src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
+                                alt=""
+                            />
+                            </li>
+                        ))}
+                        </ul>
 
-            <div className="flex flex-col items-center gap-4">
-                {category === "" && <ChooseCategory onSelect={onCategorySelect} />}
+                        <div className="flex flex-col items-center mt-4 gap-3">
+                        {submit ? (
+                            <button
+                            className="btn--default mt-4"
+                            data-cy="submit"
+                            onClick={onSubmit}
+                            >
+                            Submit
+                            </button>
+                        ) : ""}
 
-                {category !== "" && (
-                    <>
-                        {loading ? (
-                            <Spinner />
-                        ) : (
-                            <div>
-                                <ul className="flex flex-row gap-4 bg-gray-200 dark:bg-gray-800 p-4 cursor-pointer rounded-xl shadow-inner justify-center transform scale-40 sm:scale-50 md:scale-75 lg:scale-90 xl:scale-110">
-                                    {content.map((item, index) => (
-                                        <li
-                                        key={item.id}
-                                        className={`bg-gray-50 dark:bg-gray-700 relative w-48 h-72 cursor-pointer data-cy="sort-item" rounded-lg p-3 flex flex-col items-center overflow-hidden ${shake ? "shake" : ""}`}
-                                        draggable
-                                        onDragStart={(e) =>
-                                            e.dataTransfer.setData("fromIndex", index.toString())
-                                        }
-                                        onDragOver={(e) => e.preventDefault()}
-                                        onDrop={(e) => {
-                                            const fromIndex = parseInt(e.dataTransfer.getData("fromIndex"));
-                                            onReorder(fromIndex, index);
-                                        }}
-                                        >
-                                            <div className="absolute top-2 left-2 bg-col1 text-white text-xs cursor-pointer font-bold px-2 py-0.5 rounded-full">
-                                                #{index + 1}
-                                            </div>
-                                            <p className="text-gray-800 dark:text-gray-300 text-center text-sm cursor-pointer font-medium mt-6 break-words leading-tight">
-                                                {item.title || item.name} <span className="text-gray-500 text-xs">({item.year})</span>
-                                            </p>
-                                            <img className="h-40 w-80 object-contain"
-                                                src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
-                                                alt=""></img>
-                                        </li>
-                                        ))
-                                    }
-                                </ul>
-                            
-                                <div className="flex flex-col items-center mt-4 gap-3">
-                                    {
-                                        (submit) ? (
-                                        <button
-                                            className="btn--default mt-4"
-                                            data-cy="submit"
-                                            onClick={onSubmit}
-                                        >
-                                            Submit
-                                        </button>
-                                        ): ""
-                                    }
+                        {nextRound ? (
+                            <button
+                            className="btn--default"
+                            data-cy="next-round"
+                            onClick={onNextRound}
+                            >
+                            Next Round!
+                            </button>
+                        ) : ""}
 
-                                    {
-                                        (nextRound) ? (
-                                        <button 
-                                            className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
-                                            data-cy="next-round"
-                                            onClick={onNextRound}
-                                        >
-                                            Next Round!
-                                        </button>
-                                        ): ""
-                                    }
+                        {reset ? (
+                            <button
+                            className="btn--default"
+                            data-cy="reset"
+                            onClick={onReset}
+                            >
+                            Play Again!
+                            </button>
+                        ) : ""}
 
-                                    {
-                                        (reset) ? (
-                                        <button 
-                                            className="px-4 py-2 bg-col1 text-white cursor-pointer rounded mt-3" 
-                                            data-cy="reset"
-                                            onClick={onReset}
-                                        >
-                                            Play Again!
-                                        </button>
-                                        ): ""
-                                    }
-                                
-
-                                        {feedback && (
-                                            <div className="mt-4 w-full max-w-xs bg-red-100 text-red-800 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
-                                                {feedback}
-                                            </div>
-                                        )}
-
-                                    <p className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">Win streak: {streak}</p>
-                                </div>
+                        {feedback && (
+                            <div className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
+                            {feedback}
                             </div>
                         )}
-                    </>
-                )}
-            </div>
-        </div>
-    );
+
+                        <p className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
+                            Win streak: {streak}
+                        </p>
+                        <button className="btn--default mt-2" onClick={goToHome}>
+                            Game Hub
+                        </button>
+                    </div>
+                </div>
+            )}
+        </motion.div>
+    )}
+</AnimatePresence>
+</div>
+);
 }
 
 export default SortGameView;
