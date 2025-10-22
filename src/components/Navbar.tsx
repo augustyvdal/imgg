@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabaseClient";
 import { getMyProfile } from "../services/profileService";
 import logo from "/assets/images/logo_solid_bg.png";
+import { fetchAvatarUrl } from '../services/profilePictureService';
 
 function Options() {
 
@@ -30,21 +31,24 @@ const Navbar = () => {
 
     useEffect(() => {
         (async () => {
-            if (!user) return setAvatarUrl(null);
+        if (!user) return setAvatarUrl(null);
 
-            try {
-                const profile = await getMyProfile();
-                if (profile?.avatar_url) {
-                    const { data } = supabase.storage.from("avatars").getPublicUrl(profile.avatar_url);
-                    setAvatarUrl(data.publicUrl);
-                } else {
-                    setAvatarUrl(null);
-                }
-            } catch (err) {
-                console.error("Failed to load avatar:", err);
-                setAvatarUrl(null);
-            }
-        })();
+        try {
+        // Ensure session (and token) are available
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+        if (!token) {
+            console.warn("No session token yet, waiting...");
+            return; // don’t try to fetch yet
+        }
+
+        const url = await fetchAvatarUrl();
+        setAvatarUrl(url);
+        } catch (err) {
+        console.error("Failed to load avatar:", err);
+        setAvatarUrl(null);
+        }
+    })();
     }, [user]);
 
     const handleLoginClick = () => {
@@ -85,7 +89,7 @@ const Navbar = () => {
                         <div className="dropdown relative inline-block focus-within:outline-none">
                             <img
                                 src={avatarUrl ?? "https://placehold.co/96x96?text=👤"}
-                                alt="avatar"
+                                alt="avataralt"
                                 tabIndex={0} // make it focusable
                                 className="dropdown__trigger"
                             />
