@@ -1,4 +1,5 @@
 // src/index.tsx
+import './src/setupFetch';
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { observer } from "mobx-react-lite";
