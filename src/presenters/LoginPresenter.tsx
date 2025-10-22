@@ -46,6 +46,10 @@ export default function LoginPresenter() {
         }
     };
 
+    const goToHome = () => {
+        navigate("/");
+    };
+
     return (
         <LoginView
             email={email}
@@ -57,6 +61,7 @@ export default function LoginPresenter() {
             onPasswordChange={setPassword}
             onLogin={onLogin}
             onSignup={onSignup}
+            goToHome={goToHome}
         />
     );
 }

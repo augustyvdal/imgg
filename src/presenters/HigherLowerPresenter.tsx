@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import HigherLowerView from "../views/HigherLowerView";
 import HigherLowerModel from "../models/HigherLowerModel";
 import { submitScore } from "../services/leaderboardService";
+import { useNavigate } from "react-router-dom";
 import { set } from "mobx";
 
 type HigherLowerPresenterProps = {
@@ -10,6 +11,7 @@ type HigherLowerPresenterProps = {
 };
 
 export default observer(function HigherLowerPresenter({ model }: HigherLowerPresenterProps) {
+    const navigate = useNavigate();
     const [state, setState] = useState(model.createInitialState());
     // Success or fail message after guess
     const [message, setMessage] = useState<string>("");
@@ -88,6 +90,10 @@ export default observer(function HigherLowerPresenter({ model }: HigherLowerPres
         didSubmitRef.current = false;
     };
 
+    const goToHome = () => {
+        navigate("/");
+    };
+
     return (
         <HigherLowerView
         contentA = {state.contentA}
@@ -102,7 +108,7 @@ export default observer(function HigherLowerPresenter({ model }: HigherLowerPres
         chooseCategory={chooseCategory}
         onGuess={onGuess}
         prepareNewGame={prepareNewGame}
+        goToHome={goToHome}
         />
     );
 });
-

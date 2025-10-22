@@ -4,6 +4,7 @@ import { useState, useRef, useEffect} from "react";
 import funcSortGameModel from "../models/funcSortGameModel"
 import { Content } from "../services/apiClient";
 import { submitSortStreak } from "../services/sortGameLeaderboardService"
+import { useNavigate } from "react-router-dom";
 import { set } from "mobx";
 
 type SortGamePresenterProps = {
@@ -13,6 +14,7 @@ type SortGamePresenterProps = {
 
 export default observer (
     function SortGamePresenter({model}: SortGamePresenterProps) {
+        const navigate = useNavigate();
         const [sortState, setSortState] = useState(model.createInitSortGameState());
         const [loading, setLoading] = useState(false);
         const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
@@ -29,12 +31,12 @@ export default observer (
         }, [model]);
 
         const handleCategorySelect = async (category: string) => {
+            const stateWithCategory = model.chooseSortCategory(sortState, category);
+            setSortState(stateWithCategory);
+            
             setLoading(true);
             didSubmitRef.current = false;
             
-            const stateWithCategory = model.chooseSortCategory(sortState, category);
-            //setSortState(stateWithCategory);
-
             const stateWithFetchedContent = await model.GetAllContent(stateWithCategory, 5);
             setSortState(stateWithFetchedContent);
             
@@ -75,8 +77,11 @@ export default observer (
                 setSubmitReady(true);
             } else {
                 submitRoundStreak();
-                setFeedbackMessage("That was your last try!");
+                const revealed = model.revealCorrectOrder(stateWithTriesDec);
+                setSortState(revealed);
+                setFeedbackMessage("That was your last try! The correct order has been revealed.");
                 setResetReady(true);
+                setNextRoundReady(false);
             }
         };
 
@@ -102,6 +107,10 @@ export default observer (
             const stateWithReset = model.resetSortGame(sortState);
             setSortState(stateWithReset);
             newRoundOrReset();
+        };
+
+        const goToHome = () => {
+            navigate("/");
         };
 
         const submitRoundStreak = async () => {
@@ -134,6 +143,7 @@ export default observer (
         onNextRound={handleNextRound}
         streak={sortState.roundStreak}
         loading={loading}
+        goToHome={goToHome}
         />
         );
     }

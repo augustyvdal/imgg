@@ -70,6 +70,10 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
         setState(newState);
     }
 
+    const goToHome = () => {
+        navigate("/");
+    };
+
 
 
     if (loading || !user) return null;
@@ -91,6 +95,7 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
             loadingGames={loadingGames}
             games={games}
             onRefresh={() => setRefreshKey(k => k + 1)}
+            goToHome={goToHome}
         />
     );
 }

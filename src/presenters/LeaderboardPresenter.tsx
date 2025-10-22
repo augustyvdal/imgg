@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTopScores, type LeaderboardRow } from "../services/leaderboardService";
 import { getSortLeaderboard, type SortRow } from "../services/sortGameLeaderboardService";
 import LeaderboardView from "../views/LeaderboardView";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   loadHigherLower?: (limit: number, category?: string) => Promise<LeaderboardRow[]>;
@@ -12,6 +13,7 @@ export default function LeaderboardPresenter({
   loadHigherLower = getTopScores,
   loadSort = getSortLeaderboard,    
 }: Props) {
+  const navigate = useNavigate();
   const [higherLowerRows, setHigherLowerRows] = useState<LeaderboardRow[]>([]);
   const [sortRows, setSortRows] = useState<SortRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +40,10 @@ export default function LeaderboardPresenter({
     load();
   }, [category]);
 
+  const goToHome = () => {
+    navigate("/");
+  };
+
   return (
     <LeaderboardView
       higherLowerRows={higherLowerRows}
@@ -47,6 +53,7 @@ export default function LeaderboardPresenter({
       category={category}
       onCategoryChange={setCategory}
       onReload={load}
+      goToHome={goToHome}
     />
   );
 }

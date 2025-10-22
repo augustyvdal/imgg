@@ -5,17 +5,20 @@ import GuessTheMovieModel from "../models/GuessTheMovieModel";
 import GuessTheMovieView from "../views/GuessTheMovieView";
 import { Debounce } from "../utilities/Debounce";
 import { submitGameScore } from "../services/guessGameHistoryService";
+import { useNavigate } from "react-router-dom";
 
 type GuessTheMovieProps = {
     model: typeof GuessTheMovieModel;
 };
 
 export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovieProps) {
+    const navigate = useNavigate();
     const [state, setState] = useState(model.createInitialState());
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+    const [lastScore, setLastScore] = useState(0);
 
     const [searchResults, setSearchResults] = useState<{ id: number; image: string; title: string }[]>([]);
     const [query, setQuery] = useState("");
@@ -40,12 +43,12 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
         })();
     }, [debouncedQuery, state.category]);
 
-    async function startNewRound() {
+    async function startNewRound(currentState = state) {
         if (isStartingFlag.current) return;
         isStartingFlag.current = true;
 
         setLoading(true);
-        const newState = await model.startNewRound(state);
+        const newState = await model.startNewRound(currentState);
         setState(newState);
         setLoading(false);
 
@@ -53,15 +56,16 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
     }
 
     async function makeGuess(guess: string) {
+        const prevScore = state.totalScore;
         const { state: newState, correct, lose } = model.makeGuess(state, guess);
         setState(newState);
 
         if (correct) {
             setMessage(`Correct! The movie was "${newState.title.title}".`);
-            await submitIfNeeded(newState);
-            setTimeout(() => startNewRound(), 1500);
+            setTimeout(() => startNewRound(newState), 1500);
         } else if (lose) {
             setMessage(`You lose! The movie was "${newState.title.title}".`);
+            setLastScore(prevScore);
             await submitIfNeeded(newState);
             setGameOver(true);
         } else {
@@ -88,6 +92,7 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
         setSelectedCategory("");
         setSearchResults([]);
         setQuery("");
+        setLastScore(0);
         didSubmitRef.current = false;
     }
 
@@ -112,12 +117,17 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
         setSearchResults([]);
     }
 
+    const goToHome = () => {
+        navigate("/");
+    };
+
     return (
         <GuessTheMovieView
             loading={loading}
             clues={model.getCurrentClues(state)}
             message={message}
             score={state.totalScore}
+            finalScore={lastScore}
             gameOver={gameOver}
             onGuess={makeGuess}
             onRestart={reset}
@@ -128,6 +138,7 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
             onQueryChange={onQueryChange}
             searchResults={searchResults}
             onSelectSuggestion={onSelectSuggestion}
+            goToHome={goToHome}
         />
     );
 });

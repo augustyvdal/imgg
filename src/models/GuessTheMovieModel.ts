@@ -46,6 +46,7 @@ export default {
             clues,
             currentClueIndex: -1,
             gameOver: false,
+            totalScore: state.totalScore,
         };
     },
 
@@ -80,6 +81,7 @@ export default {
             ...state,
             currentClueIndex: nextClueIndex,
             gameOver: lose,
+            totalScore: lose ? 0 : state.totalScore
         };
 
         return {
