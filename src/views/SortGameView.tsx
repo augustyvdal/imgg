@@ -39,20 +39,27 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                 className="w-full h-full object-cover opacity-10"
                 />
             </div>
+            {category === "" && (
             <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-12">
                 <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight drop-shadow-lg mb-6 text-center">
-                    Sort Game
+                Sort Game
                 </h1>
 
                 <button
-                    onClick={() => setShowInfo(true)}
-                    className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
-                    title="How to play"
+                onClick={() => setShowInfo(true)}
+                className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
+                title="How to play"
                 >
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    <span className="font-medium">How to Play</span>
+                <FontAwesomeIcon icon={faInfoCircle} />
+                <span className="font-medium">How to Play</span>
                 </button>
             </div>
+            )}
+            {showInfo && (
+                <Popup onClose={() => setShowInfo(false)}>
+                    <InfoContent onClose={() => setShowInfo(false)} />
+                </Popup>
+            )}
             <AnimatePresence mode="wait">
             {category === "" ? (
                 <motion.div
@@ -73,12 +80,12 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative z-10 flex flex-col items-center bg-col3/30 backdrop-blur-[3px] rounded-xl mx-auto px-6 py-8 md:px-12 md:py-10 mt-6 max-w-6xl w-[95%]"
+                className="relative z-10 flex flex-col items-center justify-center bg-col3/30 backdrop-blur-[3px] rounded-xl mx-auto px-6 py-8 md:px-12 md:py-10 mt-0 max-w-6xl w-[95%] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
                 >
                 {loading ? (
                     <Spinner />
                 ) : (
-                    <div>
+                    <div className="w-full flex flex-col items-center justify-center gap-6">
                         <ul className="flex flex-row flex-wrap gap-4 bg-col2/20 dark:bg-col2/30 p-4 rounded-xl shadow-inner justify-center">
                         {content.map((item, index) => (
                             <li
