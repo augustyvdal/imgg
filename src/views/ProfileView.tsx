@@ -1,5 +1,5 @@
 // src/views/ProfileView.tsx
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import WysiwygEditor, { WysiwygEditorHandle } from "../components/WysiwygEditor";
 import { useRef } from "react";
 
@@ -57,6 +57,11 @@ export default function ProfileView({
     console.log(html);
   };
 
+  useEffect(() => {
+    editorRef.current?.setContent("<b>Hello</b> world!");
+  }, []);
+
+
   return (
     <div className="page-background">
       <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
@@ -102,12 +107,6 @@ export default function ProfileView({
           />
         </div>
 
-        <div>
-          <label className="text-black dark:text-white block text-sm mb-1">Bio</label>
-          <WysiwygEditor ref={editorRef} />
-          <button className="btn--default" onClick={logContent}>Log Content</button>
-        </div>
-
         <button
           className="btn--default"
           disabled={saving}
@@ -115,6 +114,12 @@ export default function ProfileView({
           {saving ? "Saving..." : "Save changes"}
         </button>
       </form>
+
+      <div>
+          <label className="text-black dark:text-white block text-sm mb-1">Bio</label>
+          <WysiwygEditor ref={editorRef} />
+          <button className="btn--default" onClick={logContent}>Log Content</button>
+        </div>
 
       {err && <p className="text-red-600">{err}</p>}
       {ok && <p className="text-green-700">{ok}</p>}
