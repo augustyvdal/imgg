@@ -42,7 +42,7 @@ export default function HigherLowerView({
     const [showInfo, setShowInfo] = useState(false);
 
     return (
-        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col3 pt-16 md:pt-20">
+        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col4/40 dark:bg-col3 pt-16 md:pt-20">
             <div className="absolute inset-0">
             <img
                 src="/assets/images/img.jpg"
@@ -94,18 +94,18 @@ export default function HigherLowerView({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative z-10 flex flex-col items-center bg-col3/30 backdrop-blur-[3px] rounded-xl mx-auto px-6 py-8 md:px-12 md:py-10 mt-0 max-w-6xl w-[95%] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
+                className="relative z-10 flex flex-col items-center bg-col4/30 dark:bg-col3/30 backdrop-blur-[3px] rounded-xl mx-auto px-6 py-8 md:px-12 md:py-10 mt-0 max-w-6xl w-[95%] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
                 >
                 {loading ? (
                     <Spinner />
                 ) : (
                     <div className="w-full flex flex-col items-center gap-6">
-                    <h2 className="mt-1 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
+                    <h2 className="mt-1 w-full max-w-xs bg-col2 text-col4 font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
                         Current Score: {score}
                     </h2>
                     <div className="w-full flex flex-row justify-center gap-6">
                         <div className="flex flex-col items-center gap-2">
-                        <h3 className="text-col4 text-xl font-bold text-center h-16 flex items-center justify-center px-2">
+                        <h3 className="text-col3 dark:text-col4 text-xl font-bold text-center h-16 flex items-center justify-center px-2">
                             {contentA?.title || contentA?.name}
                         </h3>
                         <img
@@ -113,15 +113,15 @@ export default function HigherLowerView({
                             src={`https://image.tmdb.org/t/p/w200${contentA?.poster_path}`}
                             alt={contentA?.title || contentA?.name || ""}
                         />
-                        <p className="text-col4 text-lg font-semibold text-center h-16 flex items-center justify-center">
+                        <p className="text-col3 dark:text-col4 text-lg font-semibold text-center h-16 flex items-center justify-center">
                             Rating: {contentA?.vote_average}
                         </p>
                         </div>
 
-                        <p className="text-col4 text-3xl font-extrabold self-center">VS</p>
+                        <p className="text-col3 dark:text-col4 text-3xl font-extrabold self-center">VS</p>
 
                         <div className="flex flex-col items-center gap-2">
-                        <h3 className="text-col4 text-xl font-bold text-center h-16 flex items-center justify-center px-2">
+                        <h3 className="text-col3 dark:text-col4 text-xl font-bold text-center h-16 flex items-center justify-center px-2">
                             {contentB?.title || contentB?.name}
                         </h3>
                         <img
@@ -129,7 +129,7 @@ export default function HigherLowerView({
                             src={`https://image.tmdb.org/t/p/w200${contentB?.poster_path}`}
                             alt={contentB?.title || contentB?.name || ""}
                         />
-                        <p className="text-col4 text-lg font-semibold text-center h-16 flex items-center justify-center">
+                        <p className="text-col3 dark:text-col4 text-lg font-semibold text-center h-16 flex items-center justify-center">
                             {showRatings ? `Rating: ${contentB?.vote_average}` : "Rating: ???"}
                         </p>
 

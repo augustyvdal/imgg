@@ -60,7 +60,7 @@ export default function GuessTheMovieView({
     };
 
     return (
-        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col3">
+        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col4/80 dark:bg-col3 ">
             <div className="absolute inset-0">
                 <img
                     src="/assets/images/img.jpg"
@@ -142,7 +142,7 @@ export default function GuessTheMovieView({
                                     <div className=" rounded-xs p-6 bg-col1/0 space-y-5 w-[max:100%]">
                                         {/* Starting Info */}
                                         {startingInfo.length > 0 && (
-                                            <div className="space-y-3 text-col4">
+                                            <div className="space-y-3 text-col3 dark:text-col4">
                                                 {startingInfo.map((info, i) => (
                                                     <motion.p
                                                         key={i}
@@ -171,8 +171,8 @@ export default function GuessTheMovieView({
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ duration: 0.4, delay: i * 0.1 }}
                                                 >
-                                                    <h3 className="text-lg font-semibold text-col4">Clue {i + 1}</h3>
-                                                    <p className="text-col4 mt-1 leading-relaxed">{clue}</p>
+                                                    <h3 className="text-lg font-semibold text-col3 dark:text-col4">Clue {i + 1}</h3>
+                                                    <p className="text-col3 dark:text-col4 mt-1 leading-relaxed">{clue}</p>
                                                 </motion.div>
                                             ))}
 
@@ -185,10 +185,10 @@ export default function GuessTheMovieView({
                                                         animate={{ opacity: 0.5 }}
                                                         transition={{ duration: 0.3 }}
                                                     >
-                                                        <h3 className="text-lg font-semibold text-gray-500">
+                                                        <h3 className="text-lg font-semibold text-col3/90 dark:text-col4/40">
                                                             Clue {clues.length + j + 1}
                                                         </h3>
-                                                        <p className="text-gray-600 mt-1 italic">Locked</p>
+                                                        <p className="text-col3/90 dark:text-col4/40 mt-1 italic">Locked</p>
                                                     </motion.div>
                                                 ))}
                                         </div>
@@ -233,9 +233,9 @@ export default function GuessTheMovieView({
                                     */}
 
                                     <div className="text-center mb-2">
-                                        <p className="text-lg text-gray-300">
+                                        <p className="text-lg dark:text-col4/80">
                                             Current Score:{" "}
-                                            <span className="font-bold text-white">{score}</span>
+                                            <span className="font-bold text-col3dark:text-col4">{score}</span>
                                         </p>
                                     </div>
 
