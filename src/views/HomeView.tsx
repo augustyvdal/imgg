@@ -32,7 +32,7 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                 />
             </div>
 
-            <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-col3 via-col3/50 to-col3/10 backdrop-blur-[3px]" />
+            <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-col4 dark:from-col3 via-col4/30 dark:via-col3/50 to-col4/10 dark:to-col3/10 backdrop-blur-[3px]" />
 
             <div className="relative z-10 flex flex-row h-full">
                 <motion.div
@@ -41,17 +41,17 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                     transition={{ duration: 1 }}
                     className="absolute bottom-16 left-12 md:left-20"
                 >
-                    <h1 className="text-7xl md:text-8xl font-extrabold tracking-tight drop-shadow-2xl">
+                    <h1 className="text-col3 dark:text-col4 text-7xl md:text-8xl font-extrabold tracking-tight drop-shadow-2xl">
                         IMGG
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-200 mt-2 font-medium">
-                        Internet's Movie Guessing Games!
+                    <p className="text-xl md:text-2xl text-col3 dark:text-col4 mt-2 font-medium">
+                        Internet Movie Guessing Games!
                     </p>
                 </motion.div>
 
-                <div className="ml-auto flex items-end justify-center w-full md:w-[40%] bg-col3/98 backdrop-blur-[5px] shadow-2xl h-screen">
+                <div className="ml-auto flex items-end justify-center w-full md:w-[40%] bg-col4/70 dark:bg-col3/98 backdrop-blur-[5px] shadow-2xl h-screen">
                     <div className="flex flex-col w-full text-center">
-                        <h1 className="text-5xl font-semibold mb-20">Game Hub</h1>
+                        <h1 className="text-5xl font-semibold mb-20 text-col3 dark:text-col4">Game Hub</h1>
                         <div className="flex flex-col w-full gap-1">
                             {[
                                 { label: "Guess the Movie", onClick: onStartGuessTheMovie },

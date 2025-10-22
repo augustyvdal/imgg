@@ -31,7 +31,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
     
     
     return (
-        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col3 pt-16 md:pt-20">
+        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bgcol-4 dark:bg-col3 pt-16 md:pt-20">
             <div className="absolute inset-0">
                 <img
                 src="/assets/images/img.jpg"
@@ -80,7 +80,7 @@ function SortGameView({ content, onReorder, onSubmit, onReset, feedback, onCateg
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative z-10 flex flex-col items-center justify-center bg-col3/30 backdrop-blur-[3px] rounded-xl mx-auto px-6 py-8 md:px-12 md:py-10 mt-0 max-w-6xl w-[95%] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
+                className="relative z-10 flex flex-col items-center justify-center bg-col4/40 dark:bg-col3/30 backdrop-blur-[3px] rounded-xl mx-auto px-6 py-8 md:px-12 md:py-10 mt-0 max-w-6xl w-[95%] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
                 >
                 {loading ? (
                     <Spinner />
