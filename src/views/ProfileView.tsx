@@ -1,5 +1,7 @@
 // src/views/ProfileView.tsx
 import React, { FormEvent } from "react";
+import WysiwygEditor, { WysiwygEditorHandle } from "../components/WysiwygEditor";
+import { useRef } from "react";
 
 
 type Props = {
@@ -48,6 +50,13 @@ export default function ProfileView({
   onRefresh,
   goToHome,
 }: Props) {
+  const editorRef = useRef<WysiwygEditorHandle>(null);
+  
+  const logContent = () => {
+    const html = editorRef.current?.getContent();
+    console.log(html);
+  };
+
   return (
     <div className="page-background">
       <button className="btn--default absolute left-6" onClick={goToHome}>Game Hub</button>
@@ -91,6 +100,12 @@ export default function ProfileView({
             value={username}
             onChange={(e) => onUsernameChange(e.target.value)}
           />
+        </div>
+
+        <div>
+          <label className="text-black dark:text-white block text-sm mb-1">Bio</label>
+          <WysiwygEditor ref={editorRef} />
+          <button className="btn--default" onClick={logContent}>Log Content</button>
         </div>
 
         <button
