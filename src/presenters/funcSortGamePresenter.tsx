@@ -3,7 +3,6 @@ import {observer} from "mobx-react-lite"
 import { useState, useRef, useEffect} from "react";
 import funcSortGameModel from "../models/funcSortGameModel"
 import { Content } from "../services/apiClient";
-import { submitSortStreak } from "../services/sortGameLeaderboardService"
 import { useNavigate } from "react-router-dom";
 import { set } from "mobx";
 
@@ -76,10 +75,17 @@ export default observer (
                 setTimeout(() => setShake(false), 500);
                 setSubmitReady(true);
             } else {
-                submitRoundStreak();
+                if (sortState.roundStreak > 0 && sortState.sortCategory) {
+                    didSubmitRef.current = true;
+                    model.gameScoreSave(stateWithTriesDec).catch((e) => {
+                    console.error("Failed to submit score:", e);
+                    });
+                }
+
                 const revealed = model.revealCorrectOrder(stateWithTriesDec);
                 setSortState(revealed);
                 setFeedbackMessage("That was your last try! The correct order has been revealed.");
+              
                 setResetReady(true);
                 setNextRoundReady(false);
             }
@@ -113,19 +119,6 @@ export default observer (
             navigate("/");
         };
 
-        const submitRoundStreak = async () => {
-            if (didSubmitRef.current) return;
-
-            if (sortState.roundStreak != null && sortState.sortCategory) {
-                didSubmitRef.current = true;
-                try {
-                    await submitSortStreak(sortState.roundStreak, sortState.sortCategory);
-                } catch (e) {
-                    console.error("Failed to submit score:", e);
-                }
-            }
-        };
-
         return (
         <SortGameView
         content={sortState.allContent}
@@ -147,6 +140,6 @@ export default observer (
         />
         );
     }
-)
+);
 
 

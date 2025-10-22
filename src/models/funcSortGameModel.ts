@@ -1,5 +1,6 @@
 //import { faFolderMinus } from "@fortawesome/free-solid-svg-icons";
 import { GetContentFromTMDB, Content } from "../services/apiClient";
+import { supabase } from "../services/supabaseClient";
 
 export type SortGameState = {
         allContent: Content[];
@@ -18,6 +19,33 @@ export default {
         maxTries: 3,
         triesRemaining: 3,
         roundStreak: 0,
+        }
+    },
+
+    // Backend score submit to supabase
+    async gameScoreSave(state: SortGameState): Promise<void> {
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+
+        if (userError || !userData?.user) {
+            throw new Error("User not logged in or token invalid");
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+
+        const response = await fetch("/api/sortLeaderboard", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                round_streak: state.roundStreak,
+                category: state.sortCategory,
+            }),
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to save game score: ${response.statusText}`);
         }
     },
 
