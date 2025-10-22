@@ -10,25 +10,25 @@ leaderboardRouter.get("/", async (req: Request, res: Response) => {
 
   try {
     // Build base query for Higher/Lower
-    let hlQuery = supabase
+    const hlBase = supabase
       .from("leaderboard")
       .select("id, username, score, category, created_at")
       .order("score", { ascending: false })
       .limit(limit);
 
-    if (category) hlQuery = hlQuery.eq("category", category);
+    const hlQuery = category ? hlBase.eq("category", category) : hlBase;
 
     const { data: higherLowerRows, error: hlError } = await hlQuery;
     if (hlError) throw hlError;
 
     // Build base query for Sort Game
-    let sortQuery = supabase
+    const sortBase = supabase
       .from("sort_game_leaderboard")
       .select("id, username, round_streak, category, created_at")
       .order("round_streak", { ascending: false })
       .limit(limit);
 
-    if (category) sortQuery = sortQuery.eq("category", category);
+    const sortQuery = category ? sortBase.eq("category", category) : sortBase;
 
     const { data: sortRows, error: sortError } = await sortQuery;
     if (sortError) throw sortError;

@@ -26,8 +26,11 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
 
     useEffect(() => {
         if (!loading && user) {
-            model.init(state).then(setState);
-        }
+        (async () => {
+            const newState = await model.init(state);
+            setState(newState);
+        })();
+    }
     }, [user, loading]);
 
     useEffect(() => {
