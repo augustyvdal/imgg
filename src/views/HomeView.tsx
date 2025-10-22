@@ -6,17 +6,17 @@ import poster3 from "/assets/images/poster3.png";
 import poster4 from "/assets/images/poster4.jpg";
 import poster5 from "/assets/images/poster5.webp";
 import poster6 from "/assets/images/poster6.jpg";
-
+import logo from "/assets/images/logo_solid_bg.png";
 
 type Props = {
-  onStartGuessTheMovie: () => void;
-  onStartHigherLower: () => void;
-  onStartSortGame: () => void;
+    onStartGuessTheMovie: () => void;
+    onStartHigherLower: () => void;
+    onStartSortGame: () => void;
 };
 
 export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onStartSortGame }: Props) {
     return (
-        <div className="relative min-h-screen overflow-hidden text-col4 bg-col4/70 font-sans">
+        <div className="relative min-h-screen overflow-hidden text-col4 bg-col6/70 font-sans">
             <div className="absolute inset-0 grid grid-rows-3 gap-0">
                 <MovingBackground
                     images={[poster1, poster2, poster6, poster5]}
@@ -32,7 +32,7 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                 />
             </div>
 
-            <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-col4 dark:from-col3 via-col4/30 dark:via-col3/50 to-col4/10 dark:to-col3/10 backdrop-blur-[3px]" />
+            <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-col4 via-col4/30 to-col4/10 dark:from-col6/70 dark:via-col6/50 dark:to-col6/10 backdrop-blur-[00px]" />
 
             <div className="relative z-10 flex flex-row h-full">
                 <motion.div
@@ -49,7 +49,26 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                     </p>
                 </motion.div>
 
-                <div className="ml-auto flex items-end justify-center w-full md:w-[40%] bg-col4/70 dark:bg-col3/98 backdrop-blur-[5px] shadow-2xl h-screen">
+                <div className="ml-auto flex flex-col items-center justify-between w-full md:w-[40%] bg-col4/70 dark:bg-col3/98 backdrop-blur-[20px] shadow-2xl h-screen">
+                    <div className="flex flex-col items-center text-center w-full gap-6 mt-20">
+                        <motion.img
+                            src={logo}
+                            alt="IMGG Logo"
+                            className="w-40 h-40 object-contain mb-4 drop-shadow-lg"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                        />
+                        Flavour text
+                        <motion.p
+                            className="text-lg text-gray-100 max-w-xs leading-relaxed"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3, duration: 0.8 }}
+                        >
+                        </motion.p>
+                    </div>
+
                     <div className="flex flex-col w-full text-center">
                         <h1 className="text-5xl font-semibold mb-20 text-col3 dark:text-col4">Game Hub</h1>
                         <div className="flex flex-col w-full gap-1">
@@ -58,19 +77,12 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                                 { label: "Higher / Lower", onClick: onStartHigherLower },
                                 { label: "Sort Game", onClick: onStartSortGame },
                             ].map(({ label, onClick }, i) => (
-                                <div
-                                    key={i}
-                                    onClick={onClick}
-                                    className="group relative cursor-pointer overflow-hidden p-10 flex items-center justify-between
-                                            transition-all duration-500 ease-out
-                                            bg-gradient-to-r from-col2 via-col2/50 to-transparent
-                                            hover:from-col1/80"
-                                    >
+                                <div key={i} onClick={onClick} className="group relative cursor-pointer overflow-hidden p-10 flex items-center justify-between transition-all duration-500 ease-out bg-gradient-to-r hover:from-col1/80" >
                                     <span className="text-xl font-semibold transition-transform duration-500 group-hover:translate-x-3">
-                                    {label}
+                                        {label}
                                     </span>
-                                    <span
-                                        className="text-2xl opacity-0 translate-x-[-10px] transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">➜
+                                    <span className="text-2xl opacity-100 translate-x-[-10px] transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">
+                                        ➜
                                     </span>
                                 </div>
                             ))}

@@ -2,7 +2,6 @@ import { useEffect, useState, FormEvent } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ProfileView from "../views/ProfileView";
-import { getMatchHistory } from "../services/guessGameHistoryService";
 
 
 type ProfilePresenterProps = {
@@ -27,8 +26,11 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
 
     useEffect(() => {
         if (!loading && user) {
-            model.init(state).then(setState);
-        }
+        (async () => {
+            const newState = await model.init(state);
+            setState(newState);
+        })();
+    }
     }, [user, loading]);
 
     useEffect(() => {
@@ -41,18 +43,17 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
     setLoadingGames(true);
     setGames([]);
 
-    getMatchHistory(category)
-        .then(list => {
-        // ensure it's an array of numbers & newest first
-        const clean = (list ?? []).filter((x): x is number => typeof x === "number");
+    model.fetchMatchHistory(category)
+    .then(scores => {
+        const clean = scores.filter((x): x is number => typeof x === "number");
         setGames(clean.slice().reverse());
-        })
-        .catch(e => {
+    })
+    .catch(e => {
         console.error("Failed to load match history:", e);
-        })
-        .finally(() => setLoadingGames(false));
+        setGames([]);
+    })
+    .finally(() => setLoadingGames(false));
     }, [user, category, refreshKey]);
-
 
     async function onSave(e: FormEvent) {
         e.preventDefault();
@@ -62,7 +63,6 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
         setState(newState);
     }
 
-    
     async function handlePickFile(file: File) {
         setState(s => ({ ...s, uploading: true, error: null }));
 
@@ -73,8 +73,6 @@ export default function ProfilePresenter({ model }: ProfilePresenterProps) {
     const goToHome = () => {
         navigate("/");
     };
-
-
 
     if (loading || !user) return null;
 

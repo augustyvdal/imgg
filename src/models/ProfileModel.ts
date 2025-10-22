@@ -1,5 +1,11 @@
 import { supabase } from "../services/supabaseClient";
-import { getMyProfile, updateMyProfile, uploadAvatar, type Profile } from "../services/profileService";
+
+type Profile = {
+  id: string;
+  username: string | null;
+  avatar_url: string | null;
+  updated_at: string;
+};
 
 type ProfileModelState = {
     profile: Profile | null | undefined;
@@ -22,9 +28,54 @@ export default {
         };
     },
 
+    async fetchMatchHistory(category: "movie" | "tv"): Promise<number[]>{
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+
+        if (userError || !userData?.user) {
+            throw new Error("User not logged in or token invalid");
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+
+        const response = await fetch(`/api/guessGame?category=${category}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error(`Failed to save game score: ${response.statusText}`);
+        }
+        const historyData = await response.json();
+
+        const scores = Array.isArray(historyData.scores) ? historyData.scores : [];
+        return scores;
+    },
+
     async init(state: ProfileModelState): Promise<ProfileModelState> {
         try {
-            const p = await getMyProfile();
+            const { data: userData, error: userError } = await supabase.auth.getUser();
+
+            if (userError || !userData?.user) {
+                throw new Error("User not logged in or token invalid");
+            }
+
+            const { data: { session } } = await supabase.auth.getSession();
+            const token = session?.access_token;
+
+            const response = await fetch(`/api/profile`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+
+            if (!response.ok) {
+                throw new Error(`Failed to save game score: ${response.statusText}`);
+            }
+            const p = await response.json();
             const avatarPublicUrl = p?.avatar_url
                 ? supabase.storage.from("avatars").getPublicUrl(p.avatar_url).data.publicUrl
                 : null;
@@ -47,7 +98,23 @@ export default {
 
     async setUsername(state: ProfileModelState, username: string | null): Promise<ProfileModelState> {
         try {
-            await updateMyProfile({ username });
+            const { data: userData, error: userError } = await supabase.auth.getUser();
+
+            if (userError || !userData?.user) {
+                throw new Error("User not logged in or token invalid");
+            }
+
+            const { data: { session } } = await supabase.auth.getSession();
+            const token = session?.access_token;
+
+            await fetch("/api/profile", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ username })
+            });
             return {
                 ...state,
                 saving: false,
@@ -65,7 +132,28 @@ export default {
 
     async setAvatar(state: ProfileModelState, file: File): Promise<ProfileModelState> {
         try {
-            const { path, publicUrl } = await uploadAvatar(file);
+            const { data: userData, error: userError } = await supabase.auth.getUser();
+
+            if (userError || !userData?.user) {
+                throw new Error("User not logged in or token invalid");
+            }
+
+            const { data: { session } } = await supabase.auth.getSession();
+            const token = session?.access_token;
+
+            const form = new FormData();
+            form.append("file", file);
+
+            const res = await fetch("/api/profile/avatar", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: form,
+            });
+
+            const { path, publicUrl } = await res.json();
+
             const updatedProfile = state.profile
                 ? { ...state.profile, avatar_url: path }
                 : state.profile;

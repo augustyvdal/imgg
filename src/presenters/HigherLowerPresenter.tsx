@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import HigherLowerView from "../views/HigherLowerView";
 import HigherLowerModel from "../models/HigherLowerModel";
-import { submitScore } from "../services/leaderboardService";
 import { useNavigate } from "react-router-dom";
 import { set } from "mobx";
 
@@ -32,18 +31,6 @@ export default observer(function HigherLowerPresenter({ model }: HigherLowerPres
         setState(model.createInitialState());
     }, [model]);
 
-    const submitIfNeeded = async () => {
-        if (didSubmitRef.current) return;
-        if (state.score > 0 && state.category) {
-            didSubmitRef.current = true;
-            try {
-                await submitScore(state.score, state.category);
-            } catch (e) {
-                console.error("Failed to submit score:", e);
-            }
-        }
-    };
-
     const onGuess = (guess: "higher" | "lower") => {
         if (buttonsDisabled) return;
 
@@ -62,9 +49,14 @@ export default observer(function HigherLowerPresenter({ model }: HigherLowerPres
             setMessage("");
         }, 1500);
         } else {
-        setMessage("Wrong! Game Over.");
-        setGameOver(true);
-        submitIfNeeded();
+            setMessage("Wrong! Game Over.");
+            setGameOver(true);
+            if (state.score > 0 && state.category) {
+                didSubmitRef.current = true;
+                model.gameScoreSave(newState).catch((e) => {
+                console.error("Failed to submit score:", e);
+                });
+            }
         }
     };
 

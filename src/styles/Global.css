@@ -5,10 +5,6 @@
     src: url("../../public/assets/fonts/Ubuntu-Medium.ttf") format("truetype");
 }
 
-@theme {
-    --font-ubuntu: "Ubuntu";
-}
-
 
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
@@ -22,6 +18,14 @@
     --color-col3: #25283d;
     --color-col4: #e3e3e3;
     --color-col5: #c3a995;
+    --color-col6: #000000;
+    --font-ubuntu: "Ubuntu";
+}
+
+@layer base {
+    body {
+        @apply bg-col3 text-col4;
+    }
 }
 
 /* Dropdown Block */
