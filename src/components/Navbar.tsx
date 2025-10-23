@@ -3,7 +3,6 @@ import {  useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabaseClient";
-import { getMyProfile } from "../services/profileService";
 import logo from "/assets/images/logo_solid_bg.png";
 import { fetchAvatarUrl } from '../services/profilePictureService';
 
@@ -64,10 +63,6 @@ const Navbar = () => {
         navigate("/");
     }
 
-    const toProfile = () => {
-        navigate("/profile");
-    }
-
     return (
         <header className={`
                 fixed top-0 z-50 w-full h-20 flex flex-row px-6 py-3 transition-all duration-500
@@ -114,10 +109,9 @@ const Navbar = () => {
                     <button className="btn--default" onClick={handleLoginClick}>
                         Login
                     </button>
-                )}
-            </div>
-        </header>
-
+                    )}
+                </div>
+            </header>
     );
 }
 

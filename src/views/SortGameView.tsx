@@ -26,10 +26,9 @@ type SortGameViewProps = {
     onNextRound: () => void;
     streak: number;
     loading: boolean;
-    goToHome: () => void;
 };
 
-function CategoryMenu({ onCategorySelect, goToHome }: any) {
+function CategoryMenu({ onCategorySelect }: any) {
     const [showInfo, setShowInfo] = useState(false);
 
     return (
@@ -62,9 +61,6 @@ function CategoryMenu({ onCategorySelect, goToHome }: any) {
                 </button>
 
                 <ChooseCategory onSelect={onCategorySelect} />
-                <button className="btn--default mt-4" onClick={goToHome}>
-                    Game Hub
-                </button>
             </motion.div>
         </>
     );
@@ -150,7 +146,7 @@ function SortingGame({ content, submit, shake, onReorder }: any) {
 }
 
 
-function GameActions({submit, nextRound, reset, feedback, streak, onSubmit, onNextRound, onReset, goToHome,}: any) {
+function GameActions({submit, nextRound, reset, feedback, streak, onSubmit, onNextRound, onReset}: any) {
     return (
         <div className="flex flex-col items-center mt-4 gap-3">
             {submit && (
@@ -180,15 +176,11 @@ function GameActions({submit, nextRound, reset, feedback, streak, onSubmit, onNe
             <p className="mt-4 w-full max-w-xs bg-col2 text-white font-bold text-center text-lg px-4 py-2 rounded-lg shadow">
                 Win streak: {streak}
             </p>
-
-            <button className="btn--default mt-2" onClick={goToHome}>
-                Game Hub
-            </button>
         </div>
     );
 }
 
-export function SortGameView({content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, shake, nextRound, reset, submit, onNextRound, streak, loading, goToHome,}: Readonly<SortGameViewProps>) {
+export function SortGameView({content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, shake, nextRound, reset, submit, onNextRound, streak, loading}: Readonly<SortGameViewProps>) {
     return (
         <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bgcol-4 dark:bg-col3 pt-16 md:pt-20">
             <div className="absolute inset-0">
@@ -200,7 +192,7 @@ export function SortGameView({content, onReorder, onSubmit, onReset, feedback, o
             </div>
             <AnimatePresence mode="wait">
                 {category === "" ? (
-                    <CategoryMenu onCategorySelect={onCategorySelect} goToHome={goToHome} />
+                    <CategoryMenu onCategorySelect={onCategorySelect} />
                 ) : (
                     <motion.div
                         key="game"
@@ -224,7 +216,6 @@ export function SortGameView({content, onReorder, onSubmit, onReset, feedback, o
                                     onSubmit={onSubmit}
                                     onNextRound={onNextRound}
                                     onReset={onReset}
-                                    goToHome={goToHome}
                                 />
                             </>
                         )}

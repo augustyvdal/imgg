@@ -45,22 +45,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const signUp = async (email: string, password: string) => {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        setTransitioning(true);
+        //setTransitioning(true);
     };
 
     const signIn = async (email: string, password: string) => {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        setTransitioning(true);
+        //setTransitioning(true);
     };
 
     const signOut = async () => {
         const { error } = await supabase.auth.signOut();
-        setTransitioning(true);
+        //setTransitioning(true);
         if (error) throw error;
     };
 
-    // Hide transition spinner a bit later (after rerender)
     useEffect(() => {
         if (transitioning && user) {
             const timer = setTimeout(() => setTransitioning(false), 1200);
@@ -68,7 +67,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     }, [transitioning, user]);
 
-    // Show transition spinner after login
     if (transitioning) {
         return (
             <div className="fixed inset-0 flex items-center justify-center bg-col3/90 z-50">

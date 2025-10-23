@@ -173,8 +173,4 @@ export default {
             };
         }
     },
-
-    displayName(state: ProfileModelState): string | null {
-        return state.profile?.username ?? null;
-    },
 };

@@ -17,17 +17,17 @@ type Props = {
     gameOver: boolean;
     onGuess: (guess: string) => void;
     onRestart: () => void;
+    onCreateAccount: () => void;
     chooseCategory: (category: "movie" | "tv") => void;
     startingInfo: string[];
     query: string;
     onQueryChange: (q: string) => void;
     searchResults: { id: number; image: string; title: string }[];
     onSelectSuggestion: (title: string) => void;
-    goToHome: () => void;
     finalScore: number;
 };
 
-function CategoryMenu({ chooseCategory, goToHome }: any) {
+function CategoryMenu({ chooseCategory}: any) {
     const [showInfo, setShowInfo] = useState(false);
 
     return (
@@ -59,15 +59,12 @@ function CategoryMenu({ chooseCategory, goToHome }: any) {
                     <span className="font-medium">How to Play</span>
                 </motion.button>
                 <ChooseCategory onSelect={chooseCategory} />
-                <motion.button onClick={goToHome} className="btn--default">
-                    Game Hub
-                </motion.button>
             </motion.div>
         </>
     );
 }
 
-function GuessTheMovieGame({loading, category, clues, message, startingInfo, score, query, onQueryChange, searchResults, onSelectSuggestion, onGuess, gameOver, onRestart, finalScore}: any) {
+function GuessTheMovieGame({loading, category, clues, message, startingInfo, score, query, onQueryChange, searchResults, onSelectSuggestion, onGuess, gameOver, onRestart,onCreateAccount, finalScore}: any) {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -262,7 +259,7 @@ function GuessTheMovieGame({loading, category, clues, message, startingInfo, sco
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-3 mt-4">
                                     <button
-                                        onClick={onRestart}
+                                        onClick={onCreateAccount}
                                         className="btn--default text-lg"
                                     >
                                         Create Account
@@ -292,13 +289,13 @@ export default function GuessTheMovieView({
                                               gameOver,
                                               onGuess,
                                               onRestart,
+                                              onCreateAccount,
                                               chooseCategory,
                                               startingInfo,
                                               query,
                                               onQueryChange,
                                               searchResults,
                                               onSelectSuggestion,
-                                              goToHome,
                                               finalScore,
                                           }: Props) {
     return (
@@ -312,7 +309,7 @@ export default function GuessTheMovieView({
             </div>
             <AnimatePresence mode="wait">
                 {category === "" ? (
-                    <CategoryMenu chooseCategory={chooseCategory} goToHome={goToHome} />
+                    <CategoryMenu chooseCategory={chooseCategory} />
                 ) : (
                     <GuessTheMovieGame
                         loading={loading}
@@ -327,6 +324,7 @@ export default function GuessTheMovieView({
                         onGuess={onGuess}
                         gameOver={gameOver}
                         onRestart={onRestart}
+                        onCreateAccount={onCreateAccount}
                         finalScore={finalScore}
                     />
                 )}

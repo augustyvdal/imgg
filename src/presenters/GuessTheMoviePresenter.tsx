@@ -3,8 +3,8 @@ import { searchTitles } from "../services/apiClient";
 import { observer } from "mobx-react-lite";
 import GuessTheMovieModel from "../models/GuessTheMovieModel";
 import GuessTheMovieView from "../views/GuessTheMovieView";
-import { Debounce } from "../utilities/Debounce";
-import { useNavigate } from "react-router-dom";
+import { Debounce } from "../utilities/Utilities";
+import {useNavigate} from "react-router-dom";
 
 type GuessTheMovieProps = {
     model: typeof GuessTheMovieModel;
@@ -100,6 +100,10 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
         didSubmitRef.current = false;
     }
 
+    function toCreateAccount(){
+        navigate("/login");
+    }
+
     function onQueryChange(value: string) {
         setQuery(value);
     }
@@ -108,10 +112,6 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
         setQuery(title);
         setSearchResults([]);
     }
-
-    const goToHome = () => {
-        navigate("/");
-    };
 
     return (
         <GuessTheMovieView
@@ -123,6 +123,7 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
             gameOver={gameOver}
             onGuess={makeGuess}
             onRestart={reset}
+            onCreateAccount={toCreateAccount}
             category={selectedCategory}
             chooseCategory={chooseCategory}
             startingInfo={state.startingInfo}
@@ -130,7 +131,6 @@ export default observer(function GuessTheMoviePresenter({ model }: GuessTheMovie
             onQueryChange={onQueryChange}
             searchResults={searchResults}
             onSelectSuggestion={onSelectSuggestion}
-            goToHome={goToHome}
         />
     );
 });

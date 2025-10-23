@@ -21,10 +21,9 @@ type Props = {
     chooseCategory: (category: "movie" | "tv") => void;
     onGuess: (guess: "higher" | "lower") => void;
     prepareNewGame: () => void;
-    goToHome: () => void;
 };
 
-function CategoryMenu({ chooseCategory, goToHome }: any) {
+function CategoryMenu({ chooseCategory}: any) {
     const [showInfo, setShowInfo] = useState(false);
 
     return (
@@ -54,9 +53,7 @@ function CategoryMenu({ chooseCategory, goToHome }: any) {
                     <span className="font-medium">How to Play</span>
                 </button>
                 <ChooseCategory onSelect={chooseCategory} />
-                <button className="btn--default mt-4" onClick={goToHome}>
-                    Game Hub
-                </button>
+
             </motion.div>
         </>
     );
@@ -142,7 +139,6 @@ export default function HigherLowerView({
                                             chooseCategory,
                                             onGuess,
                                             prepareNewGame,
-                                            goToHome,
                                         }: Props) {
     return (
         <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col4/40 dark:bg-col3 pt-16 md:pt-20">
@@ -155,7 +151,7 @@ export default function HigherLowerView({
             </div>
             <AnimatePresence mode="wait">
                 {category === "" ? (
-                    <CategoryMenu chooseCategory={chooseCategory} goToHome={goToHome} />
+                    <CategoryMenu chooseCategory={chooseCategory}  />
                 ) : (
                     <motion.div
                         key="game"

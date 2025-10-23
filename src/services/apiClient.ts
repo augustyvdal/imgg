@@ -1,7 +1,4 @@
-// Handles API calls to IMDb (via RapidAPI).
-// Exports functions like getMovieById, searchMovies, getPopularTitles.
-import { random } from "cypress/types/lodash";
-import { getRandomNumber } from "../utilities/RandomNumber";
+import { getRandomNumber } from "../utilities/Utilities";
 const BASE_URL = "https://api.themoviedb.org/3";
 const TOKEN = import.meta.env.VITE_TMDB_READACCESS_TOKEN;
 
@@ -121,6 +118,10 @@ export async function GuessingGameAPICall(category: string) {
     const data = await fetchFromTmdb(`/${category}/popular?language=en-US&page=${randomPage}`);
 
     const filteredResults = data.results.filter((content: any) => content.poster_path && content.vote_average > 0 && !content.adult && content.vote_count >= minVotes);
+
+    if (filteredResults.length == 0) {
+        return GuessingGameAPICall(category);
+    }
 
     const randomTitle = filteredResults[Math.floor(Math.random() * filteredResults.length)];
 

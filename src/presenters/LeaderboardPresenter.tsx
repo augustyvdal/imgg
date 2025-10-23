@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchLeaderboardData, LeaderboardData, LeaderboardRow } from "../models/LeaderboardModel";
+import { fetchLeaderboardData, LeaderboardData } from "../models/LeaderboardModel";
 import LeaderboardView from "../views/LeaderboardView";
-import { useNavigate } from "react-router-dom";
 
 
 export default function LeaderboardPresenter() {
-  const navigate = useNavigate();
   const [data, setData] = useState<LeaderboardData>({ higherLowerRows: [], sortRows: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,9 +26,7 @@ export default function LeaderboardPresenter() {
     load();
   }, [category]);
 
-  const goToHome = () => {
-    navigate("/");
-  };
+
 
   return (
     <LeaderboardView
@@ -41,7 +37,6 @@ export default function LeaderboardPresenter() {
       category={category}
       onCategoryChange={setCategory}
       onReload={load}
-      goToHome={goToHome}
     />
   );
 }

@@ -49,7 +49,7 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                     </p>
                 </motion.div>
 
-                <div className="ml-auto flex flex-col items-center justify-between w-full md:w-[40%] bg-col4/70 dark:bg-col3/98 backdrop-blur-[20px] shadow-2xl h-screen">
+                <div className="ml-auto flex flex-col items-center justify-between w-full md:w-[40%] bg-col4/70 dark:bg-col3/80 backdrop-blur-[20px] shadow-2xl h-screen">
                     <div className="flex flex-col items-center text-center w-full gap-6 mt-20">
                         <motion.img
                             src={logo}
@@ -59,18 +59,10 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
                         />
-                        Flavour text
-                        <motion.p
-                            className="text-lg text-gray-100 max-w-xs leading-relaxed"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3, duration: 0.8 }}
-                        >
-                        </motion.p>
                     </div>
 
                     <div className="flex flex-col w-full text-center">
-                        <h1 className="text-5xl font-semibold mb-20 text-col3 dark:text-col4">Game Hub</h1>
+                        <h1 className="text-5xl font-semibold mb-20 text-col3 dark:text-col4"></h1>
                         <div className="flex flex-col w-full gap-1">
                             {[
                                 { label: "Guess the Movie", onClick: onStartGuessTheMovie },
