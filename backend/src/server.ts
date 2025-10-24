@@ -9,8 +9,15 @@ import sortLeaderboardRouter from "./routes/sortLeaderboard.js"
 import profileRouter from "./routes/profile.js"
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: process.env.CORS_ORIGIN?.split(',').map(o => o.trim()),
+    credentials: true
+  }));
 app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.send('Backend is running!');
+  });
 
 app.get("/api/ping", (_, res) => res.json({ message: "Backend is running!" }));
 
