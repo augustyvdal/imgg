@@ -1,4 +1,4 @@
-import { supabase } from "../services/supabaseClient";
+import { supabase } from "./supabaseClient";
 
 
 export async function fetchAvatarUrl() {
@@ -29,7 +29,7 @@ export async function fetchAvatarUrl() {
         : null;
 
     return avatarPublicUrl;
-};
+}
 
     
 

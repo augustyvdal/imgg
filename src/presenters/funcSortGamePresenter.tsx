@@ -2,9 +2,6 @@ import SortGameView from "../views/SortGameView"
 import {observer} from "mobx-react-lite"
 import { useState, useRef, useEffect} from "react";
 import funcSortGameModel from "../models/funcSortGameModel"
-import { Content } from "../services/apiClient";
-import { useNavigate } from "react-router-dom";
-import { set } from "mobx";
 
 type SortGamePresenterProps = {
     model: typeof funcSortGameModel;
@@ -13,7 +10,6 @@ type SortGamePresenterProps = {
 
 export default observer (
     function SortGamePresenter({model}: SortGamePresenterProps) {
-        const navigate = useNavigate();
         const [sortState, setSortState] = useState(model.createInitSortGameState());
         const [loading, setLoading] = useState(false);
         const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
@@ -115,9 +111,6 @@ export default observer (
             newRoundOrReset();
         };
 
-        const goToHome = () => {
-            navigate("/");
-        };
 
         return (
         <SortGameView
@@ -136,7 +129,6 @@ export default observer (
         onNextRound={handleNextRound}
         streak={sortState.roundStreak}
         loading={loading}
-        goToHome={goToHome}
         />
         );
     }

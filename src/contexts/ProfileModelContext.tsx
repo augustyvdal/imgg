@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import ProfileModel from "../models/ProfileModel";
 import { useAuth } from "./AuthContext";
 
@@ -23,10 +23,4 @@ export function ProfileModelProvider({ children }: { children: React.ReactNode }
             {children}
         </ProfileModelCtx.Provider>
     );
-}
-
-export function useProfileModel() {
-    const ctx = useContext(ProfileModelCtx);
-    if (!ctx) throw new Error("useProfileModel must be used within ProfileModelProvider");
-    return ctx;
 }

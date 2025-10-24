@@ -1,4 +1,3 @@
-import { get } from "cypress/types/lodash";
 import { GetContentFromTMDB, Content } from "../services/apiClient";
 import { supabase } from "../services/supabaseClient";
 

@@ -1,6 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 
-export function Debounce<T>(value: T, delay: number): T {
+function Debounce<T>(value: T, delay: number): T {
     const [debounced, setDebounced] = useState(value);
 
     useEffect(() => {
@@ -10,3 +10,9 @@ export function Debounce<T>(value: T, delay: number): T {
 
     return debounced;
 }
+
+function getRandomNumber(max: number): number {
+    return (Math.floor(Math.random() * max) + 1);
+}
+
+export { Debounce, getRandomNumber };
