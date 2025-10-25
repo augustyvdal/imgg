@@ -53,7 +53,7 @@ function CategoryMenu({ chooseCategory}: any) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0 }}
-                    className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
+                    className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/25 hover:bg-white/50 dark:bg-white/10 dark:hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
                 >
                     <FontAwesomeIcon icon={faCircleInfo} />
                     <span className="font-medium">How to Play</span>
@@ -95,7 +95,7 @@ function GuessTheMovieGame({loading, category, clues, message, startingInfo, sco
                     <>
                         <div className="rounded-xs p-6 bg-col1/0 space-y-5 w-[max:100%]">
                             {startingInfo.length > 0 && (
-                                <div className="space-y-3 text-col4">
+                                <div className="space-y-3 text-col3 dark:text-col4">
                                     {startingInfo.map((info: string, i: number) => (
                                         <motion.p
                                             key={i}
@@ -118,10 +118,10 @@ function GuessTheMovieGame({loading, category, clues, message, startingInfo, sco
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.4, delay: i * 0.1 }}
                                     >
-                                        <h3 className="text-lg font-semibold text-col4">
+                                        <h3 className="text-lg font-semibold text-col3 dark:text-col4">
                                             Clue {i + 1}
                                         </h3>
-                                        <p className="text-col4 mt-1 leading-relaxed">{clue}</p>
+                                        <p className="text-col3 dark:text-col4 mt-1 leading-relaxed">{clue}</p>
                                     </motion.div>
                                 ))}
                                 {clues.length < 4 &&
@@ -158,9 +158,9 @@ function GuessTheMovieGame({loading, category, clues, message, startingInfo, sco
                         className="flex flex-col gap-6 w-full max-w-md mx-auto"
                     >
                         <div className="text-center mb-2">
-                            <p className="text-lg text-gray-300">
+                            <p className="text-lg text-col3/80 dark:text-col4/80">
                                 Current Score:{" "}
-                                <span className="font-bold text-white">{score}</span>
+                                <span className="font-bold text-col3 dark:text-col4">{score}</span>
                             </p>
                         </div>
                         <div className="relative">
@@ -182,7 +182,7 @@ function GuessTheMovieGame({loading, category, clues, message, startingInfo, sco
                                         <li
                                             key={i}
                                             onClick={() => handleSelectSuggestion(s.title)}
-                                            className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-800 transition-colors"
+                                            className="flex items-center gap-3 p-2 cursor-pointer hover:bg-col4/60 dark:hover:bg-gray-800 transition-colors"
                                         >
                                             {s.image ? (
                                                 <img
@@ -234,7 +234,7 @@ function GuessTheMovieGame({loading, category, clues, message, startingInfo, sco
 
                         {user ? (
                             <>
-                                <p className="text-col4 text-lg mt-4">
+                                <p className="text-col3 dark:text-col4 text-lg mt-4">
                                     See if you made the <span className="font-bold text-col1">leaderboards!</span>
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-3 mt-4">
@@ -299,7 +299,7 @@ export default function GuessTheMovieView({
                                               finalScore,
                                           }: Props) {
     return (
-        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col3">
+        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col4 dark:bg-col3">
             <div className="absolute inset-0">
                 <img
                     src="/assets/images/img.jpg"

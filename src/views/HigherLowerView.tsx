@@ -1,4 +1,4 @@
-﻿// src/views/HigherLowerView.tsx
+﻿﻿// src/views/HigherLowerView.tsx
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Content } from "../services/apiClient";
@@ -46,7 +46,7 @@ function CategoryMenu({ chooseCategory}: any) {
                 </h1>
                 <button
                     onClick={() => setShowInfo(true)}
-                    className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
+                    className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/25 hover:bg-white/50 dark:bg-white/10 dark:hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
                     title="How to play"
                 >
                     <FontAwesomeIcon icon={faInfoCircle} />
@@ -141,7 +141,7 @@ export default function HigherLowerView({
                                             prepareNewGame,
                                         }: Props) {
     return (
-        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col4/40 dark:bg-col3 pt-16 md:pt-20">
+        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col4 dark:bg-col3 pt-16 md:pt-20">
             <div className="absolute inset-0">
                 <img
                     src="/assets/images/img.jpg"

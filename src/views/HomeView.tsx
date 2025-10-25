@@ -70,10 +70,10 @@ export default function HomeView({ onStartGuessTheMovie, onStartHigherLower, onS
                                 { label: "Sort Game", onClick: onStartSortGame },
                             ].map(({ label, onClick }, i) => (
                                 <div key={i} onClick={onClick} className="group relative cursor-pointer overflow-hidden p-10 flex items-center justify-between transition-all duration-500 ease-out bg-gradient-to-r hover:from-col1/80" >
-                                    <span className="text-xl font-semibold transition-transform duration-500 group-hover:translate-x-3">
+                                    <span className="text-xl text-col3 dark:text-col4 font-semibold transition-transform duration-500 group-hover:translate-x-3">
                                         {label}
                                     </span>
-                                    <span className="text-2xl opacity-100 translate-x-[-10px] transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">
+                                    <span className="text-2xl text-col3 dark:text-col4 opacity-100 translate-x-[-10px] transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">
                                         ➜
                                     </span>
                                 </div>
