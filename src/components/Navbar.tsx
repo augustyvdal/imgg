@@ -99,7 +99,7 @@ const Navbar = () => {
                                 <Link to="/profile" className="dropdown__item">
                                     Profile
                                 </Link>
-                                <button className="dropdown__item btn--signout" onClick={handleLogoutClick}>
+                                <button className="transition-transform duration-300 dropdown__item btn--signout" onClick={handleLogoutClick}>
                                     Sign out
                                 </button>
                             </div>

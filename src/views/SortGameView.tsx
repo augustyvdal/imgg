@@ -53,7 +53,7 @@ function CategoryMenu({ onCategorySelect }: any) {
 
                 <button
                     onClick={() => setShowInfo(true)}
-                    className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 rounded-full dark:text-col4 text-col3 transition cursor-pointer"
+                    className="mt-10 flex items-center gap-2 px-5 py-2 bg-white/25 hover:bg-white/50 dark:bg-white/10 dark:hover:bg-white/20 rounded-full dark:text-[var(--color-col4)] text-[var(--color-col3)] transition cursor-pointer"
                     title="How to play"
                 >
                     <FontAwesomeIcon icon={faInfoCircle} />
@@ -182,7 +182,7 @@ function GameActions({submit, nextRound, reset, feedback, streak, onSubmit, onNe
 
 export function SortGameView({content, onReorder, onSubmit, onReset, feedback, onCategorySelect, category, shake, nextRound, reset, submit, onNextRound, streak, loading}: Readonly<SortGameViewProps>) {
     return (
-        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bgcol-4 dark:bg-col3 pt-16 md:pt-20">
+        <div className="relative min-h-screen overflow-hidden dark:text-col4 text-col3 font-sans bg-col4 dark:bg-col3 pt-16 md:pt-20">
             <div className="absolute inset-0">
                 <img
                     src="/assets/images/img.jpg"
