@@ -68,7 +68,7 @@ const Navbar = () => {
                 fixed top-0 z-50 w-full h-20 flex flex-row px-6 py-3 transition-all duration-500
                 ${isHome
                         ? "bg-transparent text-white"
-                        : "dark:bg-[var(--color-col3)] bg:gray-50 shadow-lg text-white dark:text-gray-200"}
+                        : "dark:bg-[var(--color-col3)] bg-gray-50 shadow-lg text-white dark:text-gray-200"}
             `}>
             <div className="flex-1">
                 {!isHome && (
